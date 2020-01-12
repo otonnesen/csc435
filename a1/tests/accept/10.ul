@@ -1,0 +1,7 @@
+void main() {
+	if (condition) {
+		true_statement;
+	} else {
+		false_statement;
+	}
+}

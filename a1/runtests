@@ -1,0 +1,27 @@
+#!/bin/sh
+
+RED='\033[0;31m'
+GREEN='\33[0;32m'
+NC='\33[0m'
+
+classpath='../lib/antlr-3.5.2-complete.jar:' 
+
+make
+
+if [ "$1" ]; then
+	java -cp $classpath Compiler $1 2>&1;
+	exit;
+fi
+
+for i in tests/accept/*.ul; do
+	if [ "$(java -cp $classpath Compiler $i 2>&1)" ];
+	then printf "$i ${RED}failed${NC}.\n";
+	else printf "$i ${GREEN}passed${NC}.\n";
+	fi
+done
+for i in tests/reject/*.ul; do
+	if [ "$(java -cp $classpath Compiler $i 2>&1)" ];
+	then printf "$i ${GREEN}passed${NC}.\n";
+	else printf "$i ${RED}failed${NC}.\n";
+	fi
+done

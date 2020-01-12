@@ -1,0 +1,18 @@
+void m41n() {
+	int i;
+	float f;
+	void v;
+	char[32] c;
+	string s;
+	boolean b;
+
+	;
+	;
+	;
+	i;
+	b;
+	c;
+	if ( condition_is_true ) {
+		more_statements;
+	}
+}

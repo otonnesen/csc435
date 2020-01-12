@@ -1,0 +1,7 @@
+books/*
+docs/*
+lab*/*
+*.class
+*.pdf
+*.tokens
+*.swp

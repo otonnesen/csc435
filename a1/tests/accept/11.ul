@@ -1,0 +1,7 @@
+void main() {
+	while
+		(condition)
+		{
+			let_me_out;
+		}
+}

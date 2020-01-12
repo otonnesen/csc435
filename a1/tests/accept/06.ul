@@ -1,0 +1,4 @@
+int main(int INT, float FLOAT, char[10] CHARS,
+			string[11] STRINGS, boolean BOOL, void[100] VOIDS) {
+
+}

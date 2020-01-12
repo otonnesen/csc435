@@ -1,0 +1,10 @@
+void main() {
+	int i;
+	string s;
+	float f;
+
+	print i;
+	println s;
+	return f;
+	return;
+}
