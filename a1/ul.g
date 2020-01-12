@@ -1,5 +1,9 @@
 grammar ul;
 
+options {
+	backtrack=true;
+}
+
 @members
 {
 protected void mismatch (IntStream input, int ttype, BitSet follow)
@@ -52,31 +56,92 @@ functionBody	:	OPENBRACE varDecl* statement* CLOSEBRACE
 varDecl			:	compoundType ID SEMICOLON
 				;
 
-statement		:	SEMICOLON
-				|	expr SEMICOLON /* NOTE: Removing any of these three lines makes the program compile */
-				|	IF OPENPAREN expr CLOSEPAREN block (ELSE block)?
-				|	WHILE OPENPAREN expr CLOSEPAREN block
-				|	PRINT expr SEMICOLON
-				|	PRINTLN expr SEMICOLON
-				|	RETURN expr? SEMICOLON
-				|	ID EQUALS expr SEMICOLON
-				/* TODO: Fix this */
-				/* |	ID OPENBRACKET expr CLOSEBRACKET EQUALS expr SEMICOLON *//* NOTE: Removing any of these three lines makes the program compile */
+statement		:	stmtEmpty
+				|	stmtExpr
+				|	stmtIf
+				|	stmtWhile
+				|	stmtPrint
+				|	stmtPrintln
+				|	stmtReturn
+				|	stmtAssign
+				|	stmtArrayAssign
 				;
 
-expr			:	ID OPENBRACKET expr CLOSEBRACKET/* NOTE: Removing any of these three lines makes the program compile */
-				|	ID OPENPAREN exprList CLOSEPAREN
-				|	ID
-				/* TODO: Fix this */
-				/* |	expr op expr */
+stmtEmpty		:	SEMICOLON
+				;
+
+stmtExpr		:	expression SEMICOLON
+				;
+
+stmtIf			:	IF OPENPAREN expression CLOSEPAREN block (ELSE block)?
+				;
+
+stmtWhile		:	WHILE OPENPAREN expression CLOSEPAREN block
+				;
+
+stmtPrint		:	PRINT expression SEMICOLON
+				;
+
+stmtPrintln		:	PRINTLN expression SEMICOLON
+				;
+
+stmtReturn		:	RETURN expression? SEMICOLON
+				;
+
+stmtAssign		:	ID EQUALS expression SEMICOLON
+				;
+
+stmtArrayAssign	:	exprArrayAccess EQUALS expression SEMICOLON
+				;
+
+/* TODO */
+expression		:	/*exprOperation
+				|*/	exprArrayAccess
+				|	exprFuncCall
+				|	exprId
 				|	literal
-				|	OPENPAREN expr CLOSEPAREN
+				|	exprParen
 				;
 
-exprList		:	expr exprMore*
+exprOperation	:	exprIsEqual
+				|	exprLessThan
+				|	exprPlus
+				|	exprMinus
+				|	exprTimes
 				;
 
-exprMore		:	COMMA expr
+exprIsEqual		:	expression IS_EQUAL expression
+				;
+
+exprLessThan	:	expression LESS_THAN expression
+				;
+
+exprPlus		:	expression PLUS expression
+				;
+
+exprMinus		:	expression MINUS expression
+				;
+
+exprTimes		:	expression TIMES expression
+				;
+
+exprArrayAccess	:	ID OPENBRACKET expression CLOSEBRACKET
+				;
+
+exprFuncCall	:	ID OPENPAREN exprList CLOSEPAREN
+				;
+
+exprId			:	ID
+				;
+
+exprParen		:	OPENPAREN expression CLOSEPAREN
+				;
+
+exprList		:	expression exprMore*
+				|
+				;
+
+exprMore		:	COMMA expression
 				;
 
 block			:	OPENBRACE statement* CLOSEBRACE
