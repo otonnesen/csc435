@@ -95,8 +95,11 @@ stmtArrayAssign	:	exprArrayAccess EQUALS expression SEMICOLON
 				;
 
 /* TODO */
-expression		:	/*exprOperation
-				|*/	exprArrayAccess
+expression		:	exprOperation
+				|	exprNoOp
+				;
+
+exprNoOp		:	exprArrayAccess
 				|	exprFuncCall
 				|	exprId
 				|	literal
@@ -105,24 +108,20 @@ expression		:	/*exprOperation
 
 exprOperation	:	exprIsEqual
 				|	exprLessThan
-				|	exprPlus
-				|	exprMinus
+				|	exprPlusMinus
 				|	exprTimes
 				;
 
-exprIsEqual		:	expression IS_EQUAL expression
+exprIsEqual		:	exprLessThan (IS_EQUAL exprLessThan)*
 				;
 
-exprLessThan	:	expression LESS_THAN expression
+exprLessThan	:	exprPlusMinus (LESS_THAN exprPlusMinus)*
 				;
 
-exprPlus		:	expression PLUS expression
+exprPlusMinus	:	exprTimes ((PLUS|MINUS) exprTimes)*
 				;
 
-exprMinus		:	expression MINUS expression
-				;
-
-exprTimes		:	expression TIMES expression
+exprTimes		:	exprNoOp (TIMES exprNoOp)*
 				;
 
 exprArrayAccess	:	ID OPENBRACKET expression CLOSEBRACKET

@@ -1,5 +1,5 @@
 void main() {
 	else {
-		false_statement
+		false_statement;
 	}
 }
