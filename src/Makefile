@@ -5,7 +5,7 @@ GSRC= $(GNAME).g
 all: grammar compile
 
 grammar: $(GSRCS)
-		java -cp $(CLASSPATH) org.antlr.Tool -fo . $(GSRC) 
+		java -cp $(CLASSPATH) org.antlr.Tool -fo . $(GSRC)
 
 compile:
 		javac -cp $(CLASSPATH) *.java
