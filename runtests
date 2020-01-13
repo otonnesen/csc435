@@ -4,7 +4,7 @@ RED='\033[0;31m'
 GREEN='\33[0;32m'
 NC='\33[0m'
 
-classpath='../lib/antlr-3.5.2-complete.jar:' 
+classpath='./lib/antlr-3.5.2-complete.jar:./build' 
 
 make
 
