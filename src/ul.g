@@ -30,17 +30,16 @@ public Object recoverFromMismatchedSet (IntStream input,
 
 /* Parser */
 
-program			:	function+
+program			:	function+ EOF
 				;
 
 function		:	functionDecl functionBody
 				;
 
-functionDecl	:	type ID OPENPAREN formalParameters CLOSEPAREN
+functionDecl	:	type ID OPENPAREN formalParameters? CLOSEPAREN
 				;
 
 formalParameters:	compoundType ID moreFormals*
-				|
 				;
 
 moreFormals		:	COMMA compoundType ID
