@@ -93,12 +93,11 @@ stmtAssign		:	ID EQUALS expression SEMICOLON
 stmtArrayAssign	:	exprArrayAccess EQUALS expression SEMICOLON
 				;
 
-/* TODO */
 expression		:	exprOperation
-				|	exprNoOp
+				|	atom
 				;
 
-exprNoOp		:	exprArrayAccess
+atom			:	exprArrayAccess
 				|	exprFuncCall
 				|	exprId
 				|	literal
@@ -120,7 +119,7 @@ exprLessThan	:	exprPlusMinus (LESS_THAN exprPlusMinus)*
 exprPlusMinus	:	exprTimes ((PLUS|MINUS) exprTimes)*
 				;
 
-exprTimes		:	exprNoOp (TIMES exprNoOp)*
+exprTimes		:	atom (TIMES atom)*
 				;
 
 exprArrayAccess	:	ID OPENBRACKET expression CLOSEBRACKET
