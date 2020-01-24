@@ -5,48 +5,8 @@ options {
 }
 
 @header {
-	import ast.Expression;
-	import ast.ExpressionArrayAccess;
-	import ast.ExpressionFunctionCall;
-	import ast.ExpressionIdentifier;
-	import ast.Literal;
-	import ast.LiteralBoolean;
-	import ast.LiteralCharacter;
-	import ast.LiteralFloat;
-	import ast.LiteralInteger;
-	import ast.LiteralString;
-	import ast.ExpressionParenthesis;
-	import ast.ExpressionList;
-	import ast.ExpressionOperation;
-	import ast.ExpressionTimes;
-	import ast.ExpressionPlusMinus;
-	import ast.ExpressionLessThan;
-	import ast.ExpressionIsEqual;
-	import ast.Statement;
-	import ast.StatementArrayAssignment;
-	import ast.StatementAssign;
-	import ast.StatementEmpty;
-	import ast.StatementExpression;
-	import ast.StatementIf;
-	import ast.StatementPrint;
-	import ast.StatementPrintln;
-	import ast.StatementReturn;
-	import ast.StatementWhile;
-	import ast.Block;
-	import ast.VariableDeclaration;
-	import ast.Function;
-	import ast.FunctionBody;
-	import ast.FunctionDeclaration;
-	import ast.FormalParameters;
-	import ast.Parameter;
-	import type.Type;
-	import type.TypeArray;
-	import type.TypeBoolean;
-	import type.TypeCharacter;
-	import type.TypeFloat;
-	import type.TypeInteger;
-	import type.TypeString;
-	import type.TypeVoid;
+	import ast.*;
+	import type.*;
 
 	import ast.Program;
 }
