@@ -4,6 +4,53 @@ options {
 	backtrack=true;
 }
 
+@header {
+	import ast.Expression;
+	import ast.ExpressionArrayAccess;
+	import ast.ExpressionFunctionCall;
+	import ast.ExpressionIdentifier;
+	import ast.Literal;
+	import ast.LiteralBoolean;
+	import ast.LiteralCharacter;
+	import ast.LiteralFloat;
+	import ast.LiteralInteger;
+	import ast.LiteralString;
+	import ast.ExpressionParenthesis;
+	import ast.ExpressionList;
+	import ast.ExpressionOperation;
+	import ast.ExpressionTimes;
+	import ast.ExpressionPlusMinus;
+	import ast.ExpressionLessThan;
+	import ast.ExpressionIsEqual;
+	import ast.Statement;
+	import ast.StatementArrayAssignment;
+	import ast.StatementAssign;
+	import ast.StatementEmpty;
+	import ast.StatementExpression;
+	import ast.StatementIf;
+	import ast.StatementPrint;
+	import ast.StatementPrintln;
+	import ast.StatementReturn;
+	import ast.StatementWhile;
+	import ast.Block;
+	import ast.VariableDeclaration;
+	import ast.Function;
+	import ast.FunctionBody;
+	import ast.FunctionDeclaration;
+	import ast.FormalParameters;
+	import ast.Parameter;
+	import type.Type;
+	import type.TypeArray;
+	import type.TypeBoolean;
+	import type.TypeCharacter;
+	import type.TypeFloat;
+	import type.TypeInteger;
+	import type.TypeString;
+	import type.TypeVoid;
+
+	import ast.Program;
+}
+
 @members
 {
 protected void mismatch (IntStream input, int ttype, BitSet follow)
@@ -30,141 +77,317 @@ public Object recoverFromMismatchedSet (IntStream input,
 
 /* Parser */
 
-program			:	function+ EOF
+program			returns [Program p]
+				@init {
+					p = new Program();
+				}
+				:	(f = function
+				{
+					p.addFunction(f);
+				})+ EOF
 				;
 
-function		:	functionDecl functionBody
+function		returns [Function f]
+				:	fd = functionDecl fb = functionBody
+				{
+					f = new Function(fd, fb);
+				}
 				;
 
-functionDecl	:	type ID OPENPAREN formalParameters? CLOSEPAREN
+functionDecl	returns [FunctionDeclaration fd]
+				:	t = type id = exprId OPENPAREN (fp = formalParams)? CLOSEPAREN
+				{
+					fd = new FunctionDeclaration(t, id, fp);
+				}
 				;
 
-formalParameters:	compoundType ID moreFormals*
+formalParams	returns [FormalParameters fp]
+				@init {
+					fp = new FormalParameters();
+				}
+				:	t = compoundType e = exprId
+				{
+					fp.addParameter(new Parameter(t, e));
+				}
+				(COMMA t = compoundType e = exprId
+				{
+					fp.addParameter(new Parameter(t, e));
+				})*
 				;
 
-moreFormals		:	COMMA compoundType ID
+compoundType	returns [Type t]
+				:	tp = type { t = tp; }
+				|	tp = type OPENBRACKET i = INT_CONST CLOSEBRACKET
+				{
+					int size = Integer.parseInt(i.getText());
+					t = new TypeArray(t, size);
+				}
 				;
 
-compoundType	:	type
-				|	type OPENBRACKET INT_CONST CLOSEBRACKET
+functionBody	returns [FunctionBody fb]
+				@init {
+					fb = new FunctionBody();
+				}
+				:	OPENBRACE (vd = varDecl { fb.addVariableDeclaration(vd); } )*
+				(stmt = statement { fb.addStatement(stmt); } )* CLOSEBRACE
 				;
 
-functionBody	:	OPENBRACE varDecl* statement* CLOSEBRACE
+varDecl			returns [VariableDeclaration v]
+				:	t = compoundType e = exprId SEMICOLON
+				{
+					v = new VariableDeclaration(t, e);
+				}
 				;
 
-varDecl			:	compoundType ID SEMICOLON
+statement		returns [Statement s]
+				:	em = stmtEmpty { s = em; }
+				|	e = stmtExpr { s = e; }
+				|	i = stmtIf { s = i; }
+				|	w = stmtWhile { s = w; }
+				|	p = stmtPrint { s = p; }
+				|	pl = stmtPrintln { s = pl; }
+				|	r = stmtReturn { s = r; }
+				|	a = stmtAssign { s = a; }
+				|	aa = stmtArrayAssign { s = aa; }
 				;
 
-statement		:	stmtEmpty
-				|	stmtExpr
-				|	stmtIf
-				|	stmtWhile
-				|	stmtPrint
-				|	stmtPrintln
-				|	stmtReturn
-				|	stmtAssign
-				|	stmtArrayAssign
+stmtEmpty		returns [StatementEmpty em]
+				:	SEMICOLON
+				{
+					em = new StatementEmpty();
+				}
 				;
 
-stmtEmpty		:	SEMICOLON
+stmtExpr		returns [StatementExpression e]
+				:	exp = expression SEMICOLON
+				{
+					e = new StatementExpression(exp);
+				}
 				;
 
-stmtExpr		:	expression SEMICOLON
+stmtIf			returns [StatementIf i]
+				:	IF OPENPAREN e = expression CLOSEPAREN ib = block (ELSE eb = block)?
+				{
+					i = new StatementIf(e, ib, eb);
+				}
 				;
 
-stmtIf			:	IF OPENPAREN expression CLOSEPAREN block (ELSE block)?
+stmtWhile		returns [StatementWhile w]
+				:	WHILE OPENPAREN expression CLOSEPAREN block
 				;
 
-stmtWhile		:	WHILE OPENPAREN expression CLOSEPAREN block
+stmtPrint		returns [StatementPrint p]
+				:	PRINT e = expression SEMICOLON
+				{
+					p = new StatementPrint(e);
+				}
 				;
 
-stmtPrint		:	PRINT expression SEMICOLON
+stmtPrintln		returns [StatementPrintln pl]
+				:	PRINTLN e = expression SEMICOLON
+				{
+					pl = new StatementPrintln(e);
+				}
 				;
 
-stmtPrintln		:	PRINTLN expression SEMICOLON
+stmtReturn		returns [StatementReturn r]
+				:	RETURN (e = expression)? SEMICOLON
+				{
+					r = new StatementReturn(e);
+				}
 				;
 
-stmtReturn		:	RETURN expression? SEMICOLON
+stmtAssign		returns [StatementAssign a]
+				:	id = exprId EQUALS e = expression SEMICOLON
+				{
+					a = new StatementAssign(id, e);
+				}
 				;
 
-stmtAssign		:	ID EQUALS expression SEMICOLON
+stmtArrayAssign	returns [StatementArrayAssignment aa]
+				:	eaa = exprArrayAccess EQUALS e = expression SEMICOLON
+				{
+					aa = new StatementArrayAssignment(eaa, e);
+				}
 				;
 
-stmtArrayAssign	:	exprArrayAccess EQUALS expression SEMICOLON
+expression		returns [Expression e]
+				:	o = exprOperation { e = o; }
+				|	a = atom { e = a; }
 				;
 
-expression		:	exprOperation
-				|	atom
+atom			returns [Expression e]
+				:	aa = exprArrayAccess { e = aa; }
+				|	fc = exprFuncCall { e = fc; }
+				|	id = exprId { e = id; }
+				|	l = literal { e = l; }
+				|	p = exprParen { e = p; }
 				;
 
-atom			:	exprArrayAccess
-				|	exprFuncCall
-				|	exprId
-				|	literal
-				|	exprParen
+exprOperation	returns [Expression e]
+				:	eq = exprIsEqual { e = eq; }
+				|	lt = exprLessThan {e = lt; }
+				|	pm = exprPlusMinus { e = pm; }
+				|	t = exprTimes { e = t; }
 				;
 
-exprOperation	:	exprIsEqual
-				|	exprLessThan
-				|	exprPlusMinus
-				|	exprTimes
+exprIsEqual		returns [Expression e]
+				@init {
+					Expression it = null;
+				}
+				@after {
+					e = it;
+				}
+				:	e1 = exprLessThan { it = e1; }
+				(IS_EQUAL e2 = exprLessThan
+				{ it = new ExpressionIsEqual(it, e2); })*
 				;
 
-exprIsEqual		:	exprLessThan (IS_EQUAL exprLessThan)*
+exprLessThan	returns [Expression e]
+				@init {
+					Expression it = null;
+				}
+				@after {
+					e = it;
+				}
+				:	e1 = exprPlusMinus { it = e1; }
+				(LESS_THAN e2 = exprPlusMinus
+				{ it = new ExpressionLessThan(it, e2); })*
 				;
 
-exprLessThan	:	exprPlusMinus (LESS_THAN exprPlusMinus)*
+exprPlusMinus	returns [Expression e]
+				@init {
+					Expression it = null;
+				}
+				@after {
+					e = it;
+				}
+				:	e1 = exprTimes { it = e1; }
+				((PLUS|MINUS) e2 = exprTimes
+				{ it = new ExpressionPlusMinus(it, e2); })*
 				;
 
-exprPlusMinus	:	exprTimes ((PLUS|MINUS) exprTimes)*
+exprTimes		returns [Expression e]
+				@init {
+					Expression it = null;
+				}
+				@after {
+					e = it;
+				}
+				:	e1 = atom { it = e1; }
+				(TIMES e2 = atom
+				{ it = new ExpressionTimes(it, e2); })*
 				;
 
-exprTimes		:	atom (TIMES atom)*
+exprArrayAccess	returns [ExpressionArrayAccess aa]
+				:	id = exprId OPENBRACKET e = expression CLOSEBRACKET
+				{
+					aa = new ExpressionArrayAccess(id, e);
+				}
 				;
 
-exprArrayAccess	:	ID OPENBRACKET expression CLOSEBRACKET
+exprFuncCall	returns [ExpressionFunctionCall fc]
+				:	id = exprId OPENPAREN el = exprList CLOSEPAREN
+				{
+					fc = new ExpressionFunctionCall(id, el);
+				}
 				;
 
-exprFuncCall	:	ID OPENPAREN exprList CLOSEPAREN
+exprId			returns [ExpressionIdentifier i]
+				:	e = ID
+				{
+					String id = e.getText();
+					i = new ExpressionIdentifier(id);
+				}
 				;
 
-exprId			:	ID
+exprParen		returns [ExpressionParenthesis p]
+				:	OPENPAREN e = expression CLOSEPAREN
+				{
+					p = new ExpressionParenthesis(e);
+				}
 				;
 
-exprParen		:	OPENPAREN expression CLOSEPAREN
-				;
-
-exprList		:	expression exprMore*
+exprList		returns [ExpressionList l]
+				@init {
+					l = new ExpressionList();
+				}
+				:	e = expression { l.addExpression(e); }
+				(e = exprMore { l.addExpression(e); })*
 				|
 				;
 
-exprMore		:	COMMA expression
+exprMore		returns [Expression e]
+				:	COMMA exp = expression { e = exp; }
 				;
 
-block			:	OPENBRACE statement* CLOSEBRACE
+block			returns [Block b]
+				@init {
+					b = new Block();
+				}
+				:	OPENBRACE (s = statement { b.addStatement(s); })* CLOSEBRACE
 				;
 
-type			:	INT
-				|	FLOAT
-				|	CHAR
-				|	STRING
-				|	BOOLEAN
-				|	VOID
+type			returns [Type t]
+				:	BOOLEAN { t = new TypeBoolean(); }
+				|	CHAR { t = new TypeCharacter(); }
+				|	FLOAT { t = new TypeFloat(); }
+				|	INT { t = new TypeInteger(); }
+				|	STRING { t = new TypeString(); }
+				|	VOID { t = new TypeVoid(); }
 				;
 
-literal			:	STRING_CONST
-				|	INT_CONST
-				|	FLOAT_CONST
-				|	CHAR_CONST
-				|	TRUE
-				|	FALSE
+literalBool		returns [LiteralBoolean b]
+				:	e = TRUE
+				{
+					boolean v = Boolean.valueOf(e.getText());
+					b = new LiteralBoolean(v);
+				}
+				|	e = FALSE
+				{
+					boolean v = Boolean.valueOf(e.getText());
+					b = new LiteralBoolean(v);
+				}
 				;
 
-op				:	IS_EQUAL
-				|	LESS_THAN
-				|	PLUS
-				|	MINUS
-				|	TIMES
+literalChar		returns [LiteralCharacter c]
+				:	e = CHAR_CONST
+				{
+					char v = e.getText().charAt(1);
+					c = new LiteralCharacter(v);
+				}
+				;
+
+literalFloat		returns [LiteralFloat f]
+				:	e = FLOAT_CONST
+				{
+					float v = Float.valueOf(e.getText());
+					f = new LiteralFloat(v);
+				}
+				;
+
+literalInt		returns [LiteralInteger i]
+				:	e = INT_CONST
+				{
+					int v = Integer.parseInt(e.getText());
+					i = new LiteralInteger(v);
+				}
+				;
+
+literalString		returns [LiteralString s]
+				:	e = STRING_CONST
+				{
+					String v = e.getText().substring(1, e.getText().length()-1);
+					s = new LiteralString(v);
+				}
+				;
+
+literal			returns [Literal l]
+				:	b = literalBool		{ l = b; }
+				|	c = literalChar		{ l = c; }
+				|	f = literalFloat	{ l = f; }
+				|	i = literalInt		{ l = i; }
+				|	s = literalString	{ l = s; }
 				;
 
 
