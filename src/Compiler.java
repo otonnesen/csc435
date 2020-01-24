@@ -7,6 +7,7 @@
 
 import org.antlr.runtime.*;
 import java.io.*;
+import ast.Program;
 
 public class Compiler {
 	public static void main (String[] args) throws Exception {
@@ -27,7 +28,7 @@ public class Compiler {
 		ulParser parser = new ulParser(tokens);
 
 		try {
-			parser.program();
+			Program p = parser.program();
 		}
 		catch (RecognitionException e )	{
 			// A lexical or parsing error occured.
