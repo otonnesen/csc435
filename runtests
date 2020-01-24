@@ -6,7 +6,7 @@ NC='\33[0m'
 
 classpath='./lib/antlr-3.5.2-complete.jar:./build' 
 
-make
+# make
 
 if [ "$1" ]; then
 	java -cp $classpath Compiler $1 2>&1;

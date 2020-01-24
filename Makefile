@@ -10,7 +10,7 @@ grammar: $(GSRCS)
 		java -cp $(CLASSPATH) org.antlr.Tool -fo $(SRC) $(SRC)/$(GSRC)
 
 compile:
-		javac -cp $(CLASSPATH) $(SRC)/*.java -d $(BUILD)
+		javac -cp $(CLASSPATH) $(SRC)/*.java $(SRC)/ast/*.java $(SRC)/type/*.java -d $(BUILD)
 
 clean:
 		rm $(BUILD)/* $(SRC)/$(GNAME)Lexer.java $(SRC)/$(GNAME)Parser.java $(SRC)/$(GNAME).tokens
