@@ -10,8 +10,4 @@ public class LiteralString extends Literal {
 	public String toString() {
 		return this.value;
 	}
-
-	public Object accept(Visitor v) {
-		return v.visit(this);
-	}
 }

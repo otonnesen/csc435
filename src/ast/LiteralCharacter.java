@@ -10,8 +10,4 @@ public class LiteralCharacter extends Literal {
 	public String toString() {
 		return String.valueOf(this.value);
 	}
-
-	public Object accept(Visitor v) {
-		return v.visit(this);
-	}
 }

@@ -1,4 +1,5 @@
-package ast;
+package visitor;
+import ast.*;
 
 public abstract class Visitor {
 	public abstract Object visit(ASTNode n);

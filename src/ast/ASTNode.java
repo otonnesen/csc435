@@ -1,4 +1,5 @@
 package ast;
+import visitor.Visitor;
 
 public class ASTNode {
 	public Object accept(Visitor v) {
