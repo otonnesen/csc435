@@ -1,6 +1,6 @@
 books/*
 docs/*
-lab*/*
+labs/
 src/ulLexer.java
 src/ulParser.java
 *.class
