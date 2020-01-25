@@ -61,20 +61,6 @@ functionDecl	returns [FunctionDeclaration fd]
 				}
 				;
 
-formalParams	returns [FormalParameters fp]
-				@init {
-					fp = new FormalParameters();
-				}
-				:	t = compoundType e = exprId
-				{
-					fp.addParameter(new Parameter(t, e));
-				}
-				(COMMA t = compoundType e = exprId
-				{
-					fp.addParameter(new Parameter(t, e));
-				})*
-				;
-
 compoundType	returns [Type t]
 				:	tp = type { t = tp; }
 				|	tp = type OPENBRACKET i = INT_CONST CLOSEBRACKET
@@ -92,10 +78,31 @@ functionBody	returns [FunctionBody fb]
 				(stmt = statement { fb.addStatement(stmt); } )* CLOSEBRACE
 				;
 
-varDecl			returns [VariableDeclaration v]
-				:	t = compoundType e = exprId SEMICOLON
+declaration		returns [Declaration d]
+				:	t = compoundType id = exprId
 				{
-					v = new VariableDeclaration(t, e);
+					d = new Declaration(t, id);
+				}
+				;
+
+formalParams	returns [ArrayList<Declaration> fp]
+				@init {
+					fp = new ArrayList<Declaration>();
+				}
+				:	d = declaration
+				{
+					fp.add(d);
+				}
+				(COMMA d = declaration
+				{
+					fp.add(d);
+				})*
+				;
+
+varDecl			returns [VariableDeclaration v]
+				:	d = declaration SEMICOLON
+				{
+					v = new VariableDeclaration(d);
 				}
 				;
 
@@ -273,12 +280,8 @@ exprList		returns [ExpressionList l]
 					l = new ExpressionList();
 				}
 				:	e = expression { l.addExpression(e); }
-				(e = exprMore { l.addExpression(e); })*
+				(COMMA e = expression { l.addExpression(e); })*
 				|
-				;
-
-exprMore		returns [Expression e]
-				:	COMMA exp = expression { e = exp; }
 				;
 
 block			returns [Block b]
