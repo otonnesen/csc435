@@ -1,7 +1,8 @@
 package ast;
+import visitor.Visitor;
 
 public class LiteralBoolean extends Literal {
-	private final boolean value;
+	private boolean value;
 
 	public LiteralBoolean(boolean b) {
 		this.value = b;
@@ -9,5 +10,9 @@ public class LiteralBoolean extends Literal {
 
 	public String toString() {
 		return String.valueOf(this.value);
+	}
+
+	public Object accept(Visitor v) {
+		return v.visit(this);
 	}
 }

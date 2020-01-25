@@ -1,8 +1,9 @@
 package ast;
+import visitor.Visitor;
 import java.util.ArrayList;
 
 public class ExpressionList extends ASTNode {
-	private ArrayList expressions;
+	private ArrayList<Expression> expressions;
 
 	public ExpressionList() {
 		this.expressions = new ArrayList<Expression>();
@@ -10,5 +11,9 @@ public class ExpressionList extends ASTNode {
 
 	public void addExpression(Expression e) {
 		this.expressions.add(e);
+	}
+
+	public Object accept(Visitor v) {
+		return v.visit(this);
 	}
 }

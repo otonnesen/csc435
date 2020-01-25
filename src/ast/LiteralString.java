@@ -1,4 +1,5 @@
 package ast;
+import visitor.Visitor;
 
 public class LiteralString extends Literal {
 	private String value;
@@ -9,5 +10,9 @@ public class LiteralString extends Literal {
 
 	public String toString() {
 		return this.value;
+	}
+
+	public Object accept(Visitor v) {
+		return v.visit(this);
 	}
 }

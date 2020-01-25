@@ -1,6 +1,6 @@
 package ast;
 
-public class ExpressionOperation extends Expression {
+public abstract class ExpressionOperation extends Expression {
 	protected Expression e1;
 	protected Expression e2;
 

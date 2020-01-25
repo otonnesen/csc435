@@ -1,4 +1,5 @@
 package ast;
+import visitor.Visitor;
 
 public class StatementIf extends Statement {
 	private Expression e;
@@ -9,5 +10,9 @@ public class StatementIf extends Statement {
 		this.e = e;
 		this.ifBlock = ifBlock;
 		this.elseBlock = elseBlock;
+	}
+
+	public Object accept(Visitor v) {
+		return v.visit(this);
 	}
 }

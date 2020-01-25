@@ -1,4 +1,5 @@
 package ast;
+import visitor.Visitor;
 
 public class StatementArrayAssignment extends Statement {
 	private ExpressionArrayAccess eaa;
@@ -7,5 +8,9 @@ public class StatementArrayAssignment extends Statement {
 	public StatementArrayAssignment(ExpressionArrayAccess eaa, Expression e) {
 		this.eaa = eaa;
 		this.e = e;
+	}
+
+	public Object accept(Visitor v) {
+		return v.visit(this);
 	}
 }
