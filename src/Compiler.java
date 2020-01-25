@@ -7,7 +7,9 @@
 
 import org.antlr.runtime.*;
 import java.io.*;
+
 import ast.Program;
+import visitor.PrettyPrintVisitor;
 
 public class Compiler {
 	public static void main (String[] args) throws Exception {
@@ -26,9 +28,10 @@ public class Compiler {
 		ulLexer lexer = new ulLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		ulParser parser = new ulParser(tokens);
+		Program p = new Program();
 
 		try {
-			Program p = parser.program();
+			p = parser.program();
 		}
 		catch (RecognitionException e )	{
 			// A lexical or parsing error occured.
@@ -40,5 +43,7 @@ public class Compiler {
 			System.out.println(e);
 			e.printStackTrace();
 		}
+		PrettyPrintVisitor v = new PrettyPrintVisitor();
+		p.accept(v);
 	}
 }
