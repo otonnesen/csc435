@@ -8,7 +8,7 @@ public class StatementExpression extends Statement {
 		this.e = e;
 	}
 
-	public Expression getExpression() {
+	public Expression getExpr() {
 		return this.e;
 	}
 

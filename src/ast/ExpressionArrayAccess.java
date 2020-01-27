@@ -10,6 +10,14 @@ public class ExpressionArrayAccess extends Expression {
 		this.e = e;
 	}
 
+	public ExpressionIdentifier getId() {
+		return this.id;
+	}
+
+	public Expression getExpr() {
+		return this.e;
+	}
+
 	public Object accept(Visitor v) {
 		return v.visit(this);
 	}

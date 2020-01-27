@@ -12,6 +12,18 @@ public class StatementIf extends Statement {
 		this.elseBlock = elseBlock;
 	}
 
+	public Expression getExpr() {
+		return this.e;
+	}
+
+	public Block getIfBlock() {
+		return this.ifBlock;
+	}
+
+	public Block getElseBlock() {
+		return this.elseBlock;
+	}
+
 	public Object accept(Visitor v) {
 		return v.visit(this);
 	}

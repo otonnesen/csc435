@@ -8,7 +8,7 @@ public class LiteralString extends Literal {
 		this.value = s;
 	}
 
-	public String toString() {
+	public String getValue() {
 		return this.value;
 	}
 

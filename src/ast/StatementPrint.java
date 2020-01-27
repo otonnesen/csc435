@@ -8,6 +8,10 @@ public class StatementPrint extends Statement {
 		this.e = e;
 	}
 
+	public Expression getExpr() {
+		return this.e;
+	}
+
 	public Object accept(Visitor v) {
 		return v.visit(this);
 	}

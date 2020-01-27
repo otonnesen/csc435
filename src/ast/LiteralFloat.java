@@ -8,8 +8,8 @@ public class LiteralFloat extends Literal {
 		this.value = f;
 	}
 
-	public String toString() {
-		return String.valueOf(this.value);
+	public float getValue() {
+		return this.value;
 	}
 
 	public Object accept(Visitor v) {

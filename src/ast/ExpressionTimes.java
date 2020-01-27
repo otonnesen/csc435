@@ -6,6 +6,14 @@ public class ExpressionTimes extends ExpressionOperation {
 		super(left, right);
 	}
 
+	public Expression getLeft() {
+		return this.left;
+	}
+
+	public Expression getRightExpr() {
+		return this.right;
+	}
+
 	public String toString() {
 		return this.left + " * " + this.right;
 	}

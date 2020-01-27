@@ -8,10 +8,6 @@ public class LiteralInteger extends Literal {
 		this.value = i;
 	}
 
-	public String toString() {
-		return String.valueOf(this.value);
-	}
-
 	public Object accept(Visitor v) {
 		return v.visit(this);
 	}

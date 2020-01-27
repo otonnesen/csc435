@@ -8,6 +8,10 @@ public class ExpressionParenthesis extends Expression {
 		this.expr = expr;
 	}
 
+	public Expression getExpr() {
+		return this.expr;
+	}
+
 	public Object accept(Visitor v) {
 		return v.visit(this);
 	}

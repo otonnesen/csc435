@@ -8,8 +8,8 @@ public class LiteralBoolean extends Literal {
 		this.value = b;
 	}
 
-	public String toString() {
-		return String.valueOf(this.value);
+	public boolean getValue() {
+		return this.value;
 	}
 
 	public Object accept(Visitor v) {

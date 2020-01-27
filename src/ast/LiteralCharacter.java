@@ -8,8 +8,8 @@ public class LiteralCharacter extends Literal {
 		this.value = c;
 	}
 
-	public String toString() {
-		return String.valueOf(this.value);
+	public char getValue() {
+		return this.value;
 	}
 
 	public Object accept(Visitor v) {

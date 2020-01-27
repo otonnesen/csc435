@@ -13,4 +13,12 @@ public class StatementArrayAssignment extends Statement {
 	public Object accept(Visitor v) {
 		return v.visit(this);
 	}
+
+	public ExpressionArrayAccess getArrayAccess() {
+		return this.eaa;
+	}
+
+	public Expression getExpr() {
+		return this.e;
+	}
 }

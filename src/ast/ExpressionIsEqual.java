@@ -6,6 +6,14 @@ public class ExpressionIsEqual extends ExpressionOperation {
 		super(left, right);
 	}
 
+	public Expression getLeft() {
+		return this.left;
+	}
+
+	public Expression getRightExpr() {
+		return this.right;
+	}
+
 	public Object accept(Visitor v) {
 		return v.visit(this);
 	}

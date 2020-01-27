@@ -13,6 +13,10 @@ public class Block extends ASTNode {
 		this.statements.add(s);
 	}
 
+	public ArrayList<Statement> getStatements() {
+		return this.statements;
+	}
+
 	public Object accept(Visitor v) {
 		return v.visit(this);
 	}

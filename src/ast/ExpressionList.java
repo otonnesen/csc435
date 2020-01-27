@@ -13,6 +13,10 @@ public class ExpressionList extends ASTNode {
 		this.expressions.add(e);
 	}
 
+	public ArrayList<Expression> getExpressions() {
+		return this.expressions;
+	}
+
 	public Object accept(Visitor v) {
 		return v.visit(this);
 	}
