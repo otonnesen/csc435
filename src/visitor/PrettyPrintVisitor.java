@@ -1,21 +1,41 @@
 package visitor;
 import ast.*;
 
-public class PrettyPrintVisitor implements Visitor {
+public class PrettyPrintVisitor extends Visitor {
+
+	public PrettyPrintVisitor() {
+	}
+
 	public Object visit(Block b) {
-		System.out.printf("<%s: TODO>", b.getClass().getSimpleName());
+		System.out.printf("{\n");
+		for (Statement s: b.getStatements()) {
+			s.accept(this);
+			System.out.printf("\n");
+		}
+		System.out.printf("}");
 		return null;
 	}
 	public Object visit(Declaration d) {
-		System.out.printf("<%s: TODO>", d.getClass().getSimpleName());
+		System.out.printf("%s %s", d.getType().getName(), d.getId().getId());
 		return null;
 	}
 	public Object visit(ExpressionArrayAccess e) {
-		System.out.printf("<%s: TODO>", e.getClass().getSimpleName());
+		e.getId().accept(this);
+		System.out.printf("[");
+		e.getExpr().accept(this);
+		System.out.printf("]");
 		return null;
 	}
 	public Object visit(ExpressionFunctionCall e) {
-		System.out.printf("<%s: TODO>", e.getClass().getSimpleName());
+		e.getId().accept(this);
+		System.out.printf("(");
+		String delim = "";
+		for (Expression expr: e.getExprList()) {
+			System.out.printf("%s", delim);
+			delim = ", ";
+			expr.accept(this);
+		}
+		System.out.printf(")");
 		return null;
 	}
 	public Object visit(ExpressionIdentifier e) {
@@ -23,27 +43,39 @@ public class PrettyPrintVisitor implements Visitor {
 		return null;
 	}
 	public Object visit(ExpressionIsEqual e) {
-		System.out.printf("<%s: TODO>", e.getClass().getSimpleName());
+		e.getLeftExpr().accept(this);
+		System.out.printf(" == ");
+		e.getRightExpr().accept(this);
 		return null;
 	}
 	public Object visit(ExpressionLessThan e) {
-		System.out.printf("<%s: TODO>", e.getClass().getSimpleName());
+		e.getLeftExpr().accept(this);
+		System.out.printf(" < ");
+		e.getRightExpr().accept(this);
 		return null;
 	}
-	public Object visit(ExpressionList el) {
-		System.out.printf("<%s: TODO>", el.getClass().getSimpleName());
+	public Object visit(ExpressionMinus e) {
+		e.getLeftExpr().accept(this);
+		System.out.printf(" - ");
+		e.getRightExpr().accept(this);
 		return null;
 	}
 	public Object visit(ExpressionParenthesis e) {
-		System.out.printf("<%s: TODO>", e.getClass().getSimpleName());
+		System.out.printf("(");
+		e.getExpr().accept(this);
+		System.out.printf(")");
 		return null;
 	}
-	public Object visit(ExpressionPlusMinus e) {
-		System.out.printf("<%s: TODO>", e.getClass().getSimpleName());
+	public Object visit(ExpressionPlus e) {
+		e.getLeftExpr().accept(this);
+		System.out.printf(" + ");
+		e.getRightExpr().accept(this);
 		return null;
 	}
 	public Object visit(ExpressionTimes e) {
-		System.out.printf("<%s: TODO>", e.getClass().getSimpleName());
+		e.getLeftExpr().accept(this);
+		System.out.printf(" * ");
+		e.getRightExpr().accept(this);
 		return null;
 	}
 	public Object visit(FunctionBody fb) {
@@ -63,9 +95,11 @@ public class PrettyPrintVisitor implements Visitor {
 		System.out.printf("%s ", fd.getType().getName());
 		fd.getId().accept(this);
 		System.out.printf("( ");
+		String delim = "";
 		for (Declaration p: fd.getParameters()) {
+			System.out.printf("%s", delim);
+			delim = ", ";
 			p.accept(this);
-			System.out.printf(" ");
 		}
 		System.out.printf(")");
 		return null;
@@ -76,23 +110,23 @@ public class PrettyPrintVisitor implements Visitor {
 		return null;
 	}
 	public Object visit(LiteralBoolean b) {
-		System.out.printf("<%s: TODO>", b.getClass().getSimpleName());
+		System.out.printf("%s", b.getValue());
 		return null;
 	}
 	public Object visit(LiteralCharacter c) {
-		System.out.printf("<%s: TODO>", c.getClass().getSimpleName());
+		System.out.printf("'%s'", c.getValue());
 		return null;
 	}
 	public Object visit(LiteralFloat f) {
-		System.out.printf("<%s: TODO>", f.getClass().getSimpleName());
+		System.out.printf("%s", f.getValue());
 		return null;
 	}
 	public Object visit(LiteralInteger i) {
-		System.out.printf("<%s: TODO>", i.getClass().getSimpleName());
+		System.out.printf("%s", i.getValue());
 		return null;
 	}
 	public Object visit(LiteralString s) {
-		System.out.printf("<%s: TODO>", s.getClass().getSimpleName());
+		System.out.printf("\"%s\"", s.getValue());
 		return null;
 	}
 	public Object visit(Program p) {
@@ -125,23 +159,40 @@ public class PrettyPrintVisitor implements Visitor {
 		return null;
 	}
 	public Object visit(StatementIf s) {
-		System.out.printf("<%s: TODO>", s.getClass().getSimpleName());
+		System.out.printf("if ");
+		s.getIfBlock().accept(this);
+		if (s.getElseBlock() != null) {
+			System.out.printf(" else ");
+			s.getElseBlock().accept(this);
+		}
 		return null;
 	}
 	public Object visit(StatementPrint s) {
-		System.out.printf("<%s: TODO>", s.getClass().getSimpleName());
+		System.out.printf("print ");
+		s.getExpr().accept(this);
+		System.out.printf(";");
 		return null;
 	}
 	public Object visit(StatementPrintln s) {
-		System.out.printf("<%s: TODO>", s.getClass().getSimpleName());
+		System.out.printf("println ");
+		s.getExpr().accept(this);
+		System.out.printf(";");
 		return null;
 	}
 	public Object visit(StatementReturn s) {
-		System.out.printf("<%s: TODO>", s.getClass().getSimpleName());
+		System.out.printf("return");
+		if (s.getExpr() != null) {
+			System.out.printf(" ");
+			s.getExpr().accept(this);
+		}
+		System.out.printf(";");
 		return null;
 	}
 	public Object visit(StatementWhile s) {
-		System.out.printf("<%s: TODO>", s.getClass().getSimpleName());
+		System.out.printf("while (");
+		s.getExpr().accept(this);
+		System.out.printf(") ");
+		s.getBlock().accept(this);
 		return null;
 	}
 	public Object visit(VariableDeclaration v) {
