@@ -138,7 +138,10 @@ stmtIf			returns [StatementIf i]
 				;
 
 stmtWhile		returns [StatementWhile w]
-				:	WHILE OPENPAREN expression CLOSEPAREN block
+				:	WHILE OPENPAREN e = expression CLOSEPAREN b = block
+				{
+					w = new StatementWhile(e, b);
+				}
 				;
 
 stmtPrint		returns [StatementPrint p]
