@@ -231,8 +231,10 @@ exprPlusMinus	returns [Expression e]
 					e = it;
 				}
 				:	left = exprTimes { it = left; }
-				((PLUS|MINUS) right = exprTimes
-				{ it = new ExpressionPlusMinus(it, right); })*
+				((PLUS right = exprTimes
+				{ it = new ExpressionPlus(it, right); })
+				|(MINUS right = exprTimes
+				{ it = new ExpressionMinus(it, right); }))*
 				;
 
 exprTimes		returns [Expression e]
