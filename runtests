@@ -14,10 +14,12 @@ if [ "$1" ]; then
 fi
 
 for i in tests/accept/*.ul; do
-	if [ "$(java -cp $classpath Compiler $i 2>&1)" ];
-	then printf "$i ${RED}failed${NC}.\n";
-	else printf "$i ${GREEN}passed${NC}.\n";
-	fi
+	# if [ "$(java -cp $classpath Compiler $i 2>&1)" ];
+	# then printf "$i ${RED}failed${NC}.\n";
+	# else printf "$i ${GREEN}passed${NC}.\n";
+	# fif
+	echo $i
+	java -cp $classpath Compiler $i
 done
 for i in tests/reject/*.ul; do
 	if [ "$(java -cp $classpath Compiler $i 2>&1)" ];
