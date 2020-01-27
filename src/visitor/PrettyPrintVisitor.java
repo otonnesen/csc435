@@ -4,7 +4,7 @@ import ast.*;
 public class PrettyPrintVisitor extends Visitor {
 	private int indentLevel;
 
-	public void printIndents() {
+	public void printIndent() {
 		for (int i = 0; i < indentLevel; i++) System.out.printf("    ");
 	}
 
@@ -14,16 +14,16 @@ public class PrettyPrintVisitor extends Visitor {
 
 	public Object visit(Block b) {
 		System.out.printf("\n");
-		this.printIndents();
+		this.printIndent();
 		System.out.printf("{\n");
 		this.indentLevel++;
 		for (Statement s: b.getStatements()) {
-			this.printIndents();
+			this.printIndent();
 			s.accept(this);
 			System.out.printf("\n");
 		}
 		this.indentLevel--;
-		this.printIndents();
+		this.printIndent();
 		System.out.printf("}");
 		return null;
 	}
@@ -92,29 +92,31 @@ public class PrettyPrintVisitor extends Visitor {
 	}
 	public Object visit(FunctionBody fb) {
 		System.out.printf("\n");
-		this.printIndents();
+		this.printIndent();
 		System.out.printf("{\n");
 		this.indentLevel++;
+		String space = "";
 		for (VariableDeclaration vd: fb.getVariables()) {
-			this.printIndents();
+			space = "\n";
+			this.printIndent();
 			vd.accept(this);
 			System.out.printf("\n");
 		}
-		System.out.printf("\n");
+		System.out.printf("%s", space);
 		for (Statement s: fb.getStatements()) {
-			this.printIndents();
+			this.printIndent();
 			s.accept(this);
 			System.out.printf("\n");
 		}
 		this.indentLevel--;
-		this.printIndents();
+		this.printIndent();
 		System.out.printf("}\n");
 		return null;
 	}
 	public Object visit(FunctionDeclaration fd) {
 		System.out.printf("%s ", fd.getType().getName());
 		fd.getId().accept(this);
-		System.out.printf("( ");
+		System.out.printf("(");
 		String delim = "";
 		for (Declaration p: fd.getParameters()) {
 			System.out.printf("%s", delim);
@@ -150,9 +152,11 @@ public class PrettyPrintVisitor extends Visitor {
 		return null;
 	}
 	public Object visit(Program p) {
+		String delim = "";
 		for (Function f: p.getFunctions()) {
+			System.out.printf("%s", delim);
+			delim = "\n";
 			f.accept(this);
-			System.out.printf("\n");
 		}
 		return null;
 	}
@@ -180,10 +184,14 @@ public class PrettyPrintVisitor extends Visitor {
 		return null;
 	}
 	public Object visit(StatementIf s) {
-		System.out.printf("if ");
+		System.out.printf("if (");
+		s.getExpr().accept(this);
+		System.out.printf(")");
 		s.getIfBlock().accept(this);
 		if (s.getElseBlock() != null) {
-			System.out.printf(" else ");
+			System.out.printf("\n");
+			this.printIndent();
+			System.out.printf("else ");
 			s.getElseBlock().accept(this);
 		}
 		return null;
