@@ -7,8 +7,6 @@ options {
 @header {
 	import ast.*;
 	import type.*;
-
-	import ast.Program;
 }
 
 @members
@@ -66,7 +64,7 @@ compoundType	returns [Type t]
 				|	tp = type OPENBRACKET i = INT_CONST CLOSEBRACKET
 				{
 					int size = Integer.parseInt(i.getText());
-					t = new TypeArray(t, size);
+					t = new TypeArray(tp, size);
 				}
 				;
 
