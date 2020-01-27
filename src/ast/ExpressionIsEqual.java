@@ -6,7 +6,7 @@ public class ExpressionIsEqual extends ExpressionOperation {
 		super(left, right);
 	}
 
-	public Expression getLeft() {
+	public Expression getLeftExpr() {
 		return this.left;
 	}
 
