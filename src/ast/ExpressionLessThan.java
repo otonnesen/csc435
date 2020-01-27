@@ -2,8 +2,8 @@ package ast;
 import visitor.Visitor;
 
 public class ExpressionLessThan extends ExpressionOperation {
-	public ExpressionLessThan(Expression e1, Expression e2) {
-		super(e1, e2);
+	public ExpressionLessThan(Expression left, Expression right) {
+		super(left, right);
 	}
 
 	public Object accept(Visitor v) {

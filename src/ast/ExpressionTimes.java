@@ -2,12 +2,12 @@ package ast;
 import visitor.Visitor;
 
 public class ExpressionTimes extends ExpressionOperation {
-	public ExpressionTimes(Expression e1, Expression e2) {
-		super(e1, e2);
+	public ExpressionTimes(Expression left, Expression right) {
+		super(left, right);
 	}
 
 	public String toString() {
-		return this.e1 + " * " + this.e2;
+		return this.left + " * " + this.right;
 	}
 
 	public Object accept(Visitor v) {

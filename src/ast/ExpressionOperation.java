@@ -1,11 +1,11 @@
 package ast;
 
 public abstract class ExpressionOperation extends Expression {
-	protected Expression e1;
-	protected Expression e2;
+	protected Expression left;
+	protected Expression right;
 
-	public ExpressionOperation(Expression e1, Expression e2) {
-		this.e1 = e1;
-		this.e2 = e2;
+	public ExpressionOperation(Expression left, Expression right) {
+		this.left = left;
+		this.right = right;
 	}
 }

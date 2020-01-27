@@ -203,9 +203,9 @@ exprIsEqual		returns [Expression e]
 				@after {
 					e = it;
 				}
-				:	e1 = exprLessThan { it = e1; }
-				(IS_EQUAL e2 = exprLessThan
-				{ it = new ExpressionIsEqual(it, e2); })*
+				:	left = exprLessThan { it = left; }
+				(IS_EQUAL right = exprLessThan
+				{ it = new ExpressionIsEqual(it, right); })*
 				;
 
 exprLessThan	returns [Expression e]
@@ -215,9 +215,9 @@ exprLessThan	returns [Expression e]
 				@after {
 					e = it;
 				}
-				:	e1 = exprPlusMinus { it = e1; }
-				(LESS_THAN e2 = exprPlusMinus
-				{ it = new ExpressionLessThan(it, e2); })*
+				:	left = exprPlusMinus { it = left; }
+				(LESS_THAN right = exprPlusMinus
+				{ it = new ExpressionLessThan(it, right); })*
 				;
 
 exprPlusMinus	returns [Expression e]
@@ -227,9 +227,9 @@ exprPlusMinus	returns [Expression e]
 				@after {
 					e = it;
 				}
-				:	e1 = exprTimes { it = e1; }
-				((PLUS|MINUS) e2 = exprTimes
-				{ it = new ExpressionPlusMinus(it, e2); })*
+				:	left = exprTimes { it = left; }
+				((PLUS|MINUS) right = exprTimes
+				{ it = new ExpressionPlusMinus(it, right); })*
 				;
 
 exprTimes		returns [Expression e]
@@ -239,9 +239,9 @@ exprTimes		returns [Expression e]
 				@after {
 					e = it;
 				}
-				:	e1 = atom { it = e1; }
-				(TIMES e2 = atom
-				{ it = new ExpressionTimes(it, e2); })*
+				:	left = atom { it = left; }
+				(TIMES right = atom
+				{ it = new ExpressionTimes(it, right); })*
 				;
 
 exprArrayAccess	returns [ExpressionArrayAccess aa]
