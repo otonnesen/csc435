@@ -264,8 +264,7 @@ exprFuncCall	returns [ExpressionFunctionCall fc]
 exprId			returns [ExpressionIdentifier i]
 				:	e = ID
 				{
-					String id = e.getText();
-					i = new ExpressionIdentifier(id);
+					i = new ExpressionIdentifier(e.getText());
 				}
 				;
 
@@ -276,12 +275,12 @@ exprParen		returns [ExpressionParenthesis p]
 				}
 				;
 
-exprList		returns [ExpressionList l]
+exprList		returns [ArrayList<Expression> l]
 				@init {
-					l = new ExpressionList();
+					l = new ArrayList<Expression>();
 				}
-				:	e = expression { l.addExpression(e); }
-				(COMMA e = expression { l.addExpression(e); })*
+				:	e = expression { l.add(e); }
+				(COMMA e = expression { l.add(e); })*
 				|
 				;
 
