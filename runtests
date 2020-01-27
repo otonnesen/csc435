@@ -9,7 +9,7 @@ classpath='./lib/antlr-3.5.2-complete.jar:./build'
 # make
 
 if [ "$1" ]; then
-	java -cp $classpath Compiler $1 2>&1;
+	java -cp $classpath Compiler $1;
 	exit;
 fi
 
