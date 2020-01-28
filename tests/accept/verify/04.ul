@@ -1,0 +1,15 @@
+void Main()
+{
+}
+
+int foo()
+{
+}
+
+char bar()
+{
+}
+
+boolean is_even()
+{
+}

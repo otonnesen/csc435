@@ -1,0 +1,16 @@
+boolean bar(int i, int j)
+{
+    int[10] foo;
+
+    bar(j, i);
+    println foo[9];
+    55;
+    (enclosed_expression);
+    3.1415925;
+    'c';
+    'h';
+    'a';
+    'r';
+    "string_literal";
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!,.:_{} ";
+}

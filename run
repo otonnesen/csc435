@@ -1,0 +1,5 @@
+#!/bin/sh
+
+classpath='./lib/antlr-3.5.2-complete.jar:./build' 
+
+java -cp $classpath Compiler $1
