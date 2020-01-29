@@ -180,8 +180,7 @@ stmtArrayAssign	returns [StatementArrayAssignment aa]
 				;
 
 expression		returns [Expression e]
-				:	o = exprOperation { e = o; }
-				|	a = atom { e = a; }
+				:	exp = exprIsEqual { e = exp; }
 				;
 
 atom			returns [Expression e]
@@ -190,13 +189,6 @@ atom			returns [Expression e]
 				|	id = exprId { e = id; }
 				|	l = literal { e = l; }
 				|	p = exprParen { e = p; }
-				;
-
-exprOperation	returns [Expression e]
-				:	eq = exprIsEqual { e = eq; }
-				|	lt = exprLessThan {e = lt; }
-				|	pm = exprPlusMinus { e = pm; }
-				|	t = exprTimes { e = t; }
 				;
 
 exprIsEqual		returns [Expression e]
