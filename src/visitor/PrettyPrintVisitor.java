@@ -162,14 +162,14 @@ public class PrettyPrintVisitor extends Visitor {
 	}
 	public Object visit(StatementArrayAssignment s) {
 		s.getArrayAccess().accept(this);
-		System.out.printf(" = ");
+		System.out.printf("=");
 		s.getExpr().accept(this);
 		System.out.printf(";");
 		return null;
 	}
 	public Object visit(StatementAssign s) {
 		s.getId().accept(this);
-		System.out.printf(" = ");
+		System.out.printf("=");
 		s.getExpression().accept(this);
 		System.out.printf(";");
 		return null;
