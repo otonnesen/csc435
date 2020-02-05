@@ -1,5 +1,0 @@
-int foo()
-{
-    variable = other_variable;
-    variable[index] = third_variable;
-}

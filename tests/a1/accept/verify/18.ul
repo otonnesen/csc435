@@ -1,0 +1,4 @@
+int foo(int i, int j, int k, int l)
+{
+    p=foo(1, 2, 3, 4)+global[31]-l+(3*k)+foo(foo(4, 3, 2, 1), 2, 3, 4);
+}
