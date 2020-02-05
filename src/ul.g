@@ -53,7 +53,7 @@ function		returns [Function f]
 				;
 
 functionDecl	returns [FunctionDeclaration fd]
-				:	t = type id = exprId OPENPAREN (fp = formalParams)? CLOSEPAREN
+				:	t = compoundType id = exprId OPENPAREN (fp = formalParams)? CLOSEPAREN
 				{
 					fd = new FunctionDeclaration(t, id, fp);
 				}
