@@ -473,8 +473,8 @@ STRING_CONST	:	'"'
 ID				:	('a'..'z'|'A'..'Z'|'_')('a'..'z'|'A'..'Z'|'_'|'0'..'9')*
 				;
 
-WS				:	(' '|'\n'|'\t')+ { $channel = HIDDEN; }
+WS				:	(' '|'\n'|'\r'|'\t')+ { $channel = HIDDEN; }
 				;
 
-COMMENT			:	'//' ~'\n'* '\n' { $channel = HIDDEN; }
+COMMENT			:	'//' ~('\n'|'\r')* ('\n'|'\r') { $channel = HIDDEN; }
 				;
