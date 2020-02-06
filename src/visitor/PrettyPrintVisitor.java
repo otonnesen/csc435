@@ -4,7 +4,7 @@ import ast.*;
 public class PrettyPrintVisitor extends Visitor {
 	private int indentLevel;
 
-	public void printIndent() {
+	private void printIndent() {
 		for (int i = 0; i < indentLevel; i++) System.out.printf("    ");
 	}
 
