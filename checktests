@@ -8,14 +8,19 @@ classpath='./lib/antlr-3.5.2-complete.jar:./build'
 
 # make
 
-for i in tests/accept/*.ul; do
-	if [ "$(java -cp $classpath Compiler $i | (diff /dev/fd/3 tests/accept/verify/$(basename $i)) 3<&0)" ];
+if [ -z $1 ]; then
+	echo "Usage: checktests [a1|a2|a3|a4]";
+	exit;
+fi
+
+for i in tests/$1/accept/*.ul; do
+	if [ "$(java -cp $classpath Compiler $i | (diff /dev/fd/3 tests/$1/accept/verify/$(basename $i)) 3<&0)" ];
 	then printf "$i ${RED}failed${NC}.\n";
 	else printf "$i ${GREEN}passed${NC}.\n";
 	fi
 done
-for i in tests/reject/*.ul; do
-	if [ "$(java -cp $classpath Compiler $i 2>&1)" ];
+for i in tests/$1/reject/*.ul; do
+	if [ "$(java -cp $classpath Compiler $i 2>&1 1>/dev/null)" ];
 	then printf "$i ${GREEN}passed${NC}.\n";
 	else printf "$i ${RED}failed${NC}.\n";
 	fi
