@@ -4,7 +4,8 @@ import visitor.Visitor;
 public class LiteralString extends Literal {
 	private String value;
 
-	public LiteralString(String s) {
+	public LiteralString(int line, int offset, String s) {
+		super(line, offset);
 		this.value = s;
 	}
 

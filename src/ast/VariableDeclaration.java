@@ -8,6 +8,7 @@ public class VariableDeclaration extends ASTNode {
 	private ExpressionIdentifier id;
 
 	public VariableDeclaration(Declaration d) {
+		super(-1, -1);
 		this.type = d.getType();
 		this.id = d.getId();
 	}

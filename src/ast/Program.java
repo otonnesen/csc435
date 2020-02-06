@@ -8,6 +8,7 @@ public class Program extends ASTNode {
 	private ArrayList<Function> functions;
 
 	public Program() {
+		super(-1, -1);
 		this.functions = new ArrayList<Function>();
 	}
 

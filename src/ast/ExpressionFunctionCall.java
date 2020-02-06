@@ -10,6 +10,7 @@ public class ExpressionFunctionCall extends Expression {
 
 	public ExpressionFunctionCall(ExpressionIdentifier id,
 									ArrayList<Expression> exprList) {
+		super();
 		this.id = id;
 		this.exprList = exprList;
 	}

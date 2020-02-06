@@ -6,6 +6,7 @@ public class Block extends ASTNode {
 	private ArrayList<Statement> statements;
 
 	public Block() {
+		super(-1, -1);
 		this.statements = new ArrayList<Statement>();
 	}
 

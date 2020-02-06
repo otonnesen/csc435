@@ -4,8 +4,10 @@ import visitor.Visitor;
 public class LiteralInteger extends Literal {
 	private int value;
 
-	public LiteralInteger(int i) {
+	public LiteralInteger(int line, int offset, int i) {
+		super(line, offset);
 		this.value = i;
+		System.out.printf("%d, %d\n", this.line, this.offset);
 	}
 
 	public int getValue() {

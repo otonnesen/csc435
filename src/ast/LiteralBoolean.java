@@ -4,7 +4,8 @@ import visitor.Visitor;
 public class LiteralBoolean extends Literal {
 	private boolean value;
 
-	public LiteralBoolean(boolean b) {
+	public LiteralBoolean(int line, int offset, boolean b) {
+		super(line, offset);
 		this.value = b;
 	}
 

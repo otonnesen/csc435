@@ -2,8 +2,8 @@ package ast;
 import visitor.Visitor;
 
 public class ExpressionPlus extends ExpressionOperation {
-	public ExpressionPlus(Expression left, Expression right) {
-		super(left, right);
+	public ExpressionPlus(int line, int offset, Expression left, Expression right) {
+		super(line, offset, left, right);
 	}
 
 	public Expression getLeftExpr() {

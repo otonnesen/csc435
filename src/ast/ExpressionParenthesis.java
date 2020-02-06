@@ -5,6 +5,7 @@ public class ExpressionParenthesis extends Expression {
 	private Expression expr;
 
 	public ExpressionParenthesis(Expression expr) {
+		super();
 		this.expr = expr;
 	}
 

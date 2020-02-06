@@ -5,7 +5,8 @@ public class StatementAssign extends Statement {
 	private ExpressionIdentifier id;
 	private Expression e;
 
-	public StatementAssign(ExpressionIdentifier id, Expression e) {
+	public StatementAssign(int line, int offset, ExpressionIdentifier id, Expression e) {
+		super(line, offset);
 		this.id = id;
 		this.e = e;
 	}

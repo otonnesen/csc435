@@ -2,8 +2,8 @@ package ast;
 import visitor.Visitor;
 
 public class ExpressionIsEqual extends ExpressionOperation {
-	public ExpressionIsEqual(Expression left, Expression right) {
-		super(left, right);
+	public ExpressionIsEqual(int line, int offset, Expression left, Expression right) {
+		super(line, offset, left, right);
 	}
 
 	public Expression getLeftExpr() {
