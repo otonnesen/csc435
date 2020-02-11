@@ -1,10 +1,9 @@
 package type;
 
 public class TypeString extends Type {
-	private String name;
+	private static final String name = "string";
 
 	public TypeString() {
-		this.name = "string";
 	}
 
 	public String getName() {

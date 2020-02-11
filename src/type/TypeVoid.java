@@ -1,10 +1,9 @@
 package type;
 
 public class TypeVoid extends Type {
-	private String name;
+	private static final String name = "void";
 
 	public TypeVoid() {
-		this.name = "void";
 	}
 
 	public String getName() {
