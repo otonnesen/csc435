@@ -6,7 +6,11 @@ public class TypeString extends Type {
 	public TypeString() {
 	}
 
-	public String getName() {
+	public String toString() {
 		return this.name;
+	}
+
+	public boolean isComparable(Type t) {
+		return t instanceof TypeString;
 	}
 }
