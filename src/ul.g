@@ -295,15 +295,12 @@ type			returns [Type t]
 				;
 
 literalBool		returns [LiteralBoolean b]
-				:	e = TRUE
+				:	e = (TRUE|FALSE)
 				{
 					boolean v = Boolean.valueOf(e.getText());
 					b = new LiteralBoolean(v);
-				}
-				|	e = FALSE
-				{
-					boolean v = Boolean.valueOf(e.getText());
-					b = new LiteralBoolean(v);
+					b.setLine(e.getLine());
+					b.setOffset(e.getCharPositionInLine());
 				}
 				;
 
@@ -312,6 +309,8 @@ literalChar		returns [LiteralCharacter c]
 				{
 					char v = e.getText().charAt(1);
 					c = new LiteralCharacter(v);
+					c.setLine(e.getLine());
+					c.setOffset(e.getCharPositionInLine());
 				}
 				;
 
@@ -320,6 +319,8 @@ literalFloat		returns [LiteralFloat f]
 				{
 					float v = Float.valueOf(e.getText());
 					f = new LiteralFloat(v);
+					f.setLine(e.getLine());
+					f.setOffset(e.getCharPositionInLine());
 				}
 				;
 
@@ -328,6 +329,8 @@ literalInt		returns [LiteralInteger i]
 				{
 					int v = Integer.parseInt(e.getText());
 					i = new LiteralInteger(v);
+					i.setLine(e.getLine());
+					i.setOffset(e.getCharPositionInLine());
 				}
 				;
 
@@ -336,6 +339,8 @@ literalString		returns [LiteralString s]
 				{
 					String v = e.getText().substring(1, e.getText().length()-1);
 					s = new LiteralString(v);
+					s.setLine(e.getLine());
+					s.setOffset(e.getCharPositionInLine());
 				}
 				;
 
