@@ -7,7 +7,6 @@ public class Function extends ASTNode {
 	private FunctionBody body;
 
 	public Function(FunctionDeclaration decl, FunctionBody body) {
-		super(-1, -1);
 		this.decl = decl;
 		this.body = body;
 	}

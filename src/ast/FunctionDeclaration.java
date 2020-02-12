@@ -11,7 +11,6 @@ public class FunctionDeclaration extends ASTNode {
 	private ArrayList<Declaration> parameters;
 
 	public FunctionDeclaration(Type type, ExpressionIdentifier id, ArrayList<Declaration> parameters) {
-		super(-1, -1);
 		this.type = type;
 		this.id = id;
 		this.parameters = parameters == null ? new ArrayList<Declaration>() : parameters;

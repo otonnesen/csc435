@@ -7,7 +7,6 @@ public class FunctionBody extends ASTNode {
 	private ArrayList<Statement> statements;
 
 	public FunctionBody() {
-		super(-1, -1);
 		variables = new ArrayList<VariableDeclaration>();
 		statements = new ArrayList<Statement>();
 	}

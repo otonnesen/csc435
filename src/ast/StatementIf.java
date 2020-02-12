@@ -6,8 +6,7 @@ public class StatementIf extends Statement {
 	private Block ifBlock;
 	private Block elseBlock;
 
-	public StatementIf(int line, int offset, Expression e, Block ifBlock, Block elseBlock) {
-		super(line, offset);
+	public StatementIf(Expression e, Block ifBlock, Block elseBlock) {
 		this.e = e;
 		this.ifBlock = ifBlock;
 		this.elseBlock = elseBlock;

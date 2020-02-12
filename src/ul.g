@@ -131,65 +131,51 @@ stmtExpr		returns [StatementExpression e]
 				;
 
 stmtIf			returns [StatementIf i]
-				:	t = IF OPENPAREN e = expression CLOSEPAREN ib = block (ELSE eb = block)?
+				:	IF OPENPAREN e = expression CLOSEPAREN ib = block (ELSE eb = block)?
 				{
-					int line = t.getLine();
-					int offset = t.getCharPositionInLine();
-					i = new StatementIf(line, offset, e, ib, eb);
+					i = new StatementIf(e, ib, eb);
 				}
 				;
 
 stmtWhile		returns [StatementWhile w]
-				:	t = WHILE OPENPAREN e = expression CLOSEPAREN b = block
+				:	WHILE OPENPAREN e = expression CLOSEPAREN b = block
 				{
-					int line = t.getLine();
-					int offset = t.getCharPositionInLine();
-					w = new StatementWhile(line, offset, e, b);
+					w = new StatementWhile(e, b);
 				}
 				;
 
 stmtPrint		returns [StatementPrint p]
-				:	t = PRINT e = expression SEMICOLON
+				:	PRINT e = expression SEMICOLON
 				{
-					int line = t.getLine();
-					int offset = t.getCharPositionInLine();
-					p = new StatementPrint(line, offset, e);
+					p = new StatementPrint(e);
 				}
 				;
 
 stmtPrintln		returns [StatementPrintln pl]
-				:	t = PRINTLN e = expression SEMICOLON
+				:	PRINTLN e = expression SEMICOLON
 				{
-					int line = t.getLine();
-					int offset = t.getCharPositionInLine();
-					pl = new StatementPrintln(line, offset, e);
+					pl = new StatementPrintln(e);
 				}
 				;
 
 stmtReturn		returns [StatementReturn r]
-				:	t = RETURN (e = expression)? SEMICOLON
+				:	RETURN (e = expression)? SEMICOLON
 				{
-					int line = t.getLine();
-					int offset = t.getCharPositionInLine();
-					r = new StatementReturn(line, offset, e);
+					r = new StatementReturn(e);
 				}
 				;
 
 stmtAssign		returns [StatementAssign a]
-				:	id = exprId t = EQUALS e = expression SEMICOLON
+				:	id = exprId EQUALS e = expression SEMICOLON
 				{
-					int line = t.getLine();
-					int offset = t.getCharPositionInLine();
-					a = new StatementAssign(line, offset, id, e);
+					a = new StatementAssign(id, e);
 				}
 				;
 
 stmtArrayAssign	returns [StatementArrayAssignment aa]
-				:	eaa = exprArrayAccess t = EQUALS e = expression SEMICOLON
+				:	eaa = exprArrayAccess EQUALS e = expression SEMICOLON
 				{
-					int line = t.getLine();
-					int offset = t.getCharPositionInLine();
-					aa = new StatementArrayAssignment(line, offset, eaa, e);
+					aa = new StatementArrayAssignment(eaa, e);
 				}
 				;
 
@@ -213,12 +199,8 @@ exprIsEqual		returns [Expression e]
 					e = it;
 				}
 				:	left = exprLessThan { it = left; }
-				( t = IS_EQUAL right = exprLessThan
-				{
-					int line = t.getLine();
-					int offset = t.getCharPositionInLine();
-					it = new ExpressionIsEqual(line, offset, it, right);
-				})*
+				(IS_EQUAL right = exprLessThan
+				{ it = new ExpressionIsEqual(it, right); })*
 				;
 
 exprLessThan	returns [Expression e]
@@ -229,12 +211,8 @@ exprLessThan	returns [Expression e]
 					e = it;
 				}
 				:	left = exprPlusMinus { it = left; }
-				( t = LESS_THAN right = exprPlusMinus
-				{
-					int line = t.getLine();
-					int offset = t.getCharPositionInLine();
-					it = new ExpressionLessThan(line, offset, it, right);
-				})*
+				(LESS_THAN right = exprPlusMinus
+				{ it = new ExpressionLessThan(it, right); })*
 				;
 
 exprPlusMinus	returns [Expression e]
@@ -245,18 +223,10 @@ exprPlusMinus	returns [Expression e]
 					e = it;
 				}
 				:	left = exprTimes { it = left; }
-				(( t = PLUS right = exprTimes
-				{
-					int line = t.getLine();
-					int offset = t.getCharPositionInLine();
-					it = new ExpressionPlus(line, offset, it, right);
-				})
-				|( t = MINUS right = exprTimes
-				{
-					int line = t.getLine();
-					int offset = t.getCharPositionInLine();
-					it = new ExpressionMinus(line, offset, it, right);
-				}))*
+				((PLUS right = exprTimes
+				{ it = new ExpressionPlus(it, right); })
+				|(MINUS right = exprTimes
+				{ it = new ExpressionMinus(it, right); }))*
 				;
 
 exprTimes		returns [Expression e]
@@ -267,12 +237,8 @@ exprTimes		returns [Expression e]
 					e = it;
 				}
 				:	left = atom { it = left; }
-				(t = TIMES right = atom
-				{
-					int line = t.getLine();
-					int offset = t.getCharPositionInLine();
-					it = new ExpressionTimes(line, offset, it, right);
-				})*
+				(TIMES right = atom
+				{ it = new ExpressionTimes(it, right); })*
 				;
 
 exprArrayAccess	returns [ExpressionArrayAccess aa]
@@ -292,10 +258,7 @@ exprFuncCall	returns [ExpressionFunctionCall fc]
 exprId			returns [ExpressionIdentifier i]
 				:	e = ID
 				{
-					String id = e.getText();
-					int line = e.getLine();
-					int offset = e.getCharPositionInLine();
-					i = new ExpressionIdentifier(line, offset, id);
+					i = new ExpressionIdentifier(e.getText());
 				}
 				;
 
@@ -332,12 +295,15 @@ type			returns [Type t]
 				;
 
 literalBool		returns [LiteralBoolean b]
-				:	e = (TRUE|FALSE)
+				:	e = TRUE
 				{
 					boolean v = Boolean.valueOf(e.getText());
-					int line = e.getLine();
-					int offset = e.getCharPositionInLine();
-					b = new LiteralBoolean(line, offset, v);
+					b = new LiteralBoolean(v);
+				}
+				|	e = FALSE
+				{
+					boolean v = Boolean.valueOf(e.getText());
+					b = new LiteralBoolean(v);
 				}
 				;
 
@@ -345,9 +311,7 @@ literalChar		returns [LiteralCharacter c]
 				:	e = CHAR_CONST
 				{
 					char v = e.getText().charAt(1);
-					int line = e.getLine();
-					int offset = e.getCharPositionInLine();
-					c = new LiteralCharacter(line, offset, v);
+					c = new LiteralCharacter(v);
 				}
 				;
 
@@ -355,9 +319,7 @@ literalFloat		returns [LiteralFloat f]
 				:	e = FLOAT_CONST
 				{
 					float v = Float.valueOf(e.getText());
-					int line = e.getLine();
-					int offset = e.getCharPositionInLine();
-					f = new LiteralFloat(line, offset, v);
+					f = new LiteralFloat(v);
 				}
 				;
 
@@ -365,9 +327,7 @@ literalInt		returns [LiteralInteger i]
 				:	e = INT_CONST
 				{
 					int v = Integer.parseInt(e.getText());
-					int line = e.getLine();
-					int offset = e.getCharPositionInLine();
-					i = new LiteralInteger(line, offset, v);
+					i = new LiteralInteger(v);
 				}
 				;
 
@@ -375,9 +335,7 @@ literalString		returns [LiteralString s]
 				:	e = STRING_CONST
 				{
 					String v = e.getText().substring(1, e.getText().length()-1);
-					int line = e.getLine();
-					int offset = e.getCharPositionInLine();
-					s = new LiteralString(line, offset, v);
+					s = new LiteralString(v);
 				}
 				;
 

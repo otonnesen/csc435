@@ -4,8 +4,7 @@ public abstract class ExpressionOperation extends Expression {
 	protected Expression left;
 	protected Expression right;
 
-	public ExpressionOperation(int line, int offset, Expression left, Expression right) {
-		super(line, offset);
+	public ExpressionOperation(Expression left, Expression right) {
 		this.left = left;
 		this.right = right;
 	}

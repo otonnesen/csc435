@@ -5,8 +5,7 @@ public class StatementArrayAssignment extends Statement {
 	private ExpressionArrayAccess eaa;
 	private Expression e;
 
-	public StatementArrayAssignment(int line, int offset, ExpressionArrayAccess eaa, Expression e) {
-		super(line, offset);
+	public StatementArrayAssignment(ExpressionArrayAccess eaa, Expression e) {
 		this.eaa = eaa;
 		this.e = e;
 	}

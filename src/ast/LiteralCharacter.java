@@ -4,8 +4,7 @@ import visitor.Visitor;
 public class LiteralCharacter extends Literal {
 	private char value;
 
-	public LiteralCharacter(int line, int offset, char c) {
-		super(line, offset);
+	public LiteralCharacter(char c) {
 		this.value = c;
 	}
 

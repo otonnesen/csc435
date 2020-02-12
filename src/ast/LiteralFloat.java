@@ -4,8 +4,7 @@ import visitor.Visitor;
 public class LiteralFloat extends Literal {
 	private float value;
 
-	public LiteralFloat(int line, int offset, float f) {
-		super(line, offset);
+	public LiteralFloat(float f) {
 		this.value = f;
 	}
 

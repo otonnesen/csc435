@@ -4,8 +4,7 @@ import visitor.Visitor;
 public class StatementPrint extends Statement {
 	private Expression e;
 
-	public StatementPrint(int line, int offset, Expression e) {
-		super(line, offset);
+	public StatementPrint(Expression e) {
 		this.e = e;
 	}
 

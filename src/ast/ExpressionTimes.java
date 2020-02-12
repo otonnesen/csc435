@@ -2,8 +2,8 @@ package ast;
 import visitor.Visitor;
 
 public class ExpressionTimes extends ExpressionOperation {
-	public ExpressionTimes(int line, int offset, Expression left, Expression right) {
-		super(line, offset, left, right);
+	public ExpressionTimes(Expression left, Expression right) {
+		super(left, right);
 	}
 
 	public Expression getLeftExpr() {

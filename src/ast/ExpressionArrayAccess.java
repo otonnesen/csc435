@@ -6,7 +6,6 @@ public class ExpressionArrayAccess extends Expression {
 	private Expression e;
 
 	public ExpressionArrayAccess(ExpressionIdentifier id, Expression e) {
-		super();
 		this.id = id;
 		this.e = e;
 	}

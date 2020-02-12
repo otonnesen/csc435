@@ -2,8 +2,8 @@ package ast;
 import visitor.Visitor;
 
 public class ExpressionMinus extends ExpressionOperation {
-	public ExpressionMinus(int line, int offset, Expression left, Expression right) {
-		super(line, offset, left, right);
+	public ExpressionMinus(Expression left, Expression right) {
+		super(left, right);
 	}
 
 	public Expression getLeftExpr() {
