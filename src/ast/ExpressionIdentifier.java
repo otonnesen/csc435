@@ -12,7 +12,7 @@ public class ExpressionIdentifier extends Expression {
 		return this.id;
 	}
 
-	public Object accept(Visitor v) {
+	public <T> T accept(Visitor<T> v) {
 		return v.visit(this);
 	}
 }

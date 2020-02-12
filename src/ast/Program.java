@@ -19,7 +19,7 @@ public class Program extends ASTNode {
 		return this.functions;
 	}
 
-	public Object accept(Visitor v) {
+	public <T> T accept(Visitor<T> v) {
 		return v.visit(this);
 	}
 }

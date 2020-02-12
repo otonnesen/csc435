@@ -22,7 +22,7 @@ public class ExpressionFunctionCall extends Expression {
 		return this.exprList;
 	}
 
-	public Object accept(Visitor v) {
+	public <T> T accept(Visitor<T> v) {
 		return v.visit(this);
 	}
 }

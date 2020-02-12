@@ -24,7 +24,7 @@ public class StatementIf extends Statement {
 		return this.elseBlock;
 	}
 
-	public Object accept(Visitor v) {
+	public <T> T accept(Visitor<T> v) {
 		return v.visit(this);
 	}
 }

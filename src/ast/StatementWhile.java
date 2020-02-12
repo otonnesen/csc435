@@ -18,7 +18,7 @@ public class StatementWhile extends Statement {
 		return this.b;
 	}
 
-	public Object accept(Visitor v) {
+	public <T> T accept(Visitor<T> v) {
 		return v.visit(this);
 	}
 }

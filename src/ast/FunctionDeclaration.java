@@ -28,7 +28,7 @@ public class FunctionDeclaration extends ASTNode {
 		return this.parameters;
 	}
 
-	public Object accept(Visitor v) {
+	public <T> T accept(Visitor<T> v) {
 		return v.visit(this);
 	}
 }

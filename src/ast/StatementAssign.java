@@ -18,7 +18,7 @@ public class StatementAssign extends Statement {
 		return this.e;
 	}
 
-	public Object accept(Visitor v) {
+	public <T> T accept(Visitor<T> v) {
 		return v.visit(this);
 	}
 }

@@ -12,7 +12,7 @@ public class LiteralFloat extends Literal {
 		return this.value;
 	}
 
-	public Object accept(Visitor v) {
+	public <T> T accept(Visitor<T> v) {
 		return v.visit(this);
 	}
 }

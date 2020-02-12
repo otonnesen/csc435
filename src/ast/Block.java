@@ -17,7 +17,7 @@ public class Block extends ASTNode {
 		return this.statements;
 	}
 
-	public Object accept(Visitor v) {
+	public <T> T accept(Visitor<T> v) {
 		return v.visit(this);
 	}
 }
