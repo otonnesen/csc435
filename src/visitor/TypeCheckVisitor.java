@@ -80,19 +80,19 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		// return t;
 	}
 	public Type visit(LiteralBoolean b) {
-		return new TypeBoolean();
+		return TypeBoolean.getInstance();
 	}
 	public Type visit(LiteralCharacter c) {
-		return new TypeCharacter();
+		return TypeCharacter.getInstance();
 	}
 	public Type visit(LiteralFloat f) {
-		return new TypeFloat();
+		return TypeFloat.getInstance();
 	}
 	public Type visit(LiteralInteger i) {
-		return new TypeInteger();
+		return TypeInteger.getInstance();
 	}
 	public Type visit(LiteralString s) {
-		return new TypeString();
+		return TypeString.getInstance();
 	}
 	public Type visit(Program p) {
 		throw new SemanticException("test", 6, 9);

@@ -286,12 +286,12 @@ block			returns [Block b]
 				;
 
 type			returns [Type t]
-				:	BOOLEAN { t = new TypeBoolean(); }
-				|	CHAR { t = new TypeCharacter(); }
-				|	FLOAT { t = new TypeFloat(); }
-				|	INT { t = new TypeInteger(); }
-				|	STRING { t = new TypeString(); }
-				|	VOID { t = new TypeVoid(); }
+				:	BOOLEAN { t = TypeBoolean.getInstance(); }
+				|	CHAR { t = TypeCharacter.getInstance(); }
+				|	FLOAT { t = TypeFloat.getInstance(); }
+				|	INT { t = TypeInteger.getInstance(); }
+				|	STRING { t = TypeString.getInstance(); }
+				|	VOID { t = TypeVoid.getInstance(); }
 				;
 
 literalBool		returns [LiteralBoolean b]
