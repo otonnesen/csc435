@@ -10,6 +10,7 @@ public abstract class Type {
 	}
 
 	public boolean comparable(Type other) {
-		return this.getClass().isAssignableFrom(other.getClass()) || other.getClass().isAssignableFrom(this.getClass()) ;
+		return this.getClass().isAssignableFrom(other.getClass())
+			|| other.getClass().isAssignableFrom(this.getClass());
 	}
 } 
