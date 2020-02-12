@@ -1,7 +1,7 @@
 package type;
 
 public abstract class Type {
-	private String name;
+	private static String name;
 
-	public abstract String getName();
-}
+	public abstract String toString();
+} 

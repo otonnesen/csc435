@@ -8,10 +8,10 @@ public class TypeArray extends Type {
 	public TypeArray(Type type, int size) {
 		this.type = type;
 		this.size = size;
-		this.name = this.type.getName() + "[" + this.size + "]";
+		this.name = this.type.toString() + "[" + this.size + "]";
 	}
 
-	public String getName() {
+	public String toString() {
 		return this.name;
 	}
 }
