@@ -9,8 +9,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 
 	private class SemanticException extends RuntimeException {
 		SemanticException(String message, int line, int offset) {
-			super(String.format("Syntax error: %s at %d:%d.",
-						message, line, offset));
+			super(String.format("%s at %d:%d.", message, line, offset));
 		}
 	}
 
