@@ -1,13 +1,10 @@
 package type;
 
+// public class TypeInteger extends TypeFloat { // TODO: Implement type conversions
 public class TypeInteger extends Type {
-	private String name;
+	private static final String name = "int";
 
-	public TypeInteger() {
-		this.name = "int";
-	}
-
-	public String getName() {
+	public String toString() {
 		return this.name;
 	}
 }
