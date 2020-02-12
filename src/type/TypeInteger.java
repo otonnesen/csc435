@@ -6,11 +6,7 @@ public class TypeInteger extends Type {
 	public TypeInteger() {
 	}
 
-	public String toString() {
+	public String getName() {
 		return this.name;
-	}
-
-	public boolean isComparable(Type t) {
-		return t instanceof TypeInteger;
 	}
 }

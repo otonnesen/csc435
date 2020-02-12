@@ -6,11 +6,7 @@ public class TypeVoid extends Type {
 	public TypeVoid() {
 	}
 
-	public String toString() {
+	public String getName() {
 		return this.name;
-	}
-
-	public boolean isComparable(Type t) {
-		return false;
 	}
 }

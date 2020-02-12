@@ -28,7 +28,7 @@ public class PrettyPrintVisitor extends Visitor {
 		return null;
 	}
 	public Object visit(Declaration d) {
-		System.out.printf("%s %s", d.getType().toString(), d.getId().getId());
+		System.out.printf("%s %s", d.getType().getName(), d.getId().getId());
 		return null;
 	}
 	public Object visit(ExpressionArrayAccess e) {
@@ -114,7 +114,7 @@ public class PrettyPrintVisitor extends Visitor {
 		return null;
 	}
 	public Object visit(FunctionDeclaration fd) {
-		System.out.printf("%s ", fd.getType().toString());
+		System.out.printf("%s ", fd.getType().getName());
 		fd.getId().accept(this);
 		System.out.printf("(");
 		String delim = "";
@@ -225,7 +225,7 @@ public class PrettyPrintVisitor extends Visitor {
 		return null;
 	}
 	public Object visit(VariableDeclaration v) {
-		System.out.printf("%s ", v.getType().toString());
+		System.out.printf("%s ", v.getType().getName());
 		v.getId().accept(this);
 		System.out.printf(";");
 		return null;

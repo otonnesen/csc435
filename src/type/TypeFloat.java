@@ -6,11 +6,7 @@ public class TypeFloat extends Type {
 	public TypeFloat() {
 	}
 
-	public String toString() {
+	public String getName() {
 		return this.name;
-	}
-
-	public boolean isComparable(Type t) {
-		return t instanceof TypeFloat;
 	}
 }

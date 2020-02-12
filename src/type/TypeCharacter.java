@@ -6,11 +6,7 @@ public class TypeCharacter extends Type {
 	public TypeCharacter() {
 	}
 
-	public String toString() {
+	public String getName() {
 		return this.name;
-	}
-
-	public boolean isComparable(Type t) {
-		return t instanceof TypeCharacter;
 	}
 }
