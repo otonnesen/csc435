@@ -1,9 +1,10 @@
 package type;
 
 public class TypeFloat extends Type {
-	private static final String name = "float";
+	private String name;
 
 	public TypeFloat() {
+		this.name = "float";
 	}
 
 	public String getName() {

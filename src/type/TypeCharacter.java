@@ -1,9 +1,10 @@
 package type;
 
 public class TypeCharacter extends Type {
-	private static final String name = "char";
+	private String name;
 
 	public TypeCharacter() {
+		this.name = "char";
 	}
 
 	public String getName() {

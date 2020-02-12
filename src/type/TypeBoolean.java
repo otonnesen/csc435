@@ -1,9 +1,10 @@
 package type;
 
 public class TypeBoolean extends Type {
-	private static final String name = "boolean";
+	private String name;
 
 	public TypeBoolean() {
+		this.name = "boolean";
 	}
 
 	public String getName() {

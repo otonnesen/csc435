@@ -1,9 +1,10 @@
 package type;
 
 public class TypeInteger extends Type {
-	private static final String name = "int";
+	private String name;
 
 	public TypeInteger() {
+		this.name = "int";
 	}
 
 	public String getName() {
