@@ -10,6 +10,7 @@ import java.io.*;
 
 import ast.Program;
 import visitor.PrettyPrintVisitor;
+import visitor.TypeCheckVisitor;
 
 public class Compiler {
 	public static void main (String[] args) throws Exception {
@@ -43,7 +44,9 @@ public class Compiler {
 			System.out.println(e);
 			e.printStackTrace();
 		}
-		PrettyPrintVisitor v = new PrettyPrintVisitor();
-		p.accept(v);
+		PrettyPrintVisitor ppv = new PrettyPrintVisitor();
+		p.accept(ppv);
+		TypeCheckVisitor tcv = new TypeCheckVisitor();
+		p.accept(tcv);
 	}
 }
