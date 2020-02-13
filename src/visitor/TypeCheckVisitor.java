@@ -1,8 +1,6 @@
 package visitor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 
 import ast.*;
 import type.*;
@@ -14,42 +12,6 @@ public class TypeCheckVisitor extends Visitor<Type> {
 			super(String.format("%s at %d:%d.", message, line, offset));
 		}
 	}
-
-	// These are sets indicating which types can be used with which operations.
-	private static final HashSet<Type> minusTypes = new HashSet<Type>(
-			Arrays.asList(
-				TypeInteger.getInstance(),
-				TypeFloat.getInstance(),
-				TypeCharacter.getInstance()
-			));
-	private static final HashSet<Type> plusTypes = new HashSet<Type>(
-			Arrays.asList(
-				TypeInteger.getInstance(),
-				TypeFloat.getInstance(),
-				TypeCharacter.getInstance(),
-				TypeString.getInstance()
-			));
-	private static final HashSet<Type> timesTypes = new HashSet<Type>(
-			Arrays.asList(
-				TypeInteger.getInstance(),
-				TypeFloat.getInstance()
-			));
-	private static final HashSet<Type> lessThanTypes = new HashSet<Type>(
-			Arrays.asList(
-				TypeInteger.getInstance(),
-				TypeFloat.getInstance(),
-				TypeCharacter.getInstance(),
-				TypeString.getInstance(),
-				TypeBoolean.getInstance()
-			));
-	private static final HashSet<Type> equalsTypes = new HashSet<Type>(
-			Arrays.asList(
-				TypeInteger.getInstance(),
-				TypeFloat.getInstance(),
-				TypeCharacter.getInstance(),
-				TypeString.getInstance(),
-				TypeBoolean.getInstance()
-			));
 
 	public Type visit(Block b) {
 		for (Statement s: b.getStatements()) {
@@ -75,7 +37,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	public Type visit(ExpressionIsEqual e) {
 		Type lhs = e.getLeftExpr().accept(this);
 		Type rhs = e.getRightExpr().accept(this);
-		if (!equalsTypes.contains(lhs)) {
+		if (!OperationTypes.equals.contains(lhs)) {
 			// This operation cannot be applied to the left-hand expression
 			int line = e.getRightExpr().getLine();
 			int offset = e.getRightExpr().getOffset();
@@ -94,7 +56,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	public Type visit(ExpressionLessThan e) {
 		Type lhs = e.getLeftExpr().accept(this);
 		Type rhs = e.getRightExpr().accept(this);
-		if (!lessThanTypes.contains(lhs)) {
+		if (!OperationTypes.lessThan.contains(lhs)) {
 			// This operation cannot be applied to the left-hand expression
 			int line = e.getRightExpr().getLine();
 			int offset = e.getRightExpr().getOffset();
@@ -113,7 +75,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	public Type visit(ExpressionMinus e) {
 		Type lhs = e.getLeftExpr().accept(this);
 		Type rhs = e.getRightExpr().accept(this);
-		if (!minusTypes.contains(lhs)) {
+		if (!OperationTypes.minus.contains(lhs)) {
 			// This operation cannot be applied to the left-hand expression
 			int line = e.getRightExpr().getLine();
 			int offset = e.getRightExpr().getOffset();
@@ -135,7 +97,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	public Type visit(ExpressionPlus e) {
 		Type lhs = e.getLeftExpr().accept(this);
 		Type rhs = e.getRightExpr().accept(this);
-		if (!plusTypes.contains(lhs)) {
+		if (!OperationTypes.plus.contains(lhs)) {
 			// This operation cannot be applied to the left-hand expression
 			int line = e.getRightExpr().getLine();
 			int offset = e.getRightExpr().getOffset();
@@ -154,7 +116,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	public Type visit(ExpressionTimes e) {
 		Type lhs = e.getLeftExpr().accept(this);
 		Type rhs = e.getRightExpr().accept(this);
-		if (!timesTypes.contains(lhs)) {
+		if (!OperationTypes.times.contains(lhs)) {
 			// This operation cannot be applied to the left-hand expression
 			int line = e.getRightExpr().getLine();
 			int offset = e.getRightExpr().getOffset();
