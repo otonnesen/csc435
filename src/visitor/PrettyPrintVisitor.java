@@ -56,19 +56,19 @@ public class PrettyPrintVisitor extends Visitor<Void> {
 	}
 	public Void visit(ExpressionIsEqual e) {
 		e.getLeftExpr().accept(this);
-		System.out.printf("==");
+		System.out.printf("%s", e);
 		e.getRightExpr().accept(this);
 		return null;
 	}
 	public Void visit(ExpressionLessThan e) {
 		e.getLeftExpr().accept(this);
-		System.out.printf("<");
+		System.out.printf("%s", e);
 		e.getRightExpr().accept(this);
 		return null;
 	}
 	public Void visit(ExpressionMinus e) {
 		e.getLeftExpr().accept(this);
-		System.out.printf("-");
+		System.out.printf("%s", e);
 		e.getRightExpr().accept(this);
 		return null;
 	}
@@ -80,13 +80,13 @@ public class PrettyPrintVisitor extends Visitor<Void> {
 	}
 	public Void visit(ExpressionPlus e) {
 		e.getLeftExpr().accept(this);
-		System.out.printf("+");
+		System.out.printf("%s", e);
 		e.getRightExpr().accept(this);
 		return null;
 	}
 	public Void visit(ExpressionTimes e) {
 		e.getLeftExpr().accept(this);
-		System.out.printf("*");
+		System.out.printf("%s", e);
 		e.getRightExpr().accept(this);
 		return null;
 	}
