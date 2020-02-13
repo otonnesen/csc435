@@ -1,6 +1,8 @@
 package ast;
-import visitor.Visitor;
+
 import java.util.ArrayList;
+
+import visitor.Visitor;
 
 public class FunctionBody extends ASTNode {
 	private ArrayList<VariableDeclaration> variables;

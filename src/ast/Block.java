@@ -1,5 +1,7 @@
 package ast;
+
 import java.util.ArrayList;
+
 import visitor.Visitor;
 
 public class Block extends ASTNode {
