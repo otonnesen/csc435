@@ -15,7 +15,7 @@ public class StatementAssign extends Statement {
 		return this.id;
 	}
 
-	public Expression getExpression() {
+	public Expression getExpr() {
 		return this.e;
 	}
 

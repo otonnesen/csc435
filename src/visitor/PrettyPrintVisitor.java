@@ -170,7 +170,7 @@ public class PrettyPrintVisitor extends Visitor<Void> {
 	public Void visit(StatementAssign s) {
 		s.getId().accept(this);
 		System.out.printf("=");
-		s.getExpression().accept(this);
+		s.getExpr().accept(this);
 		System.out.printf(";");
 		return null;
 	}
