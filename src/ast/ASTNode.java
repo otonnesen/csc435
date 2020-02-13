@@ -7,6 +7,11 @@ public abstract class ASTNode implements Visitable {
 	private int line;
 	private int offset;
 
+	public ASTNode() {
+		this.line = -1;
+		this.offset = -1;
+	}
+
 	public int getLine() {
 		return this.line;
 	}
