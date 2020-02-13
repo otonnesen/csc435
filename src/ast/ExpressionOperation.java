@@ -3,11 +3,13 @@ package ast;
 public abstract class ExpressionOperation extends Expression {
 	private Expression left;
 	private Expression right;
-	protected String op;
+	private String op;
 
-	public ExpressionOperation(Expression left, Expression right) {
+	public ExpressionOperation(Expression left, Expression right,
+			String op) {
 		this.left = left;
 		this.right = right;
+		this.op = op;
 	}
 
 	public Expression getLeftExpr() {
