@@ -36,7 +36,8 @@ public class TypeCheckVisitor extends Visitor<Type> {
 			// Left- and right-hand sides are not comparable.
 			int line = e.getRightExpr().getLine();
 			int offset = e.getRightExpr().getOffset();
-			String message = String.format("Mismatched types: `%s` and `%s`.", lhs, rhs);
+			String message = String.format(
+					"Mismatched types: `%s` and `%s`.", lhs, rhs);
 			throw new SemanticException(message, line, offset);
 		}
 		return lhs;
@@ -64,22 +65,27 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return null;
 	}
 	public Type visit(ExpressionIsEqual e) {
-		return checkExpression(e);
+		Type lhs = checkExpression(e);
+		return BOOLEAN;
 	}
 	public Type visit(ExpressionLessThan e) {
-		return checkExpression(e);
+		Type lhs = checkExpression(e);
+		return BOOLEAN;
 	}
 	public Type visit(ExpressionMinus e) {
-		return checkExpression(e);
+		Type lhs = checkExpression(e);
+		return lhs;
 	}
 	public Type visit(ExpressionParenthesis e) {
 		return null;
 	}
 	public Type visit(ExpressionPlus e) {
-		return checkExpression(e);
+		Type lhs = checkExpression(e);
+		return lhs;
 	}
 	public Type visit(ExpressionTimes e) {
-		return checkExpression(e);
+		Type lhs = checkExpression(e);
+		return lhs;
 	}
 	public Type visit(FunctionBody fb) {
 		// for (Declaration d: fb.getVariables()) {
