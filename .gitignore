@@ -7,3 +7,4 @@ src/ulParser.java
 *.pdf
 *.tokens
 *.swp
+tags
