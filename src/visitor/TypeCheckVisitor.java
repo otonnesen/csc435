@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ast.*;
 import type.*;
+import environment.Environment;
 
 public class TypeCheckVisitor extends Visitor<Type> {
 
@@ -18,6 +19,14 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		SemanticException(String message, int line, int offset) {
 			super(String.format("%s at %d:%d.", message, line, offset));
 		}
+	}
+
+	private Environment<String, Type> variables;
+	private Environment<String, Type> functions;
+
+	public TypeCheckVisitor() {
+		this.variables = new Environment<String, Type>();
+		this.functions = new Environment<String, Type>();
 	}
 
 	private Type checkExpression(ExpressionOperation e) {
@@ -50,19 +59,44 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return null;
 	}
 	public Type visit(Declaration d) {
-		Type t = d.getType();
-		d.getId().accept(this);
-		// TODO: Add to variable table
-		return t;
+		if (this.variables.inCurrentScope(d.getId().getId())) {
+			int line = d.getId().getLine();
+			int offset = d.getId().getOffset();
+			String message = String.format("Variable `%s` is already declared.",
+					d.getId().getId());
+			throw new SemanticException(message, line, offset);
+		}
+		this.variables.put(d.getId().getId(), d.getType());
+		return d.getType();
 	}
 	public Type visit(ExpressionArrayAccess e) {
-		return null;
+		Type id = e.getId().accept(this);
+		Type expr = e.getExpr().accept(this);
+		if (!expr.equals(INTEGER)) {
+			// Array index is not an integer
+			int line = e.getExpr().getLine();
+			int offset = e.getExpr().getOffset();
+			String message = String.format(
+					"Invalid type `%s` for array access, expected type `int`.",
+					expr);
+			throw new SemanticException(message, line, offset);
+		}
+		return id;
 	}
 	public Type visit(ExpressionFunctionCall e) {
 		return null;
 	}
 	public Type visit(ExpressionIdentifier e) {
-		return null;
+		Type t = this.variables.lookup(e.getId());
+		if (t == null) {
+			// Variable is not declared
+			int line = e.getLine();
+			int offset = e.getOffset();
+			String message = String.format(
+					"Variable `%s` is not declared.", e.getId());
+			throw new SemanticException(message, line, offset);
+		}
+		return t;
 	}
 	public Type visit(ExpressionIsEqual e) {
 		Type lhs = checkExpression(e);
@@ -88,9 +122,9 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return lhs;
 	}
 	public Type visit(FunctionBody fb) {
-		// for (Declaration d: fb.getVariables()) {
-		// 	d.accept(this);
-		// }
+		for (VariableDeclaration vd: fb.getVariables()) {
+			vd.accept(this);
+		}
 
 		for (Statement s: fb.getStatements()) {
 			s.accept(this);
@@ -98,20 +132,31 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return null;
 	}
 	public Type visit(FunctionDeclaration fd) {
-		fd.getId().accept(this);
-		ArrayList<Type> params = new ArrayList<Type>();
+		String id = fd.getId();
+		// Append `|` and each type's string to the end of the function
+		// to allow for overloading.
+		id += "|";
 		for (Declaration p: fd.getParameters()) {
-			// params.add(p.accept(this));
+			p.accept(this);
+			id += p.getType().toString();
 			// TODO: Add parameters to variable table
 		}
-		// TODO: Add function to function table
+		if (this.functions.inCurrentScope(id)) {
+			int line = fd.getLine();
+			int offset = fd.getOffset();
+			String message = String.format("Function `%s` is already declared.",
+					fd.getId());
+			throw new SemanticException(message, line, offset);
+		}
+		this.functions.put(id, fd.getType());
 		return fd.getType();
 	}
 	public Type visit(Function f) {
-		Object t = f.getDeclaration().accept(this);
+		this.variables.beginScope();
+		Type t = f.getDeclaration().accept(this);
 		f.getBody().accept(this);
-		return null;
-		// return t;
+		this.variables.endScope();
+		return t;
 	}
 	public Type visit(LiteralBoolean b) {
 		return BOOLEAN;
@@ -129,10 +174,13 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return STRING;
 	}
 	public Type visit(Program p) {
-		// TODO: Create function table
+		this.variables.beginScope();
+		this.functions.beginScope();
 		for (Function f: p.getFunctions()) {
 			f.accept(this);
 		}
+		this.variables.endScope();
+		this.functions.endScope();
 		return null;
 	}
 	public Type visit(StatementArrayAssignment s) {
@@ -163,6 +211,6 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return null;
 	}
 	public Type visit(VariableDeclaration v) {
-		return null;
+		return v.getDeclaration().accept(this);
 	}
 }
