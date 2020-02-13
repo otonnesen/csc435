@@ -53,9 +53,11 @@ function		returns [Function f]
 				;
 
 functionDecl	returns [FunctionDeclaration fd]
-				:	t = compoundType id = exprId OPENPAREN (fp = formalParams)? CLOSEPAREN
+				:	t = compoundType id = ID OPENPAREN (fp = formalParams)? CLOSEPAREN
 				{
-					fd = new FunctionDeclaration(t, id, fp);
+					fd = new FunctionDeclaration(t, id.getText(), fp);
+					fd.setLine(id.getLine());
+					fd.setOffset(id.getCharPositionInLine());
 				}
 				;
 

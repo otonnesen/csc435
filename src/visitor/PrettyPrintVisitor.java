@@ -114,8 +114,7 @@ public class PrettyPrintVisitor extends Visitor<Void> {
 		return null;
 	}
 	public Void visit(FunctionDeclaration fd) {
-		System.out.printf("%s ", fd.getType().toString());
-		fd.getId().accept(this);
+		System.out.printf("%s %s", fd.getType().toString(), fd.getId());
 		System.out.printf("(");
 		String delim = "";
 		for (Declaration p: fd.getParameters()) {

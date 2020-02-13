@@ -7,10 +7,10 @@ import type.Type;
 
 public class FunctionDeclaration extends ASTNode {
 	private Type type;
-	private ExpressionIdentifier id;
+	private String id;
 	private ArrayList<Declaration> parameters;
 
-	public FunctionDeclaration(Type type, ExpressionIdentifier id, ArrayList<Declaration> parameters) {
+	public FunctionDeclaration(Type type, String id, ArrayList<Declaration> parameters) {
 		this.type = type;
 		this.id = id;
 		this.parameters = parameters == null ? new ArrayList<Declaration>() : parameters;
@@ -20,7 +20,7 @@ public class FunctionDeclaration extends ASTNode {
 		return this.type;
 	}
 
-	public ExpressionIdentifier getId() {
+	public String getId() {
 		return this.id;
 	}
 
