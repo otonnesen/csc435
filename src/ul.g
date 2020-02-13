@@ -259,6 +259,8 @@ exprId			returns [ExpressionIdentifier i]
 				:	e = ID
 				{
 					i = new ExpressionIdentifier(e.getText());
+					i.setLine(e.getLine());
+					i.setOffset(e.getCharPositionInLine());
 				}
 				;
 
