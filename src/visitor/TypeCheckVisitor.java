@@ -175,11 +175,11 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	}
 	public Type visit(Program p) {
 		this.variables.beginScope();
-		this.functions.beginScope();
 		for (Function f: p.getFunctions()) {
+			this.functions.beginScope();
 			f.accept(this);
+			this.variables.endScope();
 		}
-		this.variables.endScope();
 		this.functions.endScope();
 		return null;
 	}
