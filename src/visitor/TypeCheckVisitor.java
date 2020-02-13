@@ -15,22 +15,41 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		}
 	}
 
+	// These are sets indicating which types can be used with which operations.
 	private static final HashSet<Type> minusTypes = new HashSet<Type>(
-			Arrays.asList(TypeInteger.getInstance(), TypeFloat.getInstance(),
-				TypeCharacter.getInstance()));
+			Arrays.asList(
+				TypeInteger.getInstance(),
+				TypeFloat.getInstance(),
+				TypeCharacter.getInstance()
+			));
 	private static final HashSet<Type> plusTypes = new HashSet<Type>(
-			Arrays.asList(TypeInteger.getInstance(), TypeFloat.getInstance(),
-				TypeCharacter.getInstance(), TypeString.getInstance()));
+			Arrays.asList(
+				TypeInteger.getInstance(),
+				TypeFloat.getInstance(),
+				TypeCharacter.getInstance(),
+				TypeString.getInstance()
+			));
 	private static final HashSet<Type> timesTypes = new HashSet<Type>(
-			Arrays.asList(TypeInteger.getInstance(), TypeFloat.getInstance()));
+			Arrays.asList(
+				TypeInteger.getInstance(),
+				TypeFloat.getInstance()
+			));
 	private static final HashSet<Type> lessThanTypes = new HashSet<Type>(
-			Arrays.asList(TypeInteger.getInstance(), TypeFloat.getInstance(),
-				TypeCharacter.getInstance(), TypeString.getInstance(),
-				TypeBoolean.getInstance()));
+			Arrays.asList(
+				TypeInteger.getInstance(),
+				TypeFloat.getInstance(),
+				TypeCharacter.getInstance(),
+				TypeString.getInstance(),
+				TypeBoolean.getInstance()
+			));
 	private static final HashSet<Type> equalsTypes = new HashSet<Type>(
-			Arrays.asList(TypeInteger.getInstance(), TypeFloat.getInstance(),
-				TypeCharacter.getInstance(), TypeString.getInstance(),
-				TypeBoolean.getInstance()));
+			Arrays.asList(
+				TypeInteger.getInstance(),
+				TypeFloat.getInstance(),
+				TypeCharacter.getInstance(),
+				TypeString.getInstance(),
+				TypeBoolean.getInstance()
+			));
 
 	public Type visit(Block b) {
 		for (Statement s: b.getStatements()) {
