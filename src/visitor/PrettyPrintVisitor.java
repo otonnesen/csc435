@@ -224,8 +224,7 @@ public class PrettyPrintVisitor extends Visitor<Void> {
 		return null;
 	}
 	public Void visit(VariableDeclaration v) {
-		System.out.printf("%s ", v.getType().toString());
-		v.getId().accept(this);
+		v.getDeclaration().accept(this);
 		System.out.printf(";");
 		return null;
 	}

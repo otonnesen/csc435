@@ -4,20 +4,14 @@ import visitor.Visitor;
 import type.Type;
 
 public class VariableDeclaration extends ASTNode {
-	private Type type;
-	private ExpressionIdentifier id;
+	private Declaration d;
 
 	public VariableDeclaration(Declaration d) {
-		this.type = d.getType();
-		this.id = d.getId();
+		this.d = d;
 	}
 
-	public Type getType() {
-		return this.type;
-	}
-
-	public ExpressionIdentifier getId() {
-		return this.id;
+	public Declaration getDeclaration() {
+		return this.d;
 	}
 
 	public <T> T accept(Visitor<T> v) {
