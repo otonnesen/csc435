@@ -1,6 +1,8 @@
 package visitor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import ast.*;
 import type.*;
@@ -12,6 +14,23 @@ public class TypeCheckVisitor extends Visitor<Type> {
 			super(String.format("%s at %d:%d.", message, line, offset));
 		}
 	}
+
+	private static final HashSet<Type> minusTypes = new HashSet<Type>(
+			Arrays.asList(TypeInteger.getInstance(), TypeFloat.getInstance(),
+				TypeCharacter.getInstance()));
+	private static final HashSet<Type> plusTypes = new HashSet<Type>(
+			Arrays.asList(TypeInteger.getInstance(), TypeFloat.getInstance(),
+				TypeCharacter.getInstance(), TypeString.getInstance()));
+	private static final HashSet<Type> timesTypes = new HashSet<Type>(
+			Arrays.asList(TypeInteger.getInstance(), TypeFloat.getInstance()));
+	private static final HashSet<Type> lessThanTypes = new HashSet<Type>(
+			Arrays.asList(TypeInteger.getInstance(), TypeFloat.getInstance(),
+				TypeCharacter.getInstance(), TypeString.getInstance(),
+				TypeBoolean.getInstance()));
+	private static final HashSet<Type> equalsTypes = new HashSet<Type>(
+			Arrays.asList(TypeInteger.getInstance(), TypeFloat.getInstance(),
+				TypeCharacter.getInstance(), TypeString.getInstance(),
+				TypeBoolean.getInstance()));
 
 	public Type visit(Block b) {
 		for (Statement s: b.getStatements()) {
@@ -47,10 +66,22 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return null;
 	}
 	public Type visit(ExpressionPlus e) {
+		Type lhs = e.getLeftExpr().accept(this);
+		Type rhs = e.getRightExpr().accept(this);
 		return null;
 	}
 	public Type visit(ExpressionTimes e) {
-		return null;
+		Type lhs = e.getLeftExpr().accept(this);
+		Type rhs = e.getRightExpr().accept(this);
+		if (!lhs.comparable(rhs)) {
+			throw new SemanticException(String.format("Types do not match: `%s` and `%s`.",
+						lhs, rhs), e.getRightExpr().getLine(), e.getRightExpr().getOffset());
+		}
+		if (!timesTypes.contains(lhs)) {
+			throw new SemanticException(String.format("Invalid type `%s` for operation `*`.",
+						lhs), e.getLeftExpr().getLine(), e.getLeftExpr().getOffset());
+		}
+		return lhs;
 	}
 	public Type visit(FunctionBody fb) {
 		// for (Declaration d: fb.getVariables()) {
@@ -94,12 +125,11 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return TypeString.getInstance();
 	}
 	public Type visit(Program p) {
-		throw new SemanticException("test", 6, 9);
 		// TODO: Create function table
-		// for (Function f: p.getFunctions()) {
-		// 	f.accept(this);
-		// }
-		// return null;
+		for (Function f: p.getFunctions()) {
+			f.accept(this);
+		}
+		return null;
 	}
 	public Type visit(StatementArrayAssignment s) {
 		return null;
@@ -111,7 +141,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return null;
 	}
 	public Type visit(StatementExpression s) {
-		return null;
+		return s.getExpr().accept(this);
 	}
 	public Type visit(StatementIf s) {
 		return null;
