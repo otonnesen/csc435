@@ -3,8 +3,6 @@ package type;
 public abstract class Type {
 	private static String name;
 
-	public abstract String toString();
-
 	public boolean equals(Type other) {
 		return this.getClass().equals(other.getClass());
 	}
