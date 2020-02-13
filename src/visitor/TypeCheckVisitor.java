@@ -4,8 +4,16 @@ import java.util.ArrayList;
 
 import ast.*;
 import type.*;
+import environment.Environment;
 
 public class TypeCheckVisitor extends Visitor<Type> {
+
+	private static final Type BOOLEAN = TypeBoolean.getInstance();
+	private static final Type CHARACTER = TypeCharacter.getInstance();
+	private static final Type FLOAT = TypeFloat.getInstance();
+	private static final Type INTEGER = TypeInteger.getInstance();
+	private static final Type STRING = TypeString.getInstance();
+	private static final Type VOID = TypeVoid.getInstance();
 
 	private class SemanticException extends RuntimeException {
 		SemanticException(String message, int line, int offset) {
@@ -159,19 +167,19 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		// return t;
 	}
 	public Type visit(LiteralBoolean b) {
-		return TypeBoolean.getInstance();
+		return BOOLEAN;
 	}
 	public Type visit(LiteralCharacter c) {
-		return TypeCharacter.getInstance();
+		return CHARACTER;
 	}
 	public Type visit(LiteralFloat f) {
-		return TypeFloat.getInstance();
+		return FLOAT;
 	}
 	public Type visit(LiteralInteger i) {
-		return TypeInteger.getInstance();
+		return INTEGER;
 	}
 	public Type visit(LiteralString s) {
-		return TypeString.getInstance();
+		return STRING;
 	}
 	public Type visit(Program p) {
 		// TODO: Create function table
