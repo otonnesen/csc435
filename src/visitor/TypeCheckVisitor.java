@@ -73,13 +73,61 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return null;
 	}
 	public Type visit(ExpressionIsEqual e) {
-		return null;
+		Type lhs = e.getLeftExpr().accept(this);
+		Type rhs = e.getRightExpr().accept(this);
+		if (!equalsTypes.contains(lhs)) {
+			// This operation cannot be applied to the left-hand expression
+			int line = e.getRightExpr().getLine();
+			int offset = e.getRightExpr().getOffset();
+			String message = String.format("Invalid type `%s` for operation `==`.", lhs);
+			throw new SemanticException(message, line, offset);
+		}
+		if (!lhs.comparable(rhs)) {
+			// Left- and right-hand sides are not comparable.
+			int line = e.getRightExpr().getLine();
+			int offset = e.getRightExpr().getOffset();
+			String message = String.format("Types do not match: `%s` and `%s`.", lhs, rhs);
+			throw new SemanticException(message, line, offset);
+		}
+		return lhs;
 	}
 	public Type visit(ExpressionLessThan e) {
-		return null;
+		Type lhs = e.getLeftExpr().accept(this);
+		Type rhs = e.getRightExpr().accept(this);
+		if (!lessThanTypes.contains(lhs)) {
+			// This operation cannot be applied to the left-hand expression
+			int line = e.getRightExpr().getLine();
+			int offset = e.getRightExpr().getOffset();
+			String message = String.format("Invalid type `%s` for operation `<`.", lhs);
+			throw new SemanticException(message, line, offset);
+		}
+		if (!lhs.comparable(rhs)) {
+			// Left- and right-hand sides are not comparable.
+			int line = e.getRightExpr().getLine();
+			int offset = e.getRightExpr().getOffset();
+			String message = String.format("Types do not match: `%s` and `%s`.", lhs, rhs);
+			throw new SemanticException(message, line, offset);
+		}
+		return lhs;
 	}
 	public Type visit(ExpressionMinus e) {
-		return null;
+		Type lhs = e.getLeftExpr().accept(this);
+		Type rhs = e.getRightExpr().accept(this);
+		if (!minusTypes.contains(lhs)) {
+			// This operation cannot be applied to the left-hand expression
+			int line = e.getRightExpr().getLine();
+			int offset = e.getRightExpr().getOffset();
+			String message = String.format("Invalid type `%s` for operation `-`.", lhs);
+			throw new SemanticException(message, line, offset);
+		}
+		if (!lhs.comparable(rhs)) {
+			// Left- and right-hand sides are not comparable.
+			int line = e.getRightExpr().getLine();
+			int offset = e.getRightExpr().getOffset();
+			String message = String.format("Types do not match: `%s` and `%s`.", lhs, rhs);
+			throw new SemanticException(message, line, offset);
+		}
+		return lhs;
 	}
 	public Type visit(ExpressionParenthesis e) {
 		return null;
@@ -87,18 +135,38 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	public Type visit(ExpressionPlus e) {
 		Type lhs = e.getLeftExpr().accept(this);
 		Type rhs = e.getRightExpr().accept(this);
-		return null;
+		if (!plusTypes.contains(lhs)) {
+			// This operation cannot be applied to the left-hand expression
+			int line = e.getRightExpr().getLine();
+			int offset = e.getRightExpr().getOffset();
+			String message = String.format("Invalid type `%s` for operation `+`.", lhs);
+			throw new SemanticException(message, line, offset);
+		}
+		if (!lhs.comparable(rhs)) {
+			// Left- and right-hand sides are not comparable.
+			int line = e.getRightExpr().getLine();
+			int offset = e.getRightExpr().getOffset();
+			String message = String.format("Types do not match: `%s` and `%s`.", lhs, rhs);
+			throw new SemanticException(message, line, offset);
+		}
+		return lhs;
 	}
 	public Type visit(ExpressionTimes e) {
 		Type lhs = e.getLeftExpr().accept(this);
 		Type rhs = e.getRightExpr().accept(this);
-		if (!lhs.comparable(rhs)) {
-			throw new SemanticException(String.format("Types do not match: `%s` and `%s`.",
-						lhs, rhs), e.getRightExpr().getLine(), e.getRightExpr().getOffset());
-		}
 		if (!timesTypes.contains(lhs)) {
-			throw new SemanticException(String.format("Invalid type `%s` for operation `*`.",
-						lhs), e.getLeftExpr().getLine(), e.getLeftExpr().getOffset());
+			// This operation cannot be applied to the left-hand expression
+			int line = e.getRightExpr().getLine();
+			int offset = e.getRightExpr().getOffset();
+			String message = String.format("Invalid type `%s` for operation `*`.", lhs);
+			throw new SemanticException(message, line, offset);
+		}
+		if (!lhs.comparable(rhs)) {
+			// Left- and right-hand sides are not comparable.
+			int line = e.getRightExpr().getLine();
+			int offset = e.getRightExpr().getOffset();
+			String message = String.format("Types do not match: `%s` and `%s`.", lhs, rhs);
+			throw new SemanticException(message, line, offset);
 		}
 		return lhs;
 	}
