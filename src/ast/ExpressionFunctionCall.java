@@ -5,16 +5,15 @@ import java.util.ArrayList;
 import visitor.Visitor;
 
 public class ExpressionFunctionCall extends Expression {
-	private ExpressionIdentifier id;
+	private String id;
 	private ArrayList<Expression> exprList;
 
-	public ExpressionFunctionCall(ExpressionIdentifier id,
-									ArrayList<Expression> exprList) {
+	public ExpressionFunctionCall(String id, ArrayList<Expression> exprList) {
 		this.id = id;
 		this.exprList = exprList;
 	}
 
-	public ExpressionIdentifier getId() {
+	public String getId() {
 		return this.id;
 	}
 

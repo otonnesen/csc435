@@ -39,7 +39,7 @@ public class PrettyPrintVisitor extends Visitor<Void> {
 		return null;
 	}
 	public Void visit(ExpressionFunctionCall e) {
-		e.getId().accept(this);
+		System.out.printf("%s", e.getId());
 		System.out.printf("(");
 		String delim = "";
 		for (Expression expr: e.getExprList()) {

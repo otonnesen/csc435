@@ -251,9 +251,9 @@ exprArrayAccess	returns [ExpressionArrayAccess aa]
 				;
 
 exprFuncCall	returns [ExpressionFunctionCall fc]
-				:	id = exprId OPENPAREN el = exprList CLOSEPAREN
+				:	id = ID OPENPAREN el = exprList CLOSEPAREN
 				{
-					fc = new ExpressionFunctionCall(id, el);
+					fc = new ExpressionFunctionCall(id.getText(), el);
 				}
 				;
 
