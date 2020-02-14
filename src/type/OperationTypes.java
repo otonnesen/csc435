@@ -49,6 +49,14 @@ public final class OperationTypes {
 					TypeInteger.getInstance(),
 					TypeFloat.getInstance()
 				));
+		HashSet<Type> print = new HashSet<Type>(
+				Arrays.asList(
+					TypeInteger.getInstance(),
+					TypeFloat.getInstance(),
+					TypeCharacter.getInstance(),
+					TypeString.getInstance(),
+					TypeBoolean.getInstance()
+				));
 
 		opTypes = new HashMap<String, HashSet<Type>>();
 		opTypes.put(ExpressionIsEqual.op, equals);
@@ -56,5 +64,6 @@ public final class OperationTypes {
 		opTypes.put(ExpressionMinus.op, minus);
 		opTypes.put(ExpressionPlus.op, plus);
 		opTypes.put(ExpressionTimes.op, times);
+		opTypes.put("print", print);
 	}
 }
