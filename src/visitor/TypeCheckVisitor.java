@@ -49,6 +49,21 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return lhs;
 	}
 
+	private static String getFunctionSignature(FunctionDeclaration fd) {
+		String sig = fd.getId();
+		sig += "(";
+		String sep = "";
+		// Append `(type1,type2,...)` and each type's string to
+		// the end of the function to allow for overloading.
+		for (Declaration p: fd.getParameters()) {
+			sig += sep;
+			sig += p.getType().toString();
+			sep = ", ";
+		}
+		sig += ")";
+		return sig;
+	}
+
 	public Type visit(Block b) {
 		for (Statement s: b.getStatements()) {
 			s.accept(this);
@@ -143,24 +158,10 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return null;
 	}
 	public Type visit(FunctionDeclaration fd) {
-		String id = fd.getId();
-		id += "(";
-		String sep = "";
-		// Append `(type1,type2,...)` and each type's string to
-		// the end of the function to allow for overloading.
+		String sig = getFunctionSignature(fd);
 		for (Declaration p: fd.getParameters()) {
 			p.accept(this);
-			id += sep;
-			id += p.getType().toString();
-			sep = ", ";
 		}
-		id += ")";
-		if (this.functions.inCurrentScope(id)) {
-			String message = String.format("Function `%s` is already declared.",
-					fd.getId());
-			throw new SemanticException(message, fd);
-		}
-		this.functions.put(id, fd.getType());
 		return fd.getType();
 	}
 	public Type visit(Function f) {
@@ -187,9 +188,19 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return STRING;
 	}
 	public Type visit(Program p) {
-		this.variables.beginScope();
+		this.functions.beginScope();
 		for (Function f: p.getFunctions()) {
-			this.functions.beginScope();
+			// Add function declarations to function table
+			String sig = getFunctionSignature(f.getDeclaration());
+			if (this.functions.inCurrentScope(sig)) {
+				String message = String.format("Function `%s` is already declared.",
+						sig);
+				throw new SemanticException(message, f.getDeclaration());
+			}
+			this.functions.put(sig, f.getDeclaration().getType());
+		}
+		for (Function f: p.getFunctions()) {
+			this.variables.beginScope();
 			f.accept(this);
 			this.variables.endScope();
 		}
