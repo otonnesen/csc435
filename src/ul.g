@@ -254,6 +254,8 @@ exprFuncCall	returns [ExpressionFunctionCall fc]
 				:	id = ID OPENPAREN el = exprList CLOSEPAREN
 				{
 					fc = new ExpressionFunctionCall(id.getText(), el);
+					fc.setLine(id.getLine());
+					fc.setOffset(id.getCharPositionInLine());
 				}
 				;
 
