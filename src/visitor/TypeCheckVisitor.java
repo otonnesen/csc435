@@ -17,9 +17,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 
 	private class SemanticException extends RuntimeException {
 		SemanticException(String message, ASTNode n) {
-			int line = n.getLine();
-			int offset = n.getOffset();
-			super(String.format("%s at %d:%d.", message, line, offset));
+			super(String.format("%s at %d:%d.", message, n.getLine(), n.getOffset()));
 		}
 	}
 
