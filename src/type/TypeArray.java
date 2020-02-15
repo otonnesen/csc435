@@ -29,11 +29,4 @@ public class TypeArray extends Type {
 		return this.getType().equals(other.getType()) &&
 			this.getSize() == other.getSize();
 	}
-
-	public boolean comparable(TypeArray other) {
-		if (!(other instanceof TypeArray))
-			return false;
-		return this.getType().comparable(other.getType()) &&
-			this.getSize() == other.getSize();
-	}
 }

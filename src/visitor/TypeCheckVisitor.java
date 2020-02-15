@@ -42,8 +42,8 @@ public class TypeCheckVisitor extends Visitor<Type> {
 					"Invalid type `%s` for operation `%s`.", lhs, op);
 			throw new SemanticException(message, line, offset);
 		}
-		if (!lhs.comparable(rhs)) {
-			// Left- and right-hand sides are not comparable.
+		if (!lhs.equals(rhs)) {
+			// Left- and right-hand sides are not equal.
 			int line = e.getRightExpr().getLine();
 			int offset = e.getRightExpr().getOffset();
 			String message = String.format(
@@ -197,7 +197,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	public Type visit(StatementArrayAssignment s) {
 		Type idType = s.getArrayAccess().accept(this);
 		Type exprType = s.getExpr().accept(this);
-		if (!idType.comparable(exprType)) {
+		if (!idType.equals(exprType)) {
 			// Mismatched types
 			int line = s.getArrayAccess().getId().getLine();
 			int offset = s.getArrayAccess().getId().getOffset();
@@ -211,7 +211,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	public Type visit(StatementAssign s) {
 		Type idType = s.getId().accept(this);
 		Type exprType = s.getExpr().accept(this);
-		if (!idType.comparable(exprType)) {
+		if (!idType.equals(exprType)) {
 			// Mismatched types
 			int line = s.getId().getLine();
 			int offset = s.getId().getOffset();
@@ -271,7 +271,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	}
 	public Type visit(StatementReturn s) {
 		Type t = s.getExpr().accept(this);
-		if (!t.comparable(this.returnType)) {
+		if (!t.equals(this.returnType)) {
 			// Expression does not match return type
 			int line = s.getExpr().getLine();
 			int offset = s.getExpr().getOffset();
@@ -289,7 +289,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 			int line = s.getExpr().getLine();
 			int offset = s.getExpr().getOffset();
 			String message = String.format(
-					"`%` found in while condition, expected boolean.",
+					"`%s` found in while condition, expected boolean.",
 					t);
 			throw new SemanticException(message, line, offset);
 		}
