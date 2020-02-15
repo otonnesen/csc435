@@ -1,5 +1,5 @@
-books/*
-docs/*
+books/
+docs/
 labs/
 src/ulLexer.java
 src/ulParser.java
