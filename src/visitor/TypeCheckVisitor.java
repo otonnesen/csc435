@@ -84,7 +84,20 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return id;
 	}
 	public Type visit(ExpressionFunctionCall e) {
-		return null;
+		String id = e.getId();
+		id += "(";
+		String sep = "";
+		for (Expression p: e.getExprList()) {
+			id += sep;
+			id += p.accept(this).toString();
+			sep = ", ";
+		}
+		id += ")";
+		if (!this.functions.inCurrentScope(id)) {
+			String message = String.format("Function `%s` not declared.", id);
+			throw new SemanticException(message, e);
+		}
+		return this.functions.lookup(id);
 	}
 	public Type visit(ExpressionIdentifier e) {
 		Type t = this.variables.lookup(e.getId());
@@ -131,14 +144,17 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	}
 	public Type visit(FunctionDeclaration fd) {
 		String id = fd.getId();
-		// Append `|` and each type's string to the end of the function
-		// to allow for overloading.
-		id += "|";
+		id += "(";
+		String sep = "";
+		// Append `(type1,type2,...)` and each type's string to
+		// the end of the function to allow for overloading.
 		for (Declaration p: fd.getParameters()) {
 			p.accept(this);
+			id += sep;
 			id += p.getType().toString();
-			// TODO: Add parameters to variable table
+			sep = ", ";
 		}
+		id += ")";
 		if (this.functions.inCurrentScope(id)) {
 			String message = String.format("Function `%s` is already declared.",
 					fd.getId());
