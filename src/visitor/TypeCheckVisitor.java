@@ -23,6 +23,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 
 	private Environment<String, Type> variables;
 	private Environment<String, Type> functions;
+	private Type returnType;
 
 	public TypeCheckVisitor() {
 		this.variables = new Environment<String, Type>();
@@ -60,9 +61,18 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	}
 	public Type visit(Declaration d) {
 		if (this.variables.inCurrentScope(d.getId().getId())) {
+			// Variable already declared
 			int line = d.getId().getLine();
 			int offset = d.getId().getOffset();
 			String message = String.format("Variable `%s` is already declared.",
+					d.getId().getId());
+			throw new SemanticException(message, line, offset);
+		}
+		if (d.getType().equals(VOID)) {
+			// Void declaration
+			int line = d.getId().getLine();
+			int offset = d.getId().getOffset();
+			String message = String.format("Variable `%s` cannot have type `void`.",
 					d.getId().getId());
 			throw new SemanticException(message, line, offset);
 		}
@@ -111,7 +121,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return lhs;
 	}
 	public Type visit(ExpressionParenthesis e) {
-		return null;
+		return e.getExpr().accept(this);
 	}
 	public Type visit(ExpressionPlus e) {
 		Type lhs = checkExpression(e);
@@ -154,6 +164,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	public Type visit(Function f) {
 		this.variables.beginScope();
 		Type t = f.getDeclaration().accept(this);
+		this.returnType = t;
 		f.getBody().accept(this);
 		this.variables.endScope();
 		return t;
@@ -184,10 +195,32 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return null;
 	}
 	public Type visit(StatementArrayAssignment s) {
-		return null;
+		Type idType = s.getArrayAccess().accept(this);
+		Type exprType = s.getExpr().accept(this);
+		if (!idType.comparable(exprType)) {
+			// Mismatched types
+			int line = s.getArrayAccess().getId().getLine();
+			int offset = s.getArrayAccess().getId().getOffset();
+			String message = String.format(
+					"Cannot assign value of type `%s` to array `%s` of type `%s`.",
+					exprType, s.getArrayAccess().getId().getId(), idType);
+			throw new SemanticException(message, line, offset);
+		}
+		return idType;
 	}
 	public Type visit(StatementAssign s) {
-		return null;
+		Type idType = s.getId().accept(this);
+		Type exprType = s.getExpr().accept(this);
+		if (!idType.comparable(exprType)) {
+			// Mismatched types
+			int line = s.getId().getLine();
+			int offset = s.getId().getOffset();
+			String message = String.format(
+					"Cannot assign value of type `%s` to variable `%s` of type `%s`.",
+					exprType, s.getId().getId(), idType);
+			throw new SemanticException(message, line, offset);
+		}
+		return idType;
 	}
 	public Type visit(StatementEmpty s) {
 		return null;
@@ -196,18 +229,71 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return s.getExpr().accept(this);
 	}
 	public Type visit(StatementIf s) {
+		Type t = s.getExpr().accept(this);
+		if (!t.equals(BOOLEAN)) {
+			// While condition is not boolean
+			int line = s.getExpr().getLine();
+			int offset = s.getExpr().getOffset();
+			String message = String.format(
+					"`%` found in if condition, expected boolean.",
+					t);
+			throw new SemanticException(message, line, offset);
+		}
+		s.getIfBlock().accept(this);
+		if (s.getElseBlock() != null) {
+			s.getElseBlock().accept(this);
+		}
 		return null;
 	}
 	public Type visit(StatementPrint s) {
+		Type t = s.getExpr().accept(this);
+		if (!OperationTypes.opTypes.get("print").contains(t)) {
+			// Type not printable
+			int line = s.getExpr().getLine();
+			int offset = s.getExpr().getOffset();
+			String message = String.format(
+					"Cannot print type `%s`.", t);
+			throw new SemanticException(message, line, offset);
+		}
 		return null;
 	}
 	public Type visit(StatementPrintln s) {
+		Type t = s.getExpr().accept(this);
+		if (!OperationTypes.opTypes.get("print").contains(t)) {
+			// Type not printable
+			int line = s.getExpr().getLine();
+			int offset = s.getExpr().getOffset();
+			String message = String.format(
+					"Cannot print type `%s`.", t);
+			throw new SemanticException(message, line, offset);
+		}
 		return null;
 	}
 	public Type visit(StatementReturn s) {
-		return null;
+		Type t = s.getExpr().accept(this);
+		if (!t.comparable(this.returnType)) {
+			// Expression does not match return type
+			int line = s.getExpr().getLine();
+			int offset = s.getExpr().getOffset();
+			String message = String.format(
+					"Expression does not match return type `%s`.",
+					this.returnType);
+			throw new SemanticException(message, line, offset);
+		}
+		return t;
 	}
 	public Type visit(StatementWhile s) {
+		Type t = s.getExpr().accept(this);
+		if (!t.equals(BOOLEAN)) {
+			// While condition is not boolean
+			int line = s.getExpr().getLine();
+			int offset = s.getExpr().getOffset();
+			String message = String.format(
+					"`%` found in while condition, expected boolean.",
+					t);
+			throw new SemanticException(message, line, offset);
+		}
+		s.getBlock().accept(this);
 		return null;
 	}
 	public Type visit(VariableDeclaration v) {
