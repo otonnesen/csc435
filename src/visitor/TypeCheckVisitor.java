@@ -282,8 +282,8 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		if (!t.equals(this.returnType)) {
 			// Expression does not match return type
 			String message = String.format(
-					"Expression does not match return type `%s`.",
-					this.returnType);
+					"Return value of type `%s` does not match return type `%s`.",
+					t, this.returnType);
 			throw new SemanticException(message, s.getExpr());
 		}
 		return t;
