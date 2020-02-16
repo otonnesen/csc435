@@ -204,6 +204,13 @@ public class TypeCheckVisitor extends Visitor<Type> {
 			}
 			this.functions.put(sig, f.getDeclaration().getType());
 		}
+		if (this.functions.lookup("main()") == null) {
+			throw new SemanticException("main() function not declared.", p);
+		}
+		if (!this.functions.lookup("main()").equals(VOID)) {
+			throw new SemanticException(
+					"main() function must have return type `void`", p);
+		}
 		for (Function f: p.getFunctions()) {
 			this.variables.beginScope();
 			f.accept(this);
