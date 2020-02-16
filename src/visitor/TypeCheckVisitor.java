@@ -96,6 +96,11 @@ public class TypeCheckVisitor extends Visitor<Type> {
 					expr);
 			throw new SemanticException(message, e.getExpr());
 		}
+		if (!(this.variables.lookup(e.getId().getId()) instanceof TypeArray)) {
+			String message = String.format(
+					"Cannot index into non-array variable `%s`.", e.getId().getId());
+			throw new SemanticException(message, e.getId());
+		}
 		return id;
 	}
 	public Type visit(ExpressionFunctionCall e) {
