@@ -38,6 +38,8 @@ public Object recoverFromMismatchedSet (IntStream input,
 program			returns [Program p]
 				@init {
 					p = new Program();
+					p.setLine(0);
+					p.setOffset(0);
 				}
 				:	(f = function
 				{
