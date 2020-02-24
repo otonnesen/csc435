@@ -1,0 +1,5 @@
+// Variable must be an array to index into it
+void main() {
+	int a;
+	a[0];
+}

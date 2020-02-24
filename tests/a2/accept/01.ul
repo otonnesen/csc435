@@ -1,0 +1,5 @@
+// I allowed the multiple definition of functions, as long as they
+// have different parameters.
+int main(int a) {}
+
+void main() {}
