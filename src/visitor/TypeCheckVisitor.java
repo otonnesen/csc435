@@ -37,13 +37,13 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		if (!OperationTypes.opTypes.get(op).contains(lhs)) {
 			// Operation is not applicable to left-hand expression
 			String message = String.format(
-					"Invalid type `%s` for operation `%s`.", lhs, op);
+					"Invalid type `%s` for operation `%s`", lhs, op);
 			throw new SemanticException(message, e.getLeftExpr());
 		}
 		if (!lhs.equals(rhs)) {
 			// Left- and right-hand sides are not equal.
 			String message = String.format(
-					"Mismatched types: `%s` and `%s`.", lhs, rhs);
+					"Mismatched types: `%s` and `%s`", lhs, rhs);
 			throw new SemanticException(message, e.getRightExpr());
 		}
 		return lhs;
@@ -73,13 +73,15 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	public Type visit(Declaration d) {
 		if (this.variables.inCurrentScope(d.getId().getId())) {
 			// Variable already declared
-			String message = String.format("Variable `%s` is already declared.",
+			String message = String.format(
+					"Variable `%s` is already declared",
 					d.getId().getId());
 			throw new SemanticException(message, d.getId());
 		}
 		if (d.getType().equals(VOID)) {
 			// Void declaration
-			String message = String.format("Variable `%s` cannot have type `void`.",
+			String message = String.format(
+					"Variable `%s` cannot have type `void`",
 					d.getId().getId());
 			throw new SemanticException(message, d.getId());
 		}
@@ -92,13 +94,14 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		if (!expr.equals(INTEGER)) {
 			// Array index is not an integer
 			String message = String.format(
-					"Invalid type `%s` for array access, expected type `int`.",
+					"Invalid type `%s` for array access, expected type `int`",
 					expr);
 			throw new SemanticException(message, e.getExpr());
 		}
 		if (!(this.variables.lookup(e.getId().getId()) instanceof TypeArray)) {
 			String message = String.format(
-					"Cannot index into non-array variable `%s`.", e.getId().getId());
+					"Cannot index into non-array variable `%s`",
+					e.getId().getId());
 			throw new SemanticException(message, e.getId());
 		}
 		return id;
@@ -114,7 +117,8 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		}
 		id += ")";
 		if (!this.functions.inCurrentScope(id)) {
-			String message = String.format("Function `%s` not declared.", id);
+			String message = String.format(
+					"Function `%s` not declared", id);
 			throw new SemanticException(message, e);
 		}
 		return this.functions.lookup(id);
@@ -198,14 +202,15 @@ public class TypeCheckVisitor extends Visitor<Type> {
 			// Add function declarations to function table
 			String sig = getFunctionSignature(f.getDeclaration());
 			if (this.functions.inCurrentScope(sig)) {
-				String message = String.format("Function `%s` is already declared.",
+				String message = String.format(
+						"Function `%s` is already declared",
 						sig);
 				throw new SemanticException(message, f.getDeclaration());
 			}
 			this.functions.put(sig, f.getDeclaration().getType());
 		}
 		if (this.functions.lookup("main()") == null) {
-			throw new SemanticException("main() function not declared.", p);
+			throw new SemanticException("main() function not declared", p);
 		}
 		if (!this.functions.lookup("main()").equals(VOID)) {
 			throw new SemanticException(
@@ -225,7 +230,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		if (!idType.equals(exprType)) {
 			// Mismatched types
 			String message = String.format(
-					"Cannot assign value of type `%s` to array `%s` of type `%s`.",
+					"Cannot assign value of type `%s` to array `%s` of type `%s`",
 					exprType, s.getArrayAccess().getId().getId(), idType);
 			throw new SemanticException(message, s.getArrayAccess().getId());
 		}
@@ -237,7 +242,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		if (!idType.equals(exprType)) {
 			// Mismatched types
 			String message = String.format(
-					"Cannot assign value of type `%s` to variable `%s` of type `%s`.",
+					"Cannot assign value of type `%s` to variable `%s` of type `%s`",
 					exprType, s.getId().getId(), idType);
 			throw new SemanticException(message, s.getId());
 		}
@@ -254,7 +259,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		if (!t.equals(BOOLEAN)) {
 			// While condition is not boolean
 			String message = String.format(
-					"`%` found in if condition, expected boolean.",
+					"`%` found in if condition, expected boolean",
 					t);
 			throw new SemanticException(message, s.getExpr());
 		}
@@ -269,7 +274,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		if (!OperationTypes.opTypes.get("print").contains(t)) {
 			// Type not printable
 			String message = String.format(
-					"Cannot print type `%s`.", t);
+					"Cannot print type `%s`", t);
 			throw new SemanticException(message, s.getExpr());
 		}
 		return null;
@@ -279,7 +284,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		if (!OperationTypes.opTypes.get("print").contains(t)) {
 			// Type not printable
 			String message = String.format(
-					"Cannot print type `%s`.", t);
+					"Cannot print type `%s`", t);
 			throw new SemanticException(message, s.getExpr());
 		}
 		return null;
@@ -289,7 +294,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		if (!t.equals(this.returnType)) {
 			// Expression does not match return type
 			String message = String.format(
-					"Return value of type `%s` does not match return type `%s`.",
+					"Return value of type `%s` does not match return type `%s`",
 					t, this.returnType);
 			throw new SemanticException(message, s.getExpr());
 		}
@@ -300,7 +305,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		if (!t.equals(BOOLEAN)) {
 			// While condition is not boolean
 			String message = String.format(
-					"`%s` found in while condition, expected boolean.",
+					"`%s` found in while condition, expected boolean",
 					t);
 			throw new SemanticException(message, s.getExpr());
 		}
