@@ -15,6 +15,6 @@ public class TypeString extends Type {
 	}
 
 	public String IRString() {
-		return "U"
+		return "U";
 	}
 }
