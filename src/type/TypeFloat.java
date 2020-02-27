@@ -13,4 +13,8 @@ public class TypeFloat extends Type {
 	public String toString() {
 		return this.name;
 	}
+
+	public String IRString() {
+		return "F";
+	}
 }

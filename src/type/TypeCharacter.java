@@ -13,4 +13,8 @@ public class TypeCharacter extends Type {
 	public String toString() {
 		return this.name;
 	}
+
+	public String IRString() {
+		return "C";
+	}
 }
