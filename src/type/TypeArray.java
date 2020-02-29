@@ -23,10 +23,6 @@ public class TypeArray extends Type {
 		return this.name;
 	}
 
-	public String IRString() {
-		return "A" + tihs.type.IRString();
-	}
-
 	public boolean equals(TypeArray other) {
 		if (!(other instanceof TypeArray))
 			return false;

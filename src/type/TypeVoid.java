@@ -13,8 +13,4 @@ public class TypeVoid extends Type {
 	public String toString() {
 		return this.name;
 	}
-
-	public String IRString() {
-		return "V";
-	}
 }
