@@ -9,6 +9,6 @@ public class ConstantInteger extends Constant {
 	}
 
 	public String toString() {
-		return "ConstantInteger: TODO";
+		return Integer.toString(this.value);
 	}
 }

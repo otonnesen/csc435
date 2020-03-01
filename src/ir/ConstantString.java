@@ -9,6 +9,6 @@ public class ConstantString extends Constant {
 	}
 
 	public String toString() {
-		return "ConstantString: TODO";
+		return this.value;
 	}
 }

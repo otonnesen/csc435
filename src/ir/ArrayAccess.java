@@ -19,6 +19,6 @@ public class ArrayAccess extends Operand {
 	}
 
 	public String toString() {
-		return "ArrayAccess: TODO";
+		return this.id.toString() + "[" + this.index.toString() + "]";
 	}
 }

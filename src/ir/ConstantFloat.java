@@ -9,6 +9,6 @@ public class ConstantFloat extends Constant {
 	}
 
 	public String toString() {
-		return "ConstantFloat: TODO";
+		return Float.toString(this.value);
 	}
 }

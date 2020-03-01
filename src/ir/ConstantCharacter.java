@@ -9,6 +9,6 @@ public class ConstantCharacter extends Constant {
 	}
 
 	public String toString() {
-		return "ConstantCharacter: TODO";
+		return Character.toString(this.value);
 	}
 }

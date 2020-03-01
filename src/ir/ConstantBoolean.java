@@ -9,6 +9,6 @@ public class ConstantBoolean extends Constant {
 	}
 
 	public String toString() {
-		return "ConstantBoolean: TODO";
+		return Boolean.toString(this.value);
 	}
 }
