@@ -9,3 +9,5 @@ src/ulParser.java
 *.swp
 tags
 test.ul
+TODO
+checktests
