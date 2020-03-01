@@ -2,7 +2,7 @@ package ir;
 
 import type.Type;
 
-public class Temp {
+public class Temp extends Operand {
 	public enum tempClass {
 		PARAM,
 		LOCAL,
@@ -10,17 +10,12 @@ public class Temp {
 	}
 
 	private int number;
-	private Type type;
 	private tempClass cls;
 
 	public Temp(int number, Type type, tempClass cls) {
+		super(type);
 		this.number = number;
-		this.type = type;
 		this.cls = cls;
-	}
-
-	public String toString() {
-		return "T" + this.number;
 	}
 
 	public int getNumber() {
@@ -31,7 +26,7 @@ public class Temp {
 		return this.cls;
 	}
 
-	public Type getType() {
-		return this.type;
+	public String toString() {
+		return "T" + this.number;
 	}
 }
