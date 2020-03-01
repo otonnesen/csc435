@@ -10,4 +10,8 @@ public class Type {
 	public AtomicType getAtomicType() {
 		return this.type;
 	}
+
+	public String toString() {
+		return this.type.toString();
+	}
 }
