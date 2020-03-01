@@ -1,7 +1,7 @@
 package ir;
 
 public abstract class Operand {
-	private Type type;
+	protected Type type;
 
 	public Operand(Type t) {
 		this.type = t;

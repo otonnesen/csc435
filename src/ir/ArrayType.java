@@ -6,6 +6,6 @@ public class ArrayType extends Type {
 	}
 	
 	public String toString() {
-		return "A" + this.getType().toString();
+		return "A" + this.type.toString();
 	}
 }

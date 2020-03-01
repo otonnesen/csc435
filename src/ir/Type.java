@@ -1,13 +1,13 @@
 package ir;
 
 public class Type {
-	private AtomicType type;
+	protected AtomicType type;
 
 	public Type(AtomicType type) {
 		this.type = type;
 	}
 
-	public AtomicType getType() {
+	public AtomicType getAtomicType() {
 		return this.type;
 	}
 }
