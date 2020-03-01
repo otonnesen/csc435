@@ -24,7 +24,7 @@ public class Program {
 	}
 
 	public String toString() {
-		String s = this.className;
+		String s = this.className + "\n";
 		for (Function f: this.functions) {
 			s += f.toString();
 		}

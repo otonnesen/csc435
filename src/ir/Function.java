@@ -41,14 +41,15 @@ public class Function {
 
 	public String toString() {
 		// TODO: StringBuilder
-		String s = "FUNC " + this.name + " " + this.sig + "{";
+		String s = "FUNC " + this.name + " " + this.sig + "\n{\n";
 		for (Temp t: this.temps) {
-			s += "TEMP " + t.toString() + ":" + t.getType().toString() + ";";
+			s += "TEMP " + t.toString() + ":" + t.getType().toString() + ";\n";
 		}
+		s += "\n";
 		for (Instruction i: this.instructions) {
-			s += i.toString() + ";";
+			s += i.toString() + ";\n";
 		}
-		s += "}";
+		s += "}\n";
 		return s;
 	}
 }
