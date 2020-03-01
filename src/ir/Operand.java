@@ -1,7 +1,5 @@
 package ir;
 
-import type.Type;
-
 public abstract class Operand {
 	private Type type;
 

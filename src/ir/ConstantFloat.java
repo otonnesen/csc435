@@ -1,12 +1,10 @@
 package ir;
 
-import type.TypeFloat;
-
 public class ConstantFloat extends Constant {
 	private float value;
 
 	public ConstantFloat(float v) {
-		super(TypeFloat.getInstance());
+		super(new Type(AtomicType.FLOAT));
 		this.value = v;
 	}
 

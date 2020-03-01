@@ -1,12 +1,10 @@
 package ir;
 
-import type.TypeInteger;
-
 public class ConstantInteger extends Constant {
 	private int value;
 
 	public ConstantInteger(int v) {
-		super(TypeInteger.getInstance());
+		super(new Type(AtomicType.INTEGER));
 		this.value = v;
 	}
 

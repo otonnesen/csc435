@@ -1,12 +1,10 @@
 package ir;
 
-import type.TypeString;
-
 public class ConstantString extends Constant {
 	private String value;
 
 	public ConstantString(String v) {
-		super(TypeString.getInstance());
+		super(new Type(AtomicType.STRING));
 		this.value = v;
 	}
 

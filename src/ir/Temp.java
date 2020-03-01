@@ -1,7 +1,5 @@
 package ir;
 
-import type.Type;
-
 public class Temp extends Operand {
 	public enum tempClass {
 		PARAM,

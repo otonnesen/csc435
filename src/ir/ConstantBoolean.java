@@ -1,12 +1,10 @@
 package ir;
 
-import type.TypeBoolean;
-
 public class ConstantBoolean extends Constant {
 	private boolean value;
 
 	public ConstantBoolean(boolean v) {
-		super(TypeBoolean.getInstance());
+		super(new Type(AtomicType.BOOLEAN));
 		this.value = v;
 	}
 
