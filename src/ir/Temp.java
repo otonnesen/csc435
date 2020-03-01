@@ -27,7 +27,7 @@ public class Temp {
 		return this.number;
 	}
 
-	public tempClass getClass() {
+	public tempClass getCls() {
 		return this.cls;
 	}
 
