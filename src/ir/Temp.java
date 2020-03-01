@@ -10,13 +10,13 @@ public class Temp {
 	}
 
 	private int number;
-	private tempClass cls;
 	private Type type;
+	private tempClass cls;
 
-	public Temp(int number, tempClass cls, Type type) {
+	public Temp(int number, Type type, tempClass cls) {
 		this.number = number;
-		this.cls = cls;
 		this.type = type;
+		this.cls = cls;
 	}
 
 	public String toString() {
