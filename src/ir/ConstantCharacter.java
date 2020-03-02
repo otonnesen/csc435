@@ -1,5 +1,7 @@
 package ir;
 
+import type.*;
+
 public class ConstantCharacter extends Constant {
 	private char value;
 

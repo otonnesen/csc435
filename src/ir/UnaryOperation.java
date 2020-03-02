@@ -1,5 +1,7 @@
 package ir;
 
+import type.*;
+
 public class UnaryOperation extends Operand {
 	private Temp t;
 	private UnaryOperator op;

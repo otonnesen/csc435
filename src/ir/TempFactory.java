@@ -1,5 +1,7 @@
 package ir;
 
+import type.*;
+
 public class TempFactory {
 	private final int MAX_LOCALS = 65536;
 	private int next;

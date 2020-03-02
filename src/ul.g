@@ -64,7 +64,7 @@ functionDecl	returns [FunctionDeclaration fd]
 				;
 
 compoundType	returns [Type t]
-				:	tp = type { t = tp; }
+				:	tp = type { t = new Type(tp); }
 				|	tp = type OPENBRACKET i = INT_CONST CLOSEBRACKET
 				{
 					int size = Integer.parseInt(i.getText());
@@ -293,13 +293,13 @@ block			returns [Block b]
 				:	OPENBRACE (s = statement { b.addStatement(s); })* CLOSEBRACE
 				;
 
-type			returns [Type t]
-				:	BOOLEAN { t = TypeBoolean.getInstance(); }
-				|	CHAR { t = TypeCharacter.getInstance(); }
-				|	FLOAT { t = TypeFloat.getInstance(); }
-				|	INT { t = TypeInteger.getInstance(); }
-				|	STRING { t = TypeString.getInstance(); }
-				|	VOID { t = TypeVoid.getInstance(); }
+type			returns [AtomicType t]
+				:	BOOLEAN { t = AtomicType.BOOLEAN; }
+				|	CHAR { t = AtomicType.CHARACTER; }
+				|	FLOAT { t = AtomicType.FLOAT; }
+				|	INT { t = AtomicType.INTEGER; }
+				|	STRING { t = AtomicType.STRING; }
+				|	VOID { t = AtomicType.VOID; }
 				;
 
 literalBool		returns [LiteralBoolean b]

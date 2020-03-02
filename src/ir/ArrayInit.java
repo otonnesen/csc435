@@ -1,5 +1,7 @@
 package ir;
 
+import type.*;
+
 public class ArrayInit extends Operand {
 	private int size;
 

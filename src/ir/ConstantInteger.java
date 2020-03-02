@@ -1,5 +1,7 @@
 package ir;
 
+import type.*;
+
 public class ConstantInteger extends Constant {
 	private int value;
 

@@ -1,5 +1,7 @@
 package ir;
 
+import type.*;
+
 public class ConstantFloat extends Constant {
 	private float value;
 

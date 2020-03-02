@@ -1,5 +1,7 @@
 package ir;
 
+import type.*;
+
 public class ConstantString extends Constant {
 	private String value;
 

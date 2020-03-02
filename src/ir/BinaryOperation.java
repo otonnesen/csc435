@@ -1,5 +1,7 @@
 package ir;
 
+import type.*;
+
 public class BinaryOperation extends Operand {
 	private Temp t1;
 	private Temp t2;

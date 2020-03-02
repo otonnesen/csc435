@@ -1,5 +1,7 @@
 package ir;
 
+import type.*;
+
 import java.util.ArrayList;
 
 public class Function {

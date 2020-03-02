@@ -1,5 +1,7 @@
 package ir;
 
+import type.*;
+
 public class Print extends Instruction {
 	private Temp op;
 	private boolean ln;

@@ -1,5 +1,7 @@
 package ir;
 
+import type.*;
+
 public class ConstantBoolean extends Constant {
 	private boolean value;
 

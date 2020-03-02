@@ -1,5 +1,7 @@
 package ir;
 
+import type.*;
+
 public class ArrayAccess extends Operand {
 	private Temp id;
 	private Temp index;
