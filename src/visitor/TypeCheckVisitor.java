@@ -84,7 +84,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		// the end of the function to allow for overloading.
 		for (Declaration p: fd.getParameters()) {
 			sig += sep;
-			sig += p.getType().toString();
+			sig += p.getType().getName();
 			sep = ", ";
 		}
 		sig += ")";
@@ -139,7 +139,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		String sep = "";
 		for (Expression p: e.getExprList()) {
 			id += sep;
-			id += p.accept(this).toString();
+			id += p.accept(this).getName();
 			sep = ", ";
 		}
 		id += ")";
@@ -286,7 +286,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		if (!t.equals(BOOLEAN)) {
 			// While condition is not boolean
 			String message = String.format(
-					"`%s` found in if condition, expected boolean",
+					"`%s` found in if condition, expected `boolean`",
 					t.getName());
 			throw new SemanticException(message, s.getExpr());
 		}
@@ -336,7 +336,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		if (!t.equals(BOOLEAN)) {
 			// While condition is not boolean
 			String message = String.format(
-					"`%s` found in while condition, expected boolean",
+					"`%s` found in while condition, expected `boolean`",
 					t.getName());
 			throw new SemanticException(message, s.getExpr());
 		}
