@@ -244,9 +244,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 					"main() function must have return type `void`", p);
 		}
 		for (Function f: p.getFunctions()) {
-			this.variables.beginScope();
 			f.accept(this);
-			this.variables.endScope();
 		}
 		this.functions.endScope();
 		return null;
