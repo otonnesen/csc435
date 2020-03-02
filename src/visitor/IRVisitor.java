@@ -7,7 +7,7 @@ import environment.Environment;
 
 import java.util.ArrayList;
 
-public class IRVisitor extends Visitor<Temp> {
+public class IRVisitor extends Visitor<Operand> {
 	private Environment<String, Type> functions;
 	private Environment<String, Temp> variables;
 	private Program program;
@@ -25,6 +25,10 @@ public class IRVisitor extends Visitor<Temp> {
 	private static Type STRING = new Type(AtomicType.STRING);
 	private static Type VOID = new Type(AtomicType.VOID);
 
+	public Program getProgram() {
+		return this.program;
+	}
+
 	private static MethodType getSig(ast.Function f) {
 		ArrayList<Type> params = new ArrayList<Type>();
 		for (ast.Declaration d: f.getDeclaration().getParameters()) {
@@ -39,47 +43,47 @@ public class IRVisitor extends Visitor<Temp> {
 		this.filename = filename;
 	}
 
-	public Temp visit(ast.Block b) {
+	public Operand visit(ast.Block b) {
 		for (ast.Statement s: b.getStatements()) {
 			s.accept(this);
 		}
 		return null;
 	}
-	public Temp visit(ast.Declaration d) {
+	public Operand visit(ast.Declaration d) {
 		Temp t = tf.getTemp(d.getType(), LOCAL);
 		this.variables.put(d.getId().getId(), t);
 		return t;
 	}
-	public Temp visit(ast.ExpressionArrayAccess e) {
+	public Operand visit(ast.ExpressionArrayAccess e) {
 		return null;
 	}
-	public Temp visit(ast.ExpressionFunctionCall e) {
+	public Operand visit(ast.ExpressionFunctionCall e) {
 		return null;
 	}
-	public Temp visit(ast.ExpressionIdentifier e) {
+	public Operand visit(ast.ExpressionIdentifier e) {
 		return null;
 	}
-	public Temp visit(ast.ExpressionIsEqual e) {
+	public Operand visit(ast.ExpressionIsEqual e) {
 		return null;
 	}
-	public Temp visit(ast.ExpressionLessThan e) {
+	public Operand visit(ast.ExpressionLessThan e) {
 		return null;
 	}
-	public Temp visit(ast.ExpressionMinus e) {
+	public Operand visit(ast.ExpressionMinus e) {
 		return null;
 	}
-	public Temp visit(ast.ExpressionParenthesis e) {
+	public Operand visit(ast.ExpressionParenthesis e) {
 		return null;
 	}
-	public Temp visit(ast.ExpressionPlus e) {
+	public Operand visit(ast.ExpressionPlus e) {
 		return null;
 	}
-	public Temp visit(ast.ExpressionTimes e) {
+	public Operand visit(ast.ExpressionTimes e) {
 		return null;
 	}
-	public Temp visit(ast.FunctionBody fb) {
+	public Operand visit(ast.FunctionBody fb) {
 		for (ast.VariableDeclaration vd: fb.getVariables()) {
-			this.curFunc.addTemp(vd.accept(this));
+			this.curFunc.addTemp((Temp)vd.accept(this));
 		}
 
 		for (ast.Statement s: fb.getStatements()) {
@@ -87,7 +91,8 @@ public class IRVisitor extends Visitor<Temp> {
 		}
 		return null;
 	}
-	public Temp visit(ast.FunctionDeclaration fd) {
+	public Operand visit(ast.FunctionDeclaration fd) {
+		this.functions.put(fd.getId(), fd.getType());
 		for (ast.Declaration p: fd.getParameters()) {
 			Temp t = tf.getTemp(p.getType(), PARAM);
 			this.variables.put(p.getId().getId(), t);
@@ -95,7 +100,7 @@ public class IRVisitor extends Visitor<Temp> {
 		}
 		return null;
 	}
-	public Temp visit(ast.Function f) {
+	public Operand visit(ast.Function f) {
 		this.variables.beginScope();
 		this.tf = new TempFactory();
 
@@ -111,7 +116,7 @@ public class IRVisitor extends Visitor<Temp> {
 		this.variables.endScope();
 		return null;
 	}
-	public Temp visit(ast.LiteralBoolean l) {
+	public Operand visit(ast.LiteralBoolean l) {
 		Temp t = tf.getTemp(BOOLEAN, TEMP);
 		this.curFunc.addTemp(t);
 		Operand o = new ConstantBoolean(l.getValue());
@@ -119,7 +124,7 @@ public class IRVisitor extends Visitor<Temp> {
 		this.curFunc.addInstruction(i);
 		return t;
 	}
-	public Temp visit(ast.LiteralCharacter l) {
+	public Operand visit(ast.LiteralCharacter l) {
 		Temp t = tf.getTemp(CHARACTER, TEMP);
 		this.curFunc.addTemp(t);
 		Operand o = new ConstantCharacter(l.getValue());
@@ -127,32 +132,36 @@ public class IRVisitor extends Visitor<Temp> {
 		this.curFunc.addInstruction(i);
 		return t;
 	}
-	public Temp visit(ast.LiteralFloat l) {
-		Temp t = tf.getTemp(CHARACTER, TEMP);
+	public Operand visit(ast.LiteralFloat l) {
+		Temp t = tf.getTemp(FLOAT, TEMP);
 		this.curFunc.addTemp(t);
 		Operand o = new ConstantFloat(l.getValue());
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		return t;
 	}
-	public Temp visit(ast.LiteralInteger l) {
-		Temp t = tf.getTemp(CHARACTER, TEMP);
+	public Operand visit(ast.LiteralInteger l) {
+		Temp t = tf.getTemp(INTEGER, TEMP);
 		this.curFunc.addTemp(t);
 		Operand o = new ConstantInteger(l.getValue());
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		return t;
 	}
-	public Temp visit(ast.LiteralString l) {
-		Temp t = tf.getTemp(CHARACTER, TEMP);
+	public Operand visit(ast.LiteralString l) {
+		Temp t = tf.getTemp(STRING, TEMP);
 		this.curFunc.addTemp(t);
 		Operand o = new ConstantString(l.getValue());
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		return t;
 	}
-	public Temp visit(ast.Program p) {
+	public Operand visit(ast.Program p) {
 		this.functions.beginScope();
+
+		for (ast.Function f: p.getFunctions()) {
+			this.functions.put(f.getDeclaration().getId(), f.getDeclaration().getType());
+		}
 
 		this.program = new Program(this.filename);
 
@@ -163,34 +172,34 @@ public class IRVisitor extends Visitor<Temp> {
 		this.functions.endScope();
 		return null;
 	}
-	public Temp visit(ast.StatementArrayAssignment s) {
+	public Operand visit(ast.StatementArrayAssignment s) {
 		return null;
 	}
-	public Temp visit(ast.StatementAssign s) {
+	public Operand visit(ast.StatementAssign s) {
 		return null;
 	}
-	public Temp visit(ast.StatementEmpty s) {
+	public Operand visit(ast.StatementEmpty s) {
 		return null;
 	}
-	public Temp visit(ast.StatementExpression s) {
+	public Operand visit(ast.StatementExpression s) {
 		return null;
 	}
-	public Temp visit(ast.StatementIf s) {
+	public Operand visit(ast.StatementIf s) {
 		return null;
 	}
-	public Temp visit(ast.StatementPrint s) {
+	public Operand visit(ast.StatementPrint s) {
 		return null;
 	}
-	public Temp visit(ast.StatementPrintln s) {
+	public Operand visit(ast.StatementPrintln s) {
 		return null;
 	}
-	public Temp visit(ast.StatementReturn s) {
+	public Operand visit(ast.StatementReturn s) {
 		return null;
 	}
-	public Temp visit(ast.StatementWhile s) {
+	public Operand visit(ast.StatementWhile s) {
 		return null;
 	}
-	public Temp visit(ast.VariableDeclaration v) {
+	public Operand visit(ast.VariableDeclaration v) {
 		return v.getDeclaration().accept(this);
 	}
 }
