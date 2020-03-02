@@ -2,6 +2,7 @@ package visitor;
 
 import ir.*;
 import type.Type;
+import type.AtomicType;
 import environment.Environment;
 
 import java.util.ArrayList;
@@ -17,6 +18,12 @@ public class IRVisitor extends Visitor<Temp> {
 	private static Temp.tempClass PARAM = Temp.tempClass.PARAM;
 	private static Temp.tempClass LOCAL = Temp.tempClass.LOCAL;
 	private static Temp.tempClass TEMP = Temp.tempClass.TEMP;
+	private static Type BOOLEAN = new Type(AtomicType.BOOLEAN);
+	private static Type CHARACTER = new Type(AtomicType.CHARACTER);
+	private static Type FLOAT = new Type(AtomicType.FLOAT);
+	private static Type INTEGER = new Type(AtomicType.INTEGER);
+	private static Type STRING = new Type(AtomicType.STRING);
+	private static Type VOID = new Type(AtomicType.VOID);
 
 	private static MethodType getSig(ast.Function f) {
 		ArrayList<Type> params = new ArrayList<Type>();
@@ -87,6 +94,7 @@ public class IRVisitor extends Visitor<Temp> {
 	}
 	public Temp visit(ast.Function f) {
 		this.variables.beginScope();
+		this.tf = new TempFactory();
 
 		MethodType type = this.getSig(f);
 		Function fn = new Function(f.getDeclaration().getId(), type);
@@ -100,20 +108,45 @@ public class IRVisitor extends Visitor<Temp> {
 		this.variables.endScope();
 		return null;
 	}
-	public Temp visit(ast.LiteralBoolean b) {
-		return null;
+	public Temp visit(ast.LiteralBoolean l) {
+		Temp t = tf.getTemp(BOOLEAN, TEMP);
+		this.curFunc.addTemp(t);
+		Operand o = new ConstantBoolean(l.getValue());
+		Instruction i = new Assignment(t, o);
+		this.curFunc.addInstruction(i);
+		return t;
 	}
-	public Temp visit(ast.LiteralCharacter c) {
-		return null;
+	public Temp visit(ast.LiteralCharacter l) {
+		Temp t = tf.getTemp(CHARACTER, TEMP);
+		this.curFunc.addTemp(t);
+		Operand o = new ConstantCharacter(l.getValue());
+		Instruction i = new Assignment(t, o);
+		this.curFunc.addInstruction(i);
+		return t;
 	}
-	public Temp visit(ast.LiteralFloat f) {
-		return null;
+	public Temp visit(ast.LiteralFloat l) {
+		Temp t = tf.getTemp(CHARACTER, TEMP);
+		this.curFunc.addTemp(t);
+		Operand o = new ConstantFloat(l.getValue());
+		Instruction i = new Assignment(t, o);
+		this.curFunc.addInstruction(i);
+		return t;
 	}
-	public Temp visit(ast.LiteralInteger i) {
-		return null;
+	public Temp visit(ast.LiteralInteger l) {
+		Temp t = tf.getTemp(CHARACTER, TEMP);
+		this.curFunc.addTemp(t);
+		Operand o = new ConstantInteger(l.getValue());
+		Instruction i = new Assignment(t, o);
+		this.curFunc.addInstruction(i);
+		return t;
 	}
-	public Temp visit(ast.LiteralString s) {
-		return null;
+	public Temp visit(ast.LiteralString l) {
+		Temp t = tf.getTemp(CHARACTER, TEMP);
+		this.curFunc.addTemp(t);
+		Operand o = new ConstantString(l.getValue());
+		Instruction i = new Assignment(t, o);
+		this.curFunc.addInstruction(i);
+		return t;
 	}
 	public Temp visit(ast.Program p) {
 		this.functions.beginScope();
