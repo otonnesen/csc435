@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class Function {
 	private String name;
-	private String sig;
+	private MethodType type;
 	private ArrayList<Temp> temps;
 	private ArrayList<Instruction> instructions;
 
-	public Function(String name, String sig) {
+	public Function(String name, MethodType type) {
 		this.name = name;
-		this.sig = sig;
+		this.type = type;
 		this.temps = new ArrayList<Temp>();
 		this.instructions = new ArrayList<Instruction>();
 	}
@@ -19,8 +19,8 @@ public class Function {
 		return this.name;
 	}
 
-	public String getSig() {
-		return this.sig;
+	public MethodType getType() {
+		return this.type;
 	}
 
 	public ArrayList<Temp> getTemps() {
@@ -41,7 +41,7 @@ public class Function {
 
 	public String toString() {
 		// TODO: StringBuilder
-		String s = "FUNC " + this.name + " " + this.sig + "\n{\n";
+		String s = "FUNC " + this.name + " " + this.type.toString() + "\n{\n";
 		for (Temp t: this.temps) {
 			s += "TEMP " + t.toString() + ":" + t.getType().toString() + ";\n";
 		}
