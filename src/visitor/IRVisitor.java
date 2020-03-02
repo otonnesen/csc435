@@ -40,6 +40,9 @@ public class IRVisitor extends Visitor<Temp> {
 	}
 
 	public Temp visit(ast.Block b) {
+		for (ast.Statement s: b.getStatements()) {
+			s.accept(this);
+		}
 		return null;
 	}
 	public Temp visit(ast.Declaration d) {
