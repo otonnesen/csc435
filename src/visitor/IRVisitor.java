@@ -208,30 +208,54 @@ public class IRVisitor extends Visitor<Operand> {
 		return null;
 	}
 	public Operand visit(ast.StatementArrayAssignment s) {
-		return null;
+		Operand eaa = s.getArrayAccess().accept(this);
+		Temp e = (Temp)s.getExpr().accept(this);
+		Instruction i = new Assignment(eaa, e);
+		this.curFunc.addInstruction(i);
+		return eaa;
 	}
 	public Operand visit(ast.StatementAssign s) {
-		return null;
+		Temp t = this.variables.lookup(s.getId().getId());
+		Operand o = s.getExpr().accept(this);
+		Instruction i = new Assignment(t, o);
+		this.curFunc.addInstruction(i);
+		return t;
 	}
 	public Operand visit(ast.StatementEmpty s) {
 		return null;
 	}
 	public Operand visit(ast.StatementExpression s) {
-		return null;
+		return s.getExpr().accept(this);
 	}
 	public Operand visit(ast.StatementIf s) {
+		// TODO
 		return null;
 	}
 	public Operand visit(ast.StatementPrint s) {
+		Temp t = (Temp)s.getExpr().accept(this);
+		Instruction i = new Print(t, false);
+		this.curFunc.addInstruction(i);
 		return null;
 	}
 	public Operand visit(ast.StatementPrintln s) {
+		Temp t = (Temp)s.getExpr().accept(this);
+		Instruction i = new Print(t, true);
+		this.curFunc.addInstruction(i);
 		return null;
 	}
 	public Operand visit(ast.StatementReturn s) {
+		Type type = this.curFunc.getType().getType();
+		Instruction i;
+		if (type == VOID) {
+			i = new Return(null);
+		} else {
+			i = new Return((Temp)s.getExpr().accept(this));
+		}
+		this.curFunc.addInstruction(i);
 		return null;
 	}
 	public Operand visit(ast.StatementWhile s) {
+		// TODO
 		return null;
 	}
 	public Operand visit(ast.VariableDeclaration v) {
