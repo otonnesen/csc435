@@ -1,5 +1,8 @@
 package ir;
 
+import type.Type;
+import type.AtomicType;
+
 public class ConstantInteger extends Constant {
 	private int value;
 

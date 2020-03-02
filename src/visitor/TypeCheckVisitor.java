@@ -8,12 +8,12 @@ import environment.Environment;
 
 public class TypeCheckVisitor extends Visitor<Type> {
 
-	private static final Type BOOLEAN = TypeBoolean.getInstance();
-	private static final Type CHARACTER = TypeCharacter.getInstance();
-	private static final Type FLOAT = TypeFloat.getInstance();
-	private static final Type INTEGER = TypeInteger.getInstance();
-	private static final Type STRING = TypeString.getInstance();
-	private static final Type VOID = TypeVoid.getInstance();
+	private static final Type BOOLEAN = new Type(AtomicType.BOOLEAN);
+	private static final Type CHARACTER = new Type(AtomicType.CHARACTER);
+	private static final Type FLOAT = new Type(AtomicType.FLOAT);
+	private static final Type INTEGER = new Type(AtomicType.INTEGER);
+	private static final Type STRING = new Type(AtomicType.STRING);
+	private static final Type VOID = new Type(AtomicType.VOID);
 
 	private class SemanticException extends RuntimeException {
 		SemanticException(String message, ASTNode n) {
@@ -34,16 +34,43 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		Type lhs = e.getLeftExpr().accept(this);
 		Type rhs = e.getRightExpr().accept(this);
 		String op = e.toString();
-		if (!OperationTypes.opTypes.get(op).contains(lhs)) {
+		boolean invalid = true;
+		switch (op) {
+			case "==":
+				if (lhs.equals(BOOLEAN) || lhs.equals(CHARACTER) ||
+						lhs.equals(FLOAT) || lhs.equals(INTEGER) ||
+						lhs.equals(STRING))
+					invalid = false;
+			case "<":
+				if (lhs.equals(BOOLEAN) || lhs.equals(CHARACTER) ||
+						lhs.equals(FLOAT) || lhs.equals(INTEGER) ||
+						lhs.equals(STRING))
+					invalid = false;
+			case "-":
+				if (lhs.equals(CHARACTER) || lhs.equals(FLOAT)
+						|| lhs.equals(INTEGER))
+					invalid = false;
+			case "+":
+				if (lhs.equals(CHARACTER) || lhs.equals(FLOAT) ||
+						lhs.equals(INTEGER) || lhs.equals(STRING))
+					invalid = false;
+			case "*":
+				if (lhs.equals(FLOAT) || lhs.equals(INTEGER))
+					invalid = false;
+			default:
+		}
+		if (invalid) {
 			// Operation is not applicable to left-hand expression
 			String message = String.format(
-					"Invalid type `%s` for operation `%s`", lhs, op);
+					"Invalid type `%s` for operation `%s`",
+					lhs.getName(), op);
 			throw new SemanticException(message, e.getLeftExpr());
 		}
 		if (!lhs.equals(rhs)) {
 			// Left- and right-hand sides are not equal.
 			String message = String.format(
-					"Mismatched types: `%s` and `%s`", lhs, rhs);
+					"Mismatched types: `%s` and `%s`",
+					lhs.getName(), rhs.getName());
 			throw new SemanticException(message, e.getRightExpr());
 		}
 		return lhs;
@@ -95,7 +122,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 			// Array index is not an integer
 			String message = String.format(
 					"Invalid type `%s` for array access, expected type `int`",
-					expr);
+					expr.getName());
 			throw new SemanticException(message, e.getExpr());
 		}
 		if (!(this.variables.lookup(e.getId().getId()) instanceof TypeArray)) {
@@ -231,7 +258,8 @@ public class TypeCheckVisitor extends Visitor<Type> {
 			// Mismatched types
 			String message = String.format(
 					"Cannot assign value of type `%s` to array `%s` of type `%s`",
-					exprType, s.getArrayAccess().getId().getId(), idType);
+					exprType.getName(), s.getArrayAccess().getId().getId(),
+					idType.getName());
 			throw new SemanticException(message, s.getArrayAccess().getId());
 		}
 		return idType;
@@ -243,7 +271,8 @@ public class TypeCheckVisitor extends Visitor<Type> {
 			// Mismatched types
 			String message = String.format(
 					"Cannot assign value of type `%s` to variable `%s` of type `%s`",
-					exprType, s.getId().getId(), idType);
+					exprType.getName(), s.getId().getId(),
+					idType.getName());
 			throw new SemanticException(message, s.getId());
 		}
 		return idType;
@@ -259,8 +288,8 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		if (!t.equals(BOOLEAN)) {
 			// While condition is not boolean
 			String message = String.format(
-					"`%` found in if condition, expected boolean",
-					t);
+					"`%s` found in if condition, expected boolean",
+					t.getName());
 			throw new SemanticException(message, s.getExpr());
 		}
 		s.getIfBlock().accept(this);
@@ -271,20 +300,24 @@ public class TypeCheckVisitor extends Visitor<Type> {
 	}
 	public Type visit(StatementPrint s) {
 		Type t = s.getExpr().accept(this);
-		if (!OperationTypes.opTypes.get("print").contains(t)) {
+		if (!(t.equals(BOOLEAN) || t.equals(CHARACTER) ||
+					t.equals(FLOAT) || t.equals(INTEGER) ||
+					t.equals(STRING))) {
 			// Type not printable
 			String message = String.format(
-					"Cannot print type `%s`", t);
+					"Cannot print type `%s`", t.getName());
 			throw new SemanticException(message, s.getExpr());
 		}
 		return null;
 	}
 	public Type visit(StatementPrintln s) {
 		Type t = s.getExpr().accept(this);
-		if (!OperationTypes.opTypes.get("print").contains(t)) {
+		if (!(t.equals(BOOLEAN) || t.equals(CHARACTER) ||
+					t.equals(FLOAT) || t.equals(INTEGER) ||
+					t.equals(STRING))) {
 			// Type not printable
 			String message = String.format(
-					"Cannot print type `%s`", t);
+					"Cannot print type `%s`", t.getName());
 			throw new SemanticException(message, s.getExpr());
 		}
 		return null;
@@ -295,7 +328,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 			// Expression does not match return type
 			String message = String.format(
 					"Return value of type `%s` does not match return type `%s`",
-					t, this.returnType);
+					t.getName(), this.returnType.getName());
 			throw new SemanticException(message, s.getExpr());
 		}
 		return t;
@@ -306,7 +339,7 @@ public class TypeCheckVisitor extends Visitor<Type> {
 			// While condition is not boolean
 			String message = String.format(
 					"`%s` found in while condition, expected boolean",
-					t);
+					t.getName());
 			throw new SemanticException(message, s.getExpr());
 		}
 		s.getBlock().accept(this);

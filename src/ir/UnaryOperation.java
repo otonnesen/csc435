@@ -1,5 +1,8 @@
 package ir;
 
+import type.Type;
+import type.AtomicType;
+
 public class UnaryOperation extends Operand {
 	private Temp t;
 	private UnaryOperator op;

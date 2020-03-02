@@ -1,5 +1,8 @@
 package ir;
 
+import type.Type;
+import type.AtomicType;
+
 public class ConstantBoolean extends Constant {
 	private boolean value;
 

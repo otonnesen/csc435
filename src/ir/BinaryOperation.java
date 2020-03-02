@@ -1,5 +1,8 @@
 package ir;
 
+import type.Type;
+import type.AtomicType;
+
 public class BinaryOperation extends Operand {
 	private Temp t1;
 	private Temp t2;

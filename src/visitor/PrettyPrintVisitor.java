@@ -29,7 +29,7 @@ public class PrettyPrintVisitor extends Visitor<Void> {
 		return null;
 	}
 	public Void visit(Declaration d) {
-		System.out.printf("%s %s", d.getType().toString(), d.getId().getId());
+		System.out.printf("%s %s", d.getType().getName(), d.getId().getId());
 		return null;
 	}
 	public Void visit(ExpressionArrayAccess e) {
@@ -115,7 +115,7 @@ public class PrettyPrintVisitor extends Visitor<Void> {
 		return null;
 	}
 	public Void visit(FunctionDeclaration fd) {
-		System.out.printf("%s %s", fd.getType().toString(), fd.getId());
+		System.out.printf("%s %s", fd.getType().getName(), fd.getId());
 		System.out.printf("(");
 		String delim = "";
 		for (Declaration p: fd.getParameters()) {

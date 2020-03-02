@@ -1,5 +1,8 @@
 package ir;
 
+import type.Type;
+import type.AtomicType;
+
 public class ConstantCharacter extends Constant {
 	private char value;
 

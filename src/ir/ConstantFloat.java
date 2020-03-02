@@ -1,5 +1,8 @@
 package ir;
 
+import type.Type;
+import type.AtomicType;
+
 public class ConstantFloat extends Constant {
 	private float value;
 

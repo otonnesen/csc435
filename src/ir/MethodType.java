@@ -1,10 +1,15 @@
 package ir;
 
-public class MethodType extends Type {
+import type.Type;
+
+import java.util.ArrayList;
+
+public class MethodType {
+	private Type ret;
 	private ArrayList<Type> params;
 
 	public MethodType(Type ret, ArrayList<Type> params) {
-		super(ret);
+		this.ret = ret;
 		this.params = params;
 	}
 
@@ -17,7 +22,7 @@ public class MethodType extends Type {
 		for (Type p: this.params) {
 			s += p.toString();
 		}
-		s += ")" + this.type.toString();
+		s += ")" + this.ret.toString();
 		return s;
 	}
 }
