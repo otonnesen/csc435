@@ -1,12 +1,15 @@
 package ir;
 
+import type.Type;
+
 import java.util.ArrayList;
 
 public class Call extends Operand {
 	private String id;
 	private ArrayList<Temp> args;
 
-	public Call(String id, ArrayList<Temp> args) {
+	public Call(Type type, String id, ArrayList<Temp> args) {
+		super(type);
 		this.id = id;
 		this.args = args;
 	}
@@ -17,5 +20,6 @@ public class Call extends Operand {
 			call += a.toString();
 		}
 		call += ")";
+		return call;
 	}
 }
