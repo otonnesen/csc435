@@ -55,31 +55,66 @@ public class IRVisitor extends Visitor<Operand> {
 		return t;
 	}
 	public Operand visit(ast.ExpressionArrayAccess e) {
-		return null;
+		Temp id = (Temp)e.getId().accept(this);
+		Temp index = (Temp)e.getExpr().accept(this);
+		Operand a = new ArrayAccess(id, index);
+		return a;
 	}
 	public Operand visit(ast.ExpressionFunctionCall e) {
-		return null;
+		String id = e.getId();
+		Type type = this.functions.lookup(id);
+		ArrayList<Temp> args = new ArrayList<Temp>();
+		for (ast.Expression p: e.getExprList()) {
+			args.add((Temp)p.accept(this));
+		}
+		Operand call = new Call(type, id, args);
+		if (type == VOID) {
+			return null;
+		} else {
+			Temp t = tf.getTemp(type, TEMP);
+			return t;
+		}
 	}
 	public Operand visit(ast.ExpressionIdentifier e) {
-		return null;
+		return this.variables.lookup(e.getId());
 	}
 	public Operand visit(ast.ExpressionIsEqual e) {
-		return null;
+		Temp lhs = (Temp)e.getLeftExpr().accept(this);
+		Temp rhs = (Temp)e.getRightExpr().accept(this);
+		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
+				rhs, BinaryOperator.EQUAL);
+		return o;
 	}
 	public Operand visit(ast.ExpressionLessThan e) {
-		return null;
+		Temp lhs = (Temp)e.getLeftExpr().accept(this);
+		Temp rhs = (Temp)e.getRightExpr().accept(this);
+		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
+				rhs, BinaryOperator.LESS_THAN);
+		return o;
 	}
 	public Operand visit(ast.ExpressionMinus e) {
-		return null;
+		Temp lhs = (Temp)e.getLeftExpr().accept(this);
+		Temp rhs = (Temp)e.getRightExpr().accept(this);
+		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
+				rhs, BinaryOperator.SUBTRACTION);
+		return o;
 	}
 	public Operand visit(ast.ExpressionParenthesis e) {
-		return null;
+		return e.getExpr().accept(this);
 	}
 	public Operand visit(ast.ExpressionPlus e) {
-		return null;
+		Temp lhs = (Temp)e.getLeftExpr().accept(this);
+		Temp rhs = (Temp)e.getRightExpr().accept(this);
+		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
+				rhs, BinaryOperator.ADDITION);
+		return o;
 	}
 	public Operand visit(ast.ExpressionTimes e) {
-		return null;
+		Temp lhs = (Temp)e.getLeftExpr().accept(this);
+		Temp rhs = (Temp)e.getRightExpr().accept(this);
+		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
+				rhs, BinaryOperator.MULTIPLICATION);
+		return o;
 	}
 	public Operand visit(ast.FunctionBody fb) {
 		for (ast.VariableDeclaration vd: fb.getVariables()) {
