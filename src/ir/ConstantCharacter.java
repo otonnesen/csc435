@@ -12,6 +12,6 @@ public class ConstantCharacter extends Constant {
 	}
 
 	public String toString() {
-		return Character.toString(this.value);
+		return "\'" + Character.toString(this.value) + "\'";
 	}
 }
