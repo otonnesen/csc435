@@ -12,6 +12,7 @@ public class IRVisitor extends Visitor<Operand> {
 	private Environment<String, Temp> variables;
 	private Program program;
 	private TempFactory tf;
+	private int nextLabel;
 	private Function curFunc;
 	private String filename;
 
@@ -83,21 +84,33 @@ public class IRVisitor extends Visitor<Operand> {
 		Temp rhs = (Temp)e.getRightExpr().accept(this);
 		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
 				rhs, BinaryOperator.EQUAL);
-		return o;
+		Temp t = tf.getTemp(lhs.getType(), TEMP);
+		this.curFunc.addTemp(t);
+		Instruction i = new Assignment(t, o);
+		this.curFunc.addInstruction(i);
+		return t;
 	}
 	public Operand visit(ast.ExpressionLessThan e) {
 		Temp lhs = (Temp)e.getLeftExpr().accept(this);
 		Temp rhs = (Temp)e.getRightExpr().accept(this);
 		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
 				rhs, BinaryOperator.LESS_THAN);
-		return o;
+		Temp t = tf.getTemp(lhs.getType(), TEMP);
+		this.curFunc.addTemp(t);
+		Instruction i = new Assignment(t, o);
+		this.curFunc.addInstruction(i);
+		return t;
 	}
 	public Operand visit(ast.ExpressionMinus e) {
 		Temp lhs = (Temp)e.getLeftExpr().accept(this);
 		Temp rhs = (Temp)e.getRightExpr().accept(this);
 		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
 				rhs, BinaryOperator.SUBTRACTION);
-		return o;
+		Temp t = tf.getTemp(lhs.getType(), TEMP);
+		this.curFunc.addTemp(t);
+		Instruction i = new Assignment(t, o);
+		this.curFunc.addInstruction(i);
+		return t;
 	}
 	public Operand visit(ast.ExpressionParenthesis e) {
 		return e.getExpr().accept(this);
@@ -107,14 +120,22 @@ public class IRVisitor extends Visitor<Operand> {
 		Temp rhs = (Temp)e.getRightExpr().accept(this);
 		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
 				rhs, BinaryOperator.ADDITION);
-		return o;
+		Temp t = tf.getTemp(lhs.getType(), TEMP);
+		this.curFunc.addTemp(t);
+		Instruction i = new Assignment(t, o);
+		this.curFunc.addInstruction(i);
+		return t;
 	}
 	public Operand visit(ast.ExpressionTimes e) {
 		Temp lhs = (Temp)e.getLeftExpr().accept(this);
 		Temp rhs = (Temp)e.getRightExpr().accept(this);
 		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
 				rhs, BinaryOperator.MULTIPLICATION);
-		return o;
+		Temp t = tf.getTemp(lhs.getType(), TEMP);
+		this.curFunc.addTemp(t);
+		Instruction i = new Assignment(t, o);
+		this.curFunc.addInstruction(i);
+		return t;
 	}
 	public Operand visit(ast.FunctionBody fb) {
 		for (ast.VariableDeclaration vd: fb.getVariables()) {
@@ -138,6 +159,7 @@ public class IRVisitor extends Visitor<Operand> {
 	public Operand visit(ast.Function f) {
 		this.variables.beginScope();
 		this.tf = new TempFactory();
+		this.nextLabel = 0;
 
 		MethodType type = this.getSig(f);
 		Function fn = new Function(f.getDeclaration().getId(), type);
@@ -228,7 +250,6 @@ public class IRVisitor extends Visitor<Operand> {
 		return s.getExpr().accept(this);
 	}
 	public Operand visit(ast.StatementIf s) {
-		// TODO
 		return null;
 	}
 	public Operand visit(ast.StatementPrint s) {
@@ -255,7 +276,6 @@ public class IRVisitor extends Visitor<Operand> {
 		return null;
 	}
 	public Operand visit(ast.StatementWhile s) {
-		// TODO
 		return null;
 	}
 	public Operand visit(ast.VariableDeclaration v) {
