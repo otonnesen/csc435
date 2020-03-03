@@ -1,0 +1,5 @@
+#!/bin/sh
+
+classpath='./lib/jasmin-2708/classes/:./lib/polyglot-1.3.4/classes/:./lib/polyglot-1.3.4/cup-classes/:./lib/soot-2708/classes/'
+
+java -cp $classpath jasmin.Main $1
