@@ -1,11 +1,13 @@
 package ir;
 
+import type.Type;
+
 public class ArrayAccess extends Operand {
 	private Temp id;
 	private Temp index;
 
 	public ArrayAccess(Temp id, Temp index) {
-		super(id.getType());
+		super(new Type(id.getType().getAtomicType()));
 		this.id = id;
 		this.index = index;
 	}
