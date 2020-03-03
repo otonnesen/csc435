@@ -49,7 +49,7 @@ public class Compiler {
 		// p.accept(ppv);
 		TypeCheckVisitor tcv = new TypeCheckVisitor();
 		p.accept(tcv);
-		IRVisitor irv = new IRVisitor(args[0]);
+		IRVisitor irv = new IRVisitor(args[0].split("\\.")[0]);
 		p.accept(irv);
 		System.out.printf("%s\n", irv.getProgram());
 	}
