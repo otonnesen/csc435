@@ -275,6 +275,7 @@ public class IRVisitor extends Visitor<Operand> {
 	public Operand visit(ast.StatementPrint s) {
 		Operand o = s.getExpr().accept(this);
 		Temp t = tf.getTemp(o.getType(), TEMP);
+		this.curFunc.addTemp(t);
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		i = new Print(t, false);
@@ -284,6 +285,7 @@ public class IRVisitor extends Visitor<Operand> {
 	public Operand visit(ast.StatementPrintln s) {
 		Operand o = s.getExpr().accept(this);
 		Temp t = tf.getTemp(o.getType(), TEMP);
+		this.curFunc.addTemp(t);
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		i = new Print(t, true);
