@@ -11,6 +11,7 @@ import java.io.*;
 import ast.Program;
 import visitor.PrettyPrintVisitor;
 import visitor.TypeCheckVisitor;
+import visitor.IRVisitor;
 
 public class Compiler {
 	public static void main (String[] args) throws Exception {
@@ -44,9 +45,12 @@ public class Compiler {
 			System.out.println(e);
 			e.printStackTrace();
 		}
-		PrettyPrintVisitor ppv = new PrettyPrintVisitor();
-		p.accept(ppv);
+		// PrettyPrintVisitor ppv = new PrettyPrintVisitor();
+		// p.accept(ppv);
 		TypeCheckVisitor tcv = new TypeCheckVisitor();
 		p.accept(tcv);
+		IRVisitor irv = new IRVisitor(args[0]);
+		p.accept(irv);
+		System.out.printf("%s\n", irv.getProgram());
 	}
 }
