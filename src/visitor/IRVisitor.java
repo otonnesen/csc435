@@ -273,14 +273,20 @@ public class IRVisitor extends Visitor<Operand> {
 		return null;
 	}
 	public Operand visit(ast.StatementPrint s) {
-		Temp t = (Temp)s.getExpr().accept(this);
-		Instruction i = new Print(t, false);
+		Operand o = s.getExpr().accept(this);
+		Temp t = tf.getTemp(o.getType(), TEMP);
+		Instruction i = new Assignment(t, o);
+		this.curFunc.addInstruction(i);
+		i = new Print(t, false);
 		this.curFunc.addInstruction(i);
 		return null;
 	}
 	public Operand visit(ast.StatementPrintln s) {
-		Temp t = (Temp)s.getExpr().accept(this);
-		Instruction i = new Print(t, true);
+		Operand o = s.getExpr().accept(this);
+		Temp t = tf.getTemp(o.getType(), TEMP);
+		Instruction i = new Assignment(t, o);
+		this.curFunc.addInstruction(i);
+		i = new Print(t, true);
 		this.curFunc.addInstruction(i);
 		return null;
 	}
