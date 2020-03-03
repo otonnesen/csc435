@@ -1,6 +1,6 @@
 package ir;
 
-public class Label extends Instruction {
+public class Label {
 	private int number;
 
 	public Label(int number) {

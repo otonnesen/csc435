@@ -7,9 +7,10 @@ public class UnaryOperation extends Operand {
 	private Temp t;
 	private UnaryOperator op;
 
-	public UnaryOperation(AtomicType type, Temp t) {
+	public UnaryOperation(AtomicType type, Temp t, UnaryOperator op) {
 		super(new Type(type));
 		this.t = t;
+		this.op = op;
 	}
 
 	public String toString() {

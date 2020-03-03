@@ -250,6 +250,26 @@ public class IRVisitor extends Visitor<Operand> {
 		return s.getExpr().accept(this);
 	}
 	public Operand visit(ast.StatementIf s) {
+		Label skipLabel = new Label(this.nextLabel++);
+		Temp t = (Temp)s.getExpr().accept(this);
+		Temp t_inv = this.tf.getTemp(BOOLEAN, TEMP);
+		Operand negate = new UnaryOperation(AtomicType.BOOLEAN, t,
+				UnaryOperator.LOGICAL_NEGATION);
+		Instruction i = new Assignment(t_inv, negate);
+		this.curFunc.addInstruction(i);
+		i = new Jump(t_inv, skipLabel);
+		this.curFunc.addInstruction(i);
+		s.getIfBlock().accept(this);
+		if (s.getElseBlock() == null) {
+			this.curFunc.addInstruction(new LabelInstruction(skipLabel));
+		} else {
+			Label skipEnd = new Label(this.nextLabel++);
+			i = new Jump(null, skipEnd);
+			this.curFunc.addInstruction(i);
+			this.curFunc.addInstruction(new LabelInstruction(skipLabel));
+			s.getElseBlock().accept(this);
+			this.curFunc.addInstruction(new LabelInstruction(skipEnd));
+		}
 		return null;
 	}
 	public Operand visit(ast.StatementPrint s) {
@@ -276,6 +296,24 @@ public class IRVisitor extends Visitor<Operand> {
 		return null;
 	}
 	public Operand visit(ast.StatementWhile s) {
+		Label start = new Label(this.nextLabel++);
+		Label end = new Label(this.nextLabel++);
+
+		Temp t = (Temp)s.getExpr().accept(this);
+		Temp t_inv = this.tf.getTemp(BOOLEAN, TEMP);
+		Operand negate = new UnaryOperation(AtomicType.BOOLEAN, t,
+				UnaryOperator.LOGICAL_NEGATION);
+		Instruction i = new Assignment(t_inv, negate);
+		this.curFunc.addInstruction(i);
+		i = new LabelInstruction(start);
+		this.curFunc.addInstruction(i);
+		i = new Jump(t_inv, end);
+		this.curFunc.addInstruction(i);
+		s.getBlock().accept(this);
+		i = new Jump(null, start);
+		this.curFunc.addInstruction(i);
+		i = new LabelInstruction(end);
+		this.curFunc.addInstruction(i);
 		return null;
 	}
 	public Operand visit(ast.VariableDeclaration v) {
