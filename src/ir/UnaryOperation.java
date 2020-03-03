@@ -14,6 +14,6 @@ public class UnaryOperation extends Operand {
 	}
 
 	public String toString() {
-		return this.type.toString() + this.op.toString() + this.t.toString();
+		return this.type.toString() + this.op.toString() + " " + this.t.toString();
 	}
 }
