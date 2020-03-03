@@ -44,7 +44,7 @@ public class Function {
 		String s = "FUNC " + this.name + " " + this.type.toString() + "\n{\n";
 		String spc = "";
 		for (Temp t: this.temps) {
-			s += "TEMP " + t.toString() + ":" + t.getType().toString() + ";\n";
+			s += "TEMP " + t.getNumber() + ":" + t.getType().toString() + ";\n";
 			spc = "\n";
 		}
 		s += spc;

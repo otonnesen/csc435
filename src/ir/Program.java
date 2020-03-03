@@ -24,7 +24,7 @@ public class Program {
 	}
 
 	public String toString() {
-		String s = this.className + "\n";
+		String s = "PROG " + this.className + "\n";
 		String spc = "";
 		for (Function f: this.functions) {
 			s += spc;
