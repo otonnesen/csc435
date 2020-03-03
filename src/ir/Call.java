@@ -1,28 +1,25 @@
 package ir;
 
+import type.Type;
+
 import java.util.ArrayList;
 
-public class Call extends Instruction {
-	private Temp recipient;
-	private String func_name;
+public class Call extends Operand {
+	private String id;
 	private ArrayList<Temp> args;
 
-	public Call(Temp recipient, String func_name, ArrayList<Temp> args) {
-		this.recipient = recipient;
-		this.func_name = func_name;
+	public Call(Type type, String id, ArrayList<Temp> args) {
+		super(type);
+		this.id = id;
 		this.args = args;
 	}
-	
+
 	public String toString() {
-		String call =  "CALL " + this.func_name + "(";
+		String call = "CALL " + this.id + "(";
 		for (Temp a: this.args) {
 			call += a.toString();
 		}
 		call += ")";
-		if (recipient != null) {
-			return this.recipient.toString() + " :=" + call;
-		} else {
-			return call;
-		}
+		return call;
 	}
 }

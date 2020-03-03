@@ -42,14 +42,16 @@ public class Function {
 	public String toString() {
 		// TODO: StringBuilder
 		String s = "FUNC " + this.name + " " + this.type.toString() + "\n{\n";
+		String spc = "";
 		for (Temp t: this.temps) {
 			s += "TEMP " + t.toString() + ":" + t.getType().toString() + ";\n";
+			spc = "\n";
 		}
-		s += "\n";
+		s += spc;
 		for (Instruction i: this.instructions) {
 			s += i.toString() + ";\n";
 		}
-		s += "}\n";
+		s += "}";
 		return s;
 	}
 }

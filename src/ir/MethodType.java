@@ -13,6 +13,10 @@ public class MethodType {
 		this.params = params;
 	}
 
+	public Type getType() {
+		return this.ret;
+	}
+
 	public ArrayList<Type> getParams() {
 		return this.params;
 	}

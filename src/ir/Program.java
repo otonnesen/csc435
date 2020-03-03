@@ -25,7 +25,10 @@ public class Program {
 
 	public String toString() {
 		String s = this.className + "\n";
+		String spc = "";
 		for (Function f: this.functions) {
+			s += spc;
+			spc = "\n";
 			s += f.toString();
 		}
 		return s;
