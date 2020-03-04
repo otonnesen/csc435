@@ -311,13 +311,13 @@ public class IRVisitor extends Visitor<Operand> {
 		Label start = new Label(this.nextLabel++);
 		Label end = new Label(this.nextLabel++);
 
+		Instruction i = new LabelInstruction(start);
+		this.curFunc.addInstruction(i);
 		Temp t = (Temp)s.getExpr().accept(this);
 		Temp t_inv = this.getNextTemp(BOOLEAN, TEMP);
 		Operand negate = new UnaryOperation(AtomicType.BOOLEAN, t,
 				UnaryOperator.LOGICAL_NEGATION);
-		Instruction i = new Assignment(t_inv, negate);
-		this.curFunc.addInstruction(i);
-		i = new LabelInstruction(start);
+		i = new Assignment(t_inv, negate);
 		this.curFunc.addInstruction(i);
 		i = new Jump(t_inv, end);
 		this.curFunc.addInstruction(i);
