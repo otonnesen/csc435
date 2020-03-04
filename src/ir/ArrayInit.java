@@ -11,6 +11,8 @@ public class ArrayInit extends Operand {
 	}
 
 	public String toString() {
-		return "NEWARRAY (" + this.type.getAtomicType().toString() + ")" + this.size;
+		// return "NEWARRAY (" + this.type.getAtomicType().toString() + ")" + this.size;
+		// Turns out the spec was wrong :|
+		return "NEWARRAY " + this.type.getAtomicType().toString() + this.size;
 	}
 }

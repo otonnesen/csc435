@@ -2,6 +2,7 @@ package visitor;
 
 import ir.*;
 import type.Type;
+import type.TypeArray;
 import type.AtomicType;
 import environment.Environment;
 
@@ -59,7 +60,14 @@ public class IRVisitor extends Visitor<Operand> {
 	public Operand visit(ast.Declaration d) {
 		Temp t = this.getNextTemp(d.getType(), LOCAL);
 		this.variables.put(d.getId().getId(), t);
-		this.curFunc.addTemp(t);
+		if (d.getType() instanceof TypeArray) {
+			TypeArray ta = (TypeArray)d.getType();
+			// yuck.
+			Instruction i = new Assignment(t,
+					new ArrayInit(new Type(d.getType().getAtomicType()),
+						ta.getSize()));
+			this.curFunc.addInstruction(i);
+		}
 		return t;
 	}
 	public Operand visit(ast.ExpressionArrayAccess e) {
