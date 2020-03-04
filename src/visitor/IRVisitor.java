@@ -70,7 +70,7 @@ public class IRVisitor extends Visitor<Operand> {
 			args.add((Temp)p.accept(this));
 		}
 		Call call = new Call(type, id, args);
-		if (type == VOID) {
+		if (type.equals(VOID)) {
 			this.curFunc.addInstruction(new CallInstruction(call));
 			return null;
 		} else {
@@ -300,7 +300,7 @@ public class IRVisitor extends Visitor<Operand> {
 	public Operand visit(ast.StatementReturn s) {
 		Type type = this.curFunc.getType().getType();
 		Instruction i;
-		if (type == VOID) {
+		if (type.equals(VOID)) {
 			i = new Return(null);
 		} else {
 			i = new Return((Temp)s.getExpr().accept(this));
