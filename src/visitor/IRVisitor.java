@@ -30,6 +30,12 @@ public class IRVisitor extends Visitor<Operand> {
 		return this.program;
 	}
 
+	private Temp getNextTemp(Type type, Temp.tempClass cls) {
+		Temp t = tf.get(type, cls);
+		this.curFunc.addTemp(t);
+		return t;
+	}
+
 	private static MethodType getSig(ast.Function f) {
 		ArrayList<Type> params = new ArrayList<Type>();
 		for (ast.Declaration d: f.getDeclaration().getParameters()) {
@@ -51,7 +57,7 @@ public class IRVisitor extends Visitor<Operand> {
 		return null;
 	}
 	public Operand visit(ast.Declaration d) {
-		Temp t = tf.getTemp(d.getType(), LOCAL);
+		Temp t = this.getNextTemp(d.getType(), LOCAL);
 		this.variables.put(d.getId().getId(), t);
 		this.curFunc.addTemp(t);
 		return t;
@@ -74,8 +80,7 @@ public class IRVisitor extends Visitor<Operand> {
 			this.curFunc.addInstruction(new CallInstruction(call));
 			return null;
 		} else {
-			Temp t = tf.getTemp(type, TEMP);
-			this.curFunc.addTemp(t);
+			Temp t = this.getNextTemp(type, TEMP);
 			this.curFunc.addInstruction(new Assignment(t, call));
 			return t;
 		}
@@ -88,8 +93,7 @@ public class IRVisitor extends Visitor<Operand> {
 		Temp rhs = (Temp)e.getRightExpr().accept(this);
 		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
 				rhs, BinaryOperator.EQUAL);
-		Temp t = tf.getTemp(BOOLEAN, TEMP);
-		this.curFunc.addTemp(t);
+		Temp t = this.getNextTemp(BOOLEAN, TEMP);
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		return t;
@@ -99,8 +103,7 @@ public class IRVisitor extends Visitor<Operand> {
 		Temp rhs = (Temp)e.getRightExpr().accept(this);
 		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
 				rhs, BinaryOperator.LESS_THAN);
-		Temp t = tf.getTemp(BOOLEAN, TEMP);
-		this.curFunc.addTemp(t);
+		Temp t = this.getNextTemp(BOOLEAN, TEMP);
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		return t;
@@ -110,8 +113,7 @@ public class IRVisitor extends Visitor<Operand> {
 		Temp rhs = (Temp)e.getRightExpr().accept(this);
 		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
 				rhs, BinaryOperator.SUBTRACTION);
-		Temp t = tf.getTemp(lhs.getType(), TEMP);
-		this.curFunc.addTemp(t);
+		Temp t = this.getNextTemp(lhs.getType(), TEMP);
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		return t;
@@ -124,8 +126,7 @@ public class IRVisitor extends Visitor<Operand> {
 		Temp rhs = (Temp)e.getRightExpr().accept(this);
 		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
 				rhs, BinaryOperator.ADDITION);
-		Temp t = tf.getTemp(lhs.getType(), TEMP);
-		this.curFunc.addTemp(t);
+		Temp t = this.getNextTemp(lhs.getType(), TEMP);
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		return t;
@@ -135,8 +136,7 @@ public class IRVisitor extends Visitor<Operand> {
 		Temp rhs = (Temp)e.getRightExpr().accept(this);
 		Operand o = new BinaryOperation(lhs.getType().getAtomicType(), lhs,
 				rhs, BinaryOperator.MULTIPLICATION);
-		Temp t = tf.getTemp(lhs.getType(), TEMP);
-		this.curFunc.addTemp(t);
+		Temp t = this.getNextTemp(lhs.getType(), TEMP);
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		return t;
@@ -154,9 +154,8 @@ public class IRVisitor extends Visitor<Operand> {
 	public Operand visit(ast.FunctionDeclaration fd) {
 		this.functions.put(fd.getId(), fd.getType());
 		for (ast.Declaration p: fd.getParameters()) {
-			Temp t = tf.getTemp(p.getType(), PARAM);
+			Temp t = this.getNextTemp(p.getType(), PARAM);
 			this.variables.put(p.getId().getId(), t);
-			this.curFunc.addTemp(t);
 		}
 		return null;
 	}
@@ -178,40 +177,35 @@ public class IRVisitor extends Visitor<Operand> {
 		return null;
 	}
 	public Operand visit(ast.LiteralBoolean l) {
-		Temp t = tf.getTemp(BOOLEAN, TEMP);
-		this.curFunc.addTemp(t);
+		Temp t = this.getNextTemp(BOOLEAN, TEMP);
 		Operand o = new ConstantBoolean(l.getValue());
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		return t;
 	}
 	public Operand visit(ast.LiteralCharacter l) {
-		Temp t = tf.getTemp(CHARACTER, TEMP);
-		this.curFunc.addTemp(t);
+		Temp t = this.getNextTemp(CHARACTER, TEMP);
 		Operand o = new ConstantCharacter(l.getValue());
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		return t;
 	}
 	public Operand visit(ast.LiteralFloat l) {
-		Temp t = tf.getTemp(FLOAT, TEMP);
-		this.curFunc.addTemp(t);
+		Temp t = this.getNextTemp(FLOAT, TEMP);
 		Operand o = new ConstantFloat(l.getValue());
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		return t;
 	}
 	public Operand visit(ast.LiteralInteger l) {
-		Temp t = tf.getTemp(INTEGER, TEMP);
-		this.curFunc.addTemp(t);
+		Temp t = this.getNextTemp(INTEGER, TEMP);
 		Operand o = new ConstantInteger(l.getValue());
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		return t;
 	}
 	public Operand visit(ast.LiteralString l) {
-		Temp t = tf.getTemp(STRING, TEMP);
-		this.curFunc.addTemp(t);
+		Temp t = this.getNextTemp(STRING, TEMP);
 		Operand o = new ConstantString(l.getValue());
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
@@ -256,8 +250,7 @@ public class IRVisitor extends Visitor<Operand> {
 	public Operand visit(ast.StatementIf s) {
 		Label skipLabel = new Label(this.nextLabel++);
 		Temp t = (Temp)s.getExpr().accept(this);
-		Temp t_inv = this.tf.getTemp(BOOLEAN, TEMP);
-		this.curFunc.addTemp(t_inv);
+		Temp t_inv = this.getNextTemp(BOOLEAN, TEMP);
 		Operand negate = new UnaryOperation(AtomicType.BOOLEAN, t,
 				UnaryOperator.LOGICAL_NEGATION);
 		Instruction i = new Assignment(t_inv, negate);
@@ -279,8 +272,7 @@ public class IRVisitor extends Visitor<Operand> {
 	}
 	public Operand visit(ast.StatementPrint s) {
 		Operand o = s.getExpr().accept(this);
-		Temp t = tf.getTemp(o.getType(), TEMP);
-		this.curFunc.addTemp(t);
+		Temp t = this.getNextTemp(o.getType(), TEMP);
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		i = new Print(t, false);
@@ -289,8 +281,7 @@ public class IRVisitor extends Visitor<Operand> {
 	}
 	public Operand visit(ast.StatementPrintln s) {
 		Operand o = s.getExpr().accept(this);
-		Temp t = tf.getTemp(o.getType(), TEMP);
-		this.curFunc.addTemp(t);
+		Temp t = this.getNextTemp(o.getType(), TEMP);
 		Instruction i = new Assignment(t, o);
 		this.curFunc.addInstruction(i);
 		i = new Print(t, true);
@@ -313,8 +304,7 @@ public class IRVisitor extends Visitor<Operand> {
 		Label end = new Label(this.nextLabel++);
 
 		Temp t = (Temp)s.getExpr().accept(this);
-		Temp t_inv = this.tf.getTemp(BOOLEAN, TEMP);
-		this.curFunc.addTemp(t);
+		Temp t_inv = this.getNextTemp(BOOLEAN, TEMP);
 		Operand negate = new UnaryOperation(AtomicType.BOOLEAN, t,
 				UnaryOperator.LOGICAL_NEGATION);
 		Instruction i = new Assignment(t_inv, negate);

@@ -10,7 +10,7 @@ public class TempFactory {
 		this.next = 0;
 	}
 
-	public Temp getTemp(Type t, Temp.tempClass cls) {
+	public Temp get(Type t, Temp.tempClass cls) {
 		return new Temp(this.next++, t, cls);
 	}
 }
