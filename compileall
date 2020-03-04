@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ -z $1 ]; then
+	exit
+fi
+
 file=$(basename -- $1)
 base="${file%.*}"
 
