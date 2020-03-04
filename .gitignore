@@ -1,6 +1,9 @@
 books/
 docs/
 labs/
+lib/jasmin-2708
+lib/polyglot-1.3.4
+lib/soot-2708  
 src/ulLexer.java
 src/ulParser.java
 *.class
@@ -9,5 +12,7 @@ src/ulParser.java
 *.swp
 tags
 test.ul
+test.ir
+test.j
 TODO
 checktests
