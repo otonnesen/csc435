@@ -321,7 +321,13 @@ public class TypeCheckVisitor extends Visitor<Type> {
 		return null;
 	}
 	public Type visit(StatementReturn s) {
-		Type t = s.getExpr().accept(this);
+		Expression ret = s.getExpr();
+		Type t;
+		if (ret == null) {
+			t = VOID;
+		} else {
+			t = s.getExpr().accept(this);
+		}
 		if (!t.equals(this.returnType)) {
 			// Expression does not match return type
 			String message = String.format(
