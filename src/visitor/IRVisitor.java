@@ -179,6 +179,11 @@ public class IRVisitor extends Visitor<Operand> {
 		f.getDeclaration().accept(this);
 
 		f.getBody().accept(this);
+
+		if (type.getType().equals(VOID)) {
+			Instruction i = new Return(null);
+			this.curFunc.addInstruction(i);
+		}
 		this.program.addFunction(fn);
 
 		this.variables.endScope();
