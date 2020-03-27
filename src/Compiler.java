@@ -12,6 +12,7 @@ import ast.Program;
 import visitor.PrettyPrintVisitor;
 import visitor.TypeCheckVisitor;
 import visitor.IRVisitor;
+import codegen.JasminVisitor;
 
 public class Compiler {
 	public static void main (String[] args) throws Exception {
@@ -51,6 +52,8 @@ public class Compiler {
 		p.accept(tcv);
 		IRVisitor irv = new IRVisitor(args[0].split("\\.")[0]);
 		p.accept(irv);
-		System.out.printf("%s\n", irv.getProgram());
+		// System.out.printf("%s\n", irv.getProgram());
+		JasminVisitor jv = new JasminVisitor(irv.getProgram());
+		System.out.printf("%s\n", jv.toString());
 	}
 }

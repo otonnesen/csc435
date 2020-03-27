@@ -1,5 +1,6 @@
 package ir;
 
+import codegen.JasminVisitor;
 import type.Type;
 
 import java.util.ArrayList;
@@ -28,5 +29,9 @@ public class MethodType {
 		}
 		s += ")" + this.ret.toString();
 		return s;
+	}
+
+	public void accept(JasminVisitor v) {
+		v.visit(this);
 	}
 }

@@ -1,5 +1,7 @@
 package ir;
 
+import codegen.JasminVisitor;
+
 public class LabelInstruction extends Instruction {
 	private Label label;
 
@@ -9,5 +11,9 @@ public class LabelInstruction extends Instruction {
 
 	public String toString() {
 		return "L" + this.label.getNumber() + ":";
+	}
+
+	public void accept(JasminVisitor v) {
+		v.visit(this);
 	}
 }

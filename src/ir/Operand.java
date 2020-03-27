@@ -1,5 +1,6 @@
 package ir;
 
+import codegen.JasminVisitor;
 import type.Type;
 
 public abstract class Operand {
@@ -12,4 +13,6 @@ public abstract class Operand {
 	public Type getType() {
 		return this.type;
 	}
+
+	public abstract void accept(JasminVisitor v);
 }

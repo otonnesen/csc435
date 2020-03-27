@@ -1,5 +1,6 @@
 package ir;
 
+import codegen.JasminVisitor;
 import type.Type;
 import type.AtomicType;
 
@@ -18,5 +19,9 @@ public class BinaryOperation extends Operand {
 	public String toString() {
 		return this.t1.toString() + " " + this.type.toString() +
 			this.op.toString() + " " + this.t2.toString();
+	}
+
+	public void accept(JasminVisitor v) {
+		v.visit(this);
 	}
 }

@@ -1,5 +1,6 @@
 package ir;
 
+import codegen.JasminVisitor;
 import type.Type;
 
 public class Temp extends Operand {
@@ -28,5 +29,9 @@ public class Temp extends Operand {
 
 	public String toString() {
 		return "T" + this.number;
+	}
+
+	public void accept(JasminVisitor v) {
+		v.visit(this);
 	}
 }

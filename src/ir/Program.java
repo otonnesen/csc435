@@ -1,5 +1,6 @@
 package ir;
 
+import codegen.JasminVisitor;
 import java.util.ArrayList;
 
 public class Program {
@@ -32,5 +33,9 @@ public class Program {
 			s += f.toString();
 		}
 		return s;
+	}
+
+	public void accept(JasminVisitor v) {
+		v.visit(this);
 	}
 }

@@ -1,5 +1,7 @@
 package ir;
 
+import codegen.JasminVisitor;
+
 public class Print extends Instruction {
 	private Temp op;
 	private boolean ln;
@@ -16,5 +18,9 @@ public class Print extends Instruction {
 		} else {
 			return "PRINT" + s;
 		}
+	}
+
+	public void accept(JasminVisitor v) {
+		v.visit(this);
 	}
 }

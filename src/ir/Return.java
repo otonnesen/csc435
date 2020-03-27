@@ -1,5 +1,7 @@
 package ir;
 
+import codegen.JasminVisitor;
+
 public class Return extends Instruction {
 	private Temp retval;
 
@@ -13,5 +15,9 @@ public class Return extends Instruction {
 		} else {
 			return "RETURN";
 		}
+	}
+
+	public void accept(JasminVisitor v) {
+		v.visit(this);
 	}
 }

@@ -1,5 +1,7 @@
 package ir;
 
+import codegen.JasminVisitor;
+
 public class Jump extends Instruction {
 	private Temp cond;
 	private Label label;
@@ -15,5 +17,9 @@ public class Jump extends Instruction {
 		} else {
 			return "GOTO " + this.label.toString();
 		}
+	}
+
+	public void accept(JasminVisitor v) {
+		v.visit(this);
 	}
 }

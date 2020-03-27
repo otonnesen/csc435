@@ -1,5 +1,6 @@
 package ir;
 
+import codegen.JasminVisitor;
 import java.util.ArrayList;
 
 public class CallInstruction extends Instruction {
@@ -11,5 +12,9 @@ public class CallInstruction extends Instruction {
 
 	public String toString() {
 		return this.call.toString();
+	}
+
+	public void accept(JasminVisitor v) {
+		v.visit(this);
 	}
 }

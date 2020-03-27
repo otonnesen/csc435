@@ -1,5 +1,7 @@
 package ir;
 
+import codegen.JasminVisitor;
+
 public class Assignment extends Instruction {
 	private Operand left;
 	private Operand right;
@@ -12,5 +14,9 @@ public class Assignment extends Instruction {
 
 	public String toString() {
 		return left.toString() + " := " + right.toString();
+	}
+
+	public void accept(JasminVisitor v) {
+		v.visit(this);
 	}
 }

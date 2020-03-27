@@ -1,5 +1,7 @@
 package ir;
 
+import codegen.JasminVisitor;
+
 public class Label {
 	private int number;
 
@@ -13,5 +15,9 @@ public class Label {
 
 	public String toString() {
 		return "L" + this.number;
+	}
+
+	public void accept(JasminVisitor v) {
+		v.visit(this);
 	}
 }

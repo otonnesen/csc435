@@ -1,5 +1,6 @@
 package ir;
 
+import codegen.JasminVisitor;
 import type.Type;
 import type.AtomicType;
 
@@ -13,5 +14,9 @@ public class ConstantInteger extends Constant {
 
 	public String toString() {
 		return Integer.toString(this.value);
+	}
+
+	public void accept(JasminVisitor v) {
+		v.visit(this);
 	}
 }

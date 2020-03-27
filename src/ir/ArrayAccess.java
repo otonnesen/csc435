@@ -1,5 +1,6 @@
 package ir;
 
+import codegen.JasminVisitor;
 import type.Type;
 
 public class ArrayAccess extends Operand {
@@ -22,5 +23,9 @@ public class ArrayAccess extends Operand {
 
 	public String toString() {
 		return this.id.toString() + "[" + this.index.toString() + "]";
+	}
+
+	public void accept(JasminVisitor v) {
+		v.visit(this);
 	}
 }
