@@ -243,6 +243,11 @@ public class IRVisitor extends Visitor<Operand> {
 	public Operand visit(ast.StatementArrayAssignment s) {
 		Operand eaa = s.getArrayAccess().accept(this);
 		Operand o = s.getExpr().accept(this);
+		if (o instanceof ArrayAccess) {
+			Temp t = this.getNextTemp(o.getType(), TEMP);
+			Instruction i = new Assignment(t, o);
+			o = t;
+		}
 		Instruction i = new Assignment(eaa, o);
 		this.curFunc.addInstruction(i);
 		return eaa;
