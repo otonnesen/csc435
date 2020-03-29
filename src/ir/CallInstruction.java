@@ -10,6 +10,10 @@ public class CallInstruction extends Instruction {
 		this.call = call;
 	}
 
+	public Call getCall() {
+		return this.call;
+	}
+
 	public String toString() {
 		return this.call.toString();
 	}

@@ -15,6 +15,14 @@ public class Call extends Operand {
 		this.args = args;
 	}
 
+	public String getId() {
+		return this.id;
+	}
+
+	public ArrayList<Temp> getArgs() {
+		return this.args;
+	}
+
 	public String toString() {
 		String call = "CALL " + this.id + "(";
 		for (Temp a: this.args) {
