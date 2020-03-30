@@ -23,7 +23,7 @@ public class JasminVisitor {
 		this.className = p.getClassName();
 		p.accept(this);
 		this.out.append(
-				  ";--------------------------------------------;\n"
+				";--------------------------------------------;\n"
 				+ ";                                            ;\n"
 				+ "; Boilerplate                                ;\n"
 				+ ";                                            ;\n"
