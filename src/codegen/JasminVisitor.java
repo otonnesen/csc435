@@ -3,6 +3,7 @@ package codegen;
 import ir.*;
 import type.Type;
 import type.AtomicType;
+import type.TypeArray;
 
 import java.lang.StringBuilder;
 
@@ -93,7 +94,12 @@ public class JasminVisitor {
 		this.out.append(f.getName());
 		this.out.append("(");
 		for (Type t: f.getType().getParams()) {
-			this.out.append(t.toString());
+			if (t instanceof TypeArray) {
+				this.out.append("[");
+				this.out.append(t.getAtomicType().toString());
+			} else {
+				this.out.append(t.toString());
+			}
 		}
 		this.out.append(")");
 		this.out.append(f.getType().getType());
