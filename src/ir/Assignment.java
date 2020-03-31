@@ -12,6 +12,14 @@ public class Assignment extends Instruction {
 		this.right = right;
 	}
 
+	public Operand getLeft() {
+		return this.left;
+	}
+
+	public Operand getRight() {
+		return this.right;
+	}
+
 	public String toString() {
 		return left.toString() + " := " + right.toString();
 	}

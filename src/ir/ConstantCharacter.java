@@ -12,6 +12,10 @@ public class ConstantCharacter extends Constant {
 		this.value = v;
 	}
 
+	public char getValue() {
+		return this.value;
+	}
+
 	public String toString() {
 		return "\'" + Character.toString(this.value) + "\'";
 	}

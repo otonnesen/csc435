@@ -12,6 +12,10 @@ public class ConstantString extends Constant {
 		this.value = v;
 	}
 
+	public String getValue() {
+		return this.toString();
+	}
+
 	public String toString() {
 		return "\"" + this.value + "\"";
 	}

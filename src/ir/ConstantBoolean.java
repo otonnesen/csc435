@@ -12,6 +12,10 @@ public class ConstantBoolean extends Constant {
 		this.value = v;
 	}
 
+	public boolean getValue() {
+		return this.value;
+	}
+
 	public String toString() {
 		return Boolean.toString(this.value);
 	}

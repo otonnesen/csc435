@@ -12,6 +12,10 @@ public class ConstantFloat extends Constant {
 		this.value = v;
 	}
 
+	public float getValue() {
+		return this.value;
+	}
+
 	public String toString() {
 		return Float.toString(this.value);
 	}
