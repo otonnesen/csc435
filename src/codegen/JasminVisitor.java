@@ -113,6 +113,27 @@ public class JasminVisitor {
 
 		this.out.append(".limit stack 16\n");
 
+		for (Temp t: f.getTemps()) {
+			if (t.getCls() != Temp.tempClass.PARAM) {
+				if (t.getType().equals(STRING)) {
+					this.out.append("aconst_null\n");
+					this.out.append("astore ");
+					this.out.append(t.getNumber());
+					this.out.append("\n");
+				} else if (t.getType().equals(FLOAT)) {
+					this.out.append("ldc 0.0\n");
+					this.out.append("fstore ");
+					this.out.append(t.getNumber());
+					this.out.append("\n");
+				} else {
+					this.out.append("ldc 0\n");
+					this.out.append("istore ");
+					this.out.append(t.getNumber());
+					this.out.append("\n");
+				}
+			}
+		}
+
 		for (Instruction i: f.getInstructions()) {
 			i.accept(this);
 			out.append("\n");
