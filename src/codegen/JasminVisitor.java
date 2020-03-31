@@ -97,6 +97,7 @@ public class JasminVisitor {
 			if (t instanceof TypeArray) {
 				this.out.append("[");
 				this.out.append(t.getAtomicType().toString());
+
 			} else {
 				this.out.append(t.toString());
 			}
@@ -126,7 +127,7 @@ public class JasminVisitor {
 	public void visit(Print i) {}
 
 	public void visit(Program p) {
-		this.out.append(".class ");
+		this.out.append(".class public ");
 		this.out.append(p.getClassName());
 		this.out.append("\n.super java/lang/Object\n\n");
 		for (Function f: p.getFunctions()) {
