@@ -49,9 +49,68 @@ public class JasminVisitor {
 		return this.out.toString();
 	}
 
-	public void visit(ArrayAccess i) {}
-	public void visit(ArrayInit i) {}
-	public void visit(Assignment i) {}
+	public void visit(ArrayAccess a) {
+		this.out.append("aload ");
+		this.out.append(a.getId().getNumber());
+		this.out.append("\n");
+
+		this.out.append("iload ");
+		this.out.append(a.getIndex().getNumber());
+		this.out.append("\n");
+
+		this.out.append("iaload\n");
+	}
+	public void visit(ArrayInit a) {
+		this.out.append("ldc ");
+		this.out.append(a.getSize());
+		this.out.append("\n");
+		Type t = a.getType();
+		if (t.equals(BOOLEAN)) {
+			this.out.append("newarray boolean");
+		} else if (t.equals(CHARACTER)) {
+			this.out.append("newarray char");
+		} else if (t.equals(FLOAT)) {
+			this.out.append("newarray float");
+		} else if (t.equals(INTEGER)) {
+			this.out.append("newarray int");
+		} else if (t.equals(STRING)) {
+			this.out.append("anewarray java/lang/String");
+		}
+		this.out.append("\n");
+	}
+	public void visit(Assignment a) {
+		Operand l = a.getLeft();
+
+		if (l instanceof ArrayAccess) {
+			l = (ArrayAccess)l;
+			this.out.append("aload ");
+			this.out.append(((ArrayAccess)l).getId().getNumber());
+			this.out.append("\n");
+			this.out.append("iload ");
+			this.out.append(((ArrayAccess)l).getIndex().getNumber());
+			this.out.append("\n");
+		}
+
+		a.getRight().accept(this);
+
+		if (l instanceof ArrayAccess) {
+			this.out.append("iastore\n");
+		} else {
+			if (l.getType().equals(STRING) || l.getType() instanceof TypeArray) {
+				this.out.append("astore ");
+				this.out.append(((Temp)l).getNumber());
+				this.out.append("\n");
+			} else if (((Temp)l).getType().equals(FLOAT)) {
+				this.out.append("fstore ");
+				this.out.append(((Temp)l).getNumber());
+				this.out.append("\n");
+			} else {
+				this.out.append("istore ");
+				this.out.append(((Temp)l).getNumber());
+				this.out.append("\n");
+			}
+		}
+	}
 	public void visit(BinaryOperation i) {}
 	public void visit(Call c) {
 		this.out.append(c.getId());
@@ -64,10 +123,10 @@ public class JasminVisitor {
 	}
 	public void visit(CallInstruction i) {
 		for (Temp t: i.getCall().getArgs()) {
-			if (t.getType().equals(FLOAT)) {
-				this.out.append("fload ");
-			} else if (t.getType().equals(STRING)) {
+			if (t.getType().equals(STRING)) {
 				this.out.append("aload ");
+			} else if (t.getType().equals(FLOAT)) {
+				this.out.append("fload ");
 			} else {
 				this.out.append("iload ");
 			}
@@ -79,11 +138,31 @@ public class JasminVisitor {
 		this.out.append("/");
 		i.getCall().accept(this);
 	}
-	public void visit(ConstantBoolean i) {}
-	public void visit(ConstantCharacter i) {}
-	public void visit(ConstantFloat i) {}
-	public void visit(ConstantInteger i) {}
-	public void visit(ConstantString i) {}
+	public void visit(ConstantBoolean c) {
+		this.out.append("ldc ");
+		this.out.append(c.getValue() ? "1" : "0");
+		this.out.append("\n");
+	}
+	public void visit(ConstantCharacter c) {
+		this.out.append("ldc ");
+		this.out.append((int)c.getValue());
+		this.out.append("\n");
+	}
+	public void visit(ConstantFloat c) {
+		this.out.append("ldc ");
+		this.out.append(c.getValue());
+		this.out.append("\n");
+	}
+	public void visit(ConstantInteger c) {
+		this.out.append("ldc ");
+		this.out.append(c.getValue());
+		this.out.append("\n");
+	}
+	public void visit(ConstantString c) {
+		this.out.append("ldc ");
+		this.out.append(c.getValue());
+		this.out.append("\n");
+	}
 	public void visit(Function f) {
 		this.out.append(".method public static ");
 		if (f.getName().equals("main")
@@ -115,7 +194,7 @@ public class JasminVisitor {
 
 		for (Temp t: f.getTemps()) {
 			if (t.getCls() != Temp.tempClass.PARAM) {
-				if (t.getType().equals(STRING)) {
+				if (t.getType().equals(STRING) || t.getType() instanceof TypeArray) {
 					this.out.append("aconst_null\n");
 					this.out.append("astore ");
 					this.out.append(t.getNumber());
@@ -133,6 +212,8 @@ public class JasminVisitor {
 				}
 			}
 		}
+
+		this.out.append("\n");
 
 		for (Instruction i: f.getInstructions()) {
 			i.accept(this);
@@ -156,6 +237,20 @@ public class JasminVisitor {
 		}
 	}
 	public void visit(Return i) {}
-	public void visit(Temp i) {}
+	public void visit(Temp t) {
+		if (t.getType().equals(STRING)) {
+			this.out.append("aload ");
+			this.out.append(t.getNumber());
+			this.out.append("\n");
+		} else if (t.getType().equals(FLOAT)) {
+			this.out.append("fload ");
+			this.out.append(t.getNumber());
+			this.out.append("\n");
+		} else {
+			this.out.append("iload ");
+			this.out.append(t.getNumber());
+			this.out.append("\n");
+		}
+	}
 	public void visit(UnaryOperation i) {}
 }
