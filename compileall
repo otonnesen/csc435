@@ -7,6 +7,5 @@ fi
 file=$(basename -- $1)
 base="${file%.*}"
 
-./run $base.ul > $base.ir
-./codegen --file=$base.ir > $base.j
+./run $base.ul > $base.j
 ./bytegen $base.j
