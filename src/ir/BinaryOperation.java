@@ -16,6 +16,18 @@ public class BinaryOperation extends Operand {
 		this.op = op;
 	}
 
+	public Temp getLeft() {
+		return this.t1;
+	}
+
+	public Temp getRight() {
+		return this.t2;
+	}
+
+	public BinaryOperator getOp() {
+		return this.op;
+	}
+
 	public String toString() {
 		return this.t1.toString() + " " + this.type.toString() +
 			this.op.toString() + " " + this.t2.toString();

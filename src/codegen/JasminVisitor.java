@@ -10,6 +10,7 @@ import java.lang.StringBuilder;
 public class JasminVisitor {
 	private StringBuilder out;
 	private String className;
+	private int label_num;
 
 	private static Type BOOLEAN = new Type(AtomicType.BOOLEAN);
 	private static Type CHARACTER = new Type(AtomicType.CHARACTER);
@@ -21,6 +22,7 @@ public class JasminVisitor {
 	public JasminVisitor(Program p) {
 		this.out = new StringBuilder();
 		this.className = p.getClassName();
+		this.label_num = 0;
 		p.accept(this);
 		this.out.append(
 				";--------------------------------------------;\n"
@@ -111,7 +113,91 @@ public class JasminVisitor {
 			}
 		}
 	}
-	public void visit(BinaryOperation i) {}
+	public void visit(BinaryOperation o) {
+		o.getLeft().accept(this);
+		o.getRight().accept(this);
+		Type t = o.getType();
+		String prefix;
+		if (t.equals(STRING) || t instanceof TypeArray) {
+			prefix = "a";
+		} else if (t.equals(FLOAT)) {
+			prefix = "f";
+		} else {
+			prefix = "i";
+		}
+		int l1;
+		int l2;
+		switch(o.getOp()) {
+			case ADDITION:
+				this.out.append(prefix + "add\n");
+				break;
+			case SUBTRACTION:
+				this.out.append(prefix + "sub\n");
+				break;
+			case MULTIPLICATION:
+				this.out.append(prefix + "mul\n");
+				break;
+			case LESS_THAN:
+				l1 = this.label_num++;
+				l2 = this.label_num++;
+				if (t.equals(FLOAT)) {
+					this.out.append("fcmpg\n");
+				} else {
+					this.out.append("isub\n");
+				}
+				this.out.append("iflt L_");
+				this.out.append(l1);
+				this.out.append("\n");
+
+				this.out.append("ldc 0\n");
+
+				this.out.append("goto L_");
+				this.out.append(l2);
+				this.out.append(":\n");
+
+				this.out.append("L_");
+				this.out.append(l1);
+				this.out.append(":\n");
+
+				this.out.append("ldc 1\n");
+
+				this.out.append("L_");
+				this.out.append(l2);
+				this.out.append(":\n");
+				break;
+			case EQUAL:
+				l1 = this.label_num++;
+				l2 = this.label_num++;
+				if (t.equals(FLOAT)) {
+					this.out.append("fcmpg\n");
+				} else {
+					this.out.append("isub\n");
+				}
+				this.out.append("ifeq L_");
+				this.out.append(l1);
+				this.out.append("\n");
+
+				this.out.append("ldc 0\n");
+
+				this.out.append("goto L_");
+				this.out.append(l2);
+				this.out.append(":\n");
+
+				this.out.append("L_");
+				this.out.append(l1);
+				this.out.append(":\n");
+
+				this.out.append("ldc 1\n");
+
+				this.out.append("L_");
+				this.out.append(l2);
+				this.out.append(":\n");
+				break;
+			default:
+				this.out.append("");
+				break;
+		}
+	}
 	public void visit(Call c) {
 		this.out.append(c.getId());
 		this.out.append("(");
@@ -164,6 +250,8 @@ public class JasminVisitor {
 		this.out.append("\n");
 	}
 	public void visit(Function f) {
+		int start = this.label_num++;
+		int end = this.label_num++;
 		this.out.append(".method public static ");
 		if (f.getName().equals("main")
 				&& f.getType().getType().equals(VOID)
@@ -191,6 +279,9 @@ public class JasminVisitor {
 		this.out.append("\n");
 
 		this.out.append(".limit stack 16\n");
+		this.out.append("L_");
+		this.out.append(start);
+		this.out.append(":\n");
 
 		for (Temp t: f.getTemps()) {
 			if (t.getCls() != Temp.tempClass.PARAM) {
@@ -217,17 +308,17 @@ public class JasminVisitor {
 
 		for (Instruction i: f.getInstructions()) {
 			i.accept(this);
-			out.append("\n");
 		}
 
+		this.out.append("L_");
+		this.out.append(end);
+		this.out.append(":\n");
 		this.out.append(".end method\n");
 	}
 	public void visit(Jump i) {}
 	public void visit(Label i) {}
 	public void visit(LabelInstruction i) {}
-	public void visit(MethodType i) {}
 	public void visit(Print i) {}
-
 	public void visit(Program p) {
 		this.out.append(".class public ");
 		this.out.append(p.getClassName());

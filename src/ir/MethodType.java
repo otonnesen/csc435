@@ -30,8 +30,4 @@ public class MethodType {
 		s += ")" + this.ret.toString();
 		return s;
 	}
-
-	public void accept(JasminVisitor v) {
-		v.visit(this);
-	}
 }
