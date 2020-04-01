@@ -199,6 +199,12 @@ public class JasminVisitor {
 		}
 	}
 	public void visit(Call c) {
+		for (Temp t: c.getArgs()) {
+			t.accept(this);
+		}
+		this.out.append("invokestatic ");
+		this.out.append(this.className);
+		this.out.append("/");
 		this.out.append(c.getId());
 		this.out.append("(");
 		for (Temp t: c.getArgs()) {
@@ -206,6 +212,7 @@ public class JasminVisitor {
 		}
 		this.out.append(")");
 		this.out.append(c.getType().toString());
+		this.out.append("\n");
 	}
 	public void visit(CallInstruction i) {
 		for (Temp t: i.getCall().getArgs()) {
@@ -222,7 +229,14 @@ public class JasminVisitor {
 		this.out.append("invokestatic ");
 		this.out.append(this.className);
 		this.out.append("/");
-		i.getCall().accept(this);
+		Call c = i.getCall();
+		this.out.append(c.getId());
+		this.out.append("(");
+		for (Temp t: c.getArgs()) {
+			this.out.append(t.getType().toString());
+		}
+		this.out.append(")");
+		this.out.append(c.getType().toString());
 		this.out.append("\n");
 	}
 	public void visit(ConstantBoolean c) {
