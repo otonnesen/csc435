@@ -46,13 +46,24 @@ public class Compiler {
 			System.out.println(e);
 			e.printStackTrace();
 		}
-		// PrettyPrintVisitor ppv = new PrettyPrintVisitor();
-		// p.accept(ppv);
+		String com = "jasmin";
+		if (args.length > 1) {
+			com = args[1];
+		}
+		if (com.equals("print")) {
+			PrettyPrintVisitor ppv = new PrettyPrintVisitor();
+			p.accept(ppv);
+			return;
+		}
+
 		TypeCheckVisitor tcv = new TypeCheckVisitor();
 		p.accept(tcv);
 		IRVisitor irv = new IRVisitor(args[0].split("\\.")[0]);
 		p.accept(irv);
-		// System.out.printf("%s\n", irv.getProgram());
+		if (com.equals("ir")) {
+			System.out.printf("%s\n", irv.getProgram());
+			return;
+		}
 		JasminVisitor jv = new JasminVisitor(irv.getProgram());
 		System.out.printf("%s\n", jv.toString());
 	}
