@@ -14,6 +14,14 @@ public class UnaryOperation extends Operand {
 		this.op = op;
 	}
 
+	public Temp getTemp() {
+		return this.t;
+	}
+
+	public UnaryOperator getOp() {
+		return this.op;
+	}
+
 	public String toString() {
 		return this.type.toString() + this.op.toString() + " " + this.t.toString();
 	}

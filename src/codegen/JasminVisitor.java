@@ -343,5 +343,15 @@ public class JasminVisitor {
 			this.out.append("\n");
 		}
 	}
-	public void visit(UnaryOperation i) {}
+	public void visit(UnaryOperation o) {
+		switch (o.getOp()) {
+			case LOGICAL_NEGATION:
+				o.getTemp().accept(this);
+				this.out.append("ldc 1\n");
+				this.out.append("ixor\n");
+				break;
+			default:
+				break;
+		}
+	}
 }
