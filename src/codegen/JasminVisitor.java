@@ -153,7 +153,7 @@ public class JasminVisitor {
 
 				this.out.append("goto L_");
 				this.out.append(l2);
-				this.out.append(":\n");
+				this.out.append("\n");
 
 				this.out.append("L_");
 				this.out.append(l1);
@@ -181,7 +181,7 @@ public class JasminVisitor {
 
 				this.out.append("goto L_");
 				this.out.append(l2);
-				this.out.append(":\n");
+				this.out.append("\n");
 
 				this.out.append("L_");
 				this.out.append(l1);
@@ -223,6 +223,7 @@ public class JasminVisitor {
 		this.out.append(this.className);
 		this.out.append("/");
 		i.getCall().accept(this);
+		this.out.append("\n");
 	}
 	public void visit(ConstantBoolean c) {
 		this.out.append("ldc ");
@@ -334,7 +335,30 @@ public class JasminVisitor {
 		this.out.append(l.toString());
 		this.out.append("\n");
 	}
-	public void visit(Print i) {}
+	public void visit(Print p) {
+		Type t = p.getTemp().getType();
+		this.out.append("getstatic java/lang/System/out Ljava/io/PrintStream;\n");
+		if (t.equals(STRING)) {
+			this.out.append("aload ");
+		} else if (t.equals(FLOAT)) {
+			this.out.append("fload ");
+		} else {
+			this.out.append("iload ");
+		}
+		this.out.append(p.getTemp().getNumber());
+		this.out.append("\n");
+		if (p.getLn()) {
+			this.out.append("invokevirtual java/io/PrintStream/println(");
+		} else {
+			this.out.append("invokevirtual java/io/PrintStream/print(");
+		}
+		if (t.equals(STRING)) {
+			this.out.append("Ljava/lang/String;");
+		} else {
+			this.out.append(p.getTemp().getType().getAtomicType().toString());
+		}
+		this.out.append(")V\n");
+	}
 	public void visit(Program p) {
 		this.out.append(".class public ");
 		this.out.append(p.getClassName());

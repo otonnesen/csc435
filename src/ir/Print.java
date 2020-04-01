@@ -11,6 +11,14 @@ public class Print extends Instruction {
 		this.ln = ln;
 	}
 
+	public Temp getTemp() {
+		return this.op;
+	}
+
+	public boolean getLn() {
+		return this.ln;
+	}
+
 	public String toString() {
 		String s = this.op.getType().toString() + " " + this.op.toString();
 		if (this.ln) {
