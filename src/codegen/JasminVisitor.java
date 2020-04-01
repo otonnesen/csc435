@@ -327,7 +327,29 @@ public class JasminVisitor {
 			f.accept(this);
 		}
 	}
-	public void visit(Return i) {}
+	public void visit(Return r) {
+		if (r.getRetVal() != null) {
+			Type t = r.getRetVal().getType();
+			if (t.equals(STRING) || t instanceof TypeArray) {
+				this.out.append("aload ");
+				this.out.append(r.getRetVal().getNumber());
+				this.out.append("\n");
+				this.out.append("areturn\n");
+			} else if (t.equals(FLOAT)) {
+				this.out.append("fload ");
+				this.out.append(r.getRetVal().getNumber());
+				this.out.append("\n");
+				this.out.append("freturn\n");
+			} else {
+				this.out.append("iload ");
+				this.out.append(r.getRetVal().getNumber());
+				this.out.append("\n");
+				this.out.append("ireturn\n");
+			}
+		} else {
+			this.out.append("return\n");
+		}
+	}
 	public void visit(Temp t) {
 		if (t.getType().equals(STRING)) {
 			this.out.append("aload ");

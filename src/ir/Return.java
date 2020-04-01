@@ -9,6 +9,10 @@ public class Return extends Instruction {
 		this.retval = retval;
 	}
 
+	public Temp getRetVal() {
+		return this.retval;
+	}
+
 	public String toString() {
 		if (retval != null) {
 			return "RETURN " + retval.toString();
