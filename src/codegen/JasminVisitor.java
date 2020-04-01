@@ -315,9 +315,25 @@ public class JasminVisitor {
 		this.out.append(":\n");
 		this.out.append(".end method\n");
 	}
-	public void visit(Jump i) {}
-	public void visit(Label i) {}
-	public void visit(LabelInstruction i) {}
+	public void visit(Jump j) {
+		if (j.getCond() != null) {
+			this.out.append("iload ");
+			this.out.append(j.getCond().getNumber());
+			this.out.append("\n");
+
+			this.out.append("ifne ");
+			this.out.append(j.getLabel().toString());
+			this.out.append("\n");
+		} else {
+			this.out.append("goto ");
+			this.out.append(j.getLabel().toString());
+			this.out.append("\n");
+		}
+	}
+	public void visit(LabelInstruction l) {
+		this.out.append(l.toString());
+		this.out.append("\n");
+	}
 	public void visit(Print i) {}
 	public void visit(Program p) {
 		this.out.append(".class public ");

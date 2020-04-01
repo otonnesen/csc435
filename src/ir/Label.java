@@ -16,8 +16,4 @@ public class Label {
 	public String toString() {
 		return "L" + this.number;
 	}
-
-	public void accept(JasminVisitor v) {
-		v.visit(this);
-	}
 }

@@ -11,6 +11,14 @@ public class Jump extends Instruction {
 		this.label = label;
 	}
 
+	public Temp getCond() {
+		return this.cond;
+	}
+
+	public Label getLabel() {
+		return this.label;
+	}
+
 	public String toString() {
 		if (cond != null) {
 			return "IF " + this.cond.toString() + " GOTO " + this.label.toString();
