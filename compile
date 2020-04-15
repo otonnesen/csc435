@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ -z $1 ]; then
+	exit
+fi
+
+file=$(basename -- $1)
+base="${file%.*}"
+
+java -cp './lib/antlr-3.5.2-complete.jar:./build' Compiler $base.ul > $base.j
+
+java -cp './lib/jasmin-2708/classes/:./lib/polyglot-1.3.4/classes/:./lib/polyglot-1.3.4/cup-classes/:./lib/soot-2708/classes/' jasmin.Main $base.j
